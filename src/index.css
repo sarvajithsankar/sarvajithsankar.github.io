@@ -1,0 +1,435 @@
+@import "tailwindcss";
+
+/* =====================================================
+   HOSTILE SYSTEM — THEME
+===================================================== */
+:root {
+  --void: #000000;
+  --blood: #8b0000;
+  --alert: #ff0000;
+  --toxic: #ff0033;
+  --ice: #ffffff;
+  --ash: #9d9daa;
+  --glass-bg: rgba(139, 0, 0, 0.08);
+  --glass-border: rgba(255, 0, 0, 0.2);
+  --font-display: 'Anton', Impact, 'Arial Narrow', sans-serif;
+  --font-body: 'Space Grotesk', 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Courier New', monospace;
+}
+
+* { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+html { scroll-behavior: smooth; }
+
+html, body {
+  background: var(--void);
+  color: var(--ice);
+  font-family: var(--font-body);
+  cursor: none;
+  overflow-x: hidden;
+}
+
+@media (pointer: coarse) {
+  html, body, * { cursor: auto !important; }
+  .cursor-fx { display: none !important; }
+}
+
+::selection { background: rgba(255, 0, 51, 0.45); color: #fff; }
+
+::-webkit-scrollbar { width: 9px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #8b0000, #ff0033);
+  border-radius: 0;
+  box-shadow: 0 0 10px rgba(255, 0, 51, 0.5);
+}
+
+.font-display { font-family: var(--font-display); }
+.font-mono2 { font-family: var(--font-mono); }
+.red { color: var(--alert); }
+.dim { color: var(--ash); }
+
+/* =====================================================
+   GLASS — CRIMSON
+===================================================== */
+.glass-red {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px) saturate(130%);
+  -webkit-backdrop-filter: blur(20px) saturate(130%);
+  box-shadow: 0 0 40px rgba(139, 0, 0, 0.22), inset 0 0 26px rgba(139, 0, 0, 0.10);
+}
+
+/* =====================================================
+   BACKGROUND LAYERS
+===================================================== */
+.red-grid {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 0, 0, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.045) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse at center, black 35%, transparent 92%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 35%, transparent 92%);
+}
+
+.vignette {
+  position: fixed; inset: 0; z-index: 35; pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 52%, rgba(0, 0, 0, 0.82) 100%);
+}
+
+.topo {
+  background-image:
+    repeating-radial-gradient(circle at 18% 28%, rgba(255, 0, 0, 0.05) 0 1px, transparent 1px 64px),
+    repeating-radial-gradient(circle at 82% 72%, rgba(255, 0, 0, 0.04) 0 1px, transparent 1px 88px);
+}
+
+/* =====================================================
+   GLITCH — RGB CHANNEL SPLIT
+===================================================== */
+.glitch { position: relative; display: inline-block; animation: glitchSkew 3.4s infinite; }
+.glitch::before, .glitch::after {
+  content: attr(data-text);
+  position: absolute; inset: 0; opacity: 0; pointer-events: none;
+}
+.glitch::before { color: #ff0000; z-index: -1; animation: glitchA 3.4s infinite steps(1); }
+.glitch::after  { color: #00a2ff; z-index: -2; animation: glitchB 3.4s infinite steps(1); }
+
+@keyframes glitchA {
+  0%, 90% { opacity: 0; transform: none; clip-path: inset(0); }
+  91% { opacity: .95; transform: translate(-7px, 3px); clip-path: inset(8% 0 58% 0); }
+  93% { opacity: .95; transform: translate(6px, -2px); clip-path: inset(62% 0 6% 0); }
+  95% { opacity: .85; transform: translate(-4px, 1px); clip-path: inset(28% 0 42% 0); }
+  97% { opacity: .9; transform: translate(5px, 2px); clip-path: inset(48% 0 22% 0); }
+  98%, 100% { opacity: 0; }
+}
+@keyframes glitchB {
+  0%, 90% { opacity: 0; transform: none; clip-path: inset(0); }
+  91% { opacity: .9; transform: translate(6px, -3px); clip-path: inset(52% 0 12% 0); }
+  93% { opacity: .9; transform: translate(-5px, 2px); clip-path: inset(12% 0 66% 0); }
+  95% { opacity: .8; transform: translate(4px, -1px); clip-path: inset(38% 0 32% 0); }
+  97% { opacity: .85; transform: translate(-6px, -2px); clip-path: inset(70% 0 4% 0); }
+  98%, 100% { opacity: 0; }
+}
+@keyframes glitchSkew {
+  0%, 90%, 100% { transform: none; text-shadow: none; }
+  92% { transform: skewX(5deg); text-shadow: -3px 0 #ff0000, 3px 0 #00e5ff; }
+  94% { transform: skewX(-4deg); text-shadow: 3px 0 #00ff88, -3px 0 #ff0033; }
+  96% { transform: skewX(2deg); text-shadow: -2px 0 #00a2ff, 2px 0 #ff0000; }
+}
+.violent { animation: glitchSkew 0.28s infinite; }
+
+/* =====================================================
+   SCANLINES / CRT
+===================================================== */
+.scanline-sweep {
+  position: absolute; left: 0; right: 0; height: 140px; top: -18%;
+  background: linear-gradient(to bottom, transparent, rgba(255, 0, 51, 0.10), rgba(255, 0, 0, 0.32), transparent);
+  filter: blur(1px);
+  animation: sweep 6.5s linear infinite;
+  pointer-events: none;
+}
+@keyframes sweep { 0% { top: -18%; } 100% { top: 112%; } }
+
+.crt { position: relative; border-radius: 22px; }
+.crt::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; z-index: 5; pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.028) 0 1px, transparent 1px 3px);
+}
+.crt::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; z-index: 6; pointer-events: none;
+  box-shadow: inset 0 0 130px rgba(0, 0, 0, 0.92), inset 0 0 44px rgba(139, 0, 0, 0.28);
+}
+.crt-flicker { animation: crtFlicker 5s infinite; }
+@keyframes crtFlicker {
+  0%, 91%, 94%, 98%, 100% { opacity: 1; }
+  92% { opacity: 0.85; }
+  96% { opacity: 0.93; }
+}
+.term-cursor {
+  display: inline-block; width: 10px; height: 1.15em; vertical-align: text-bottom; margin-left: 2px;
+  background: var(--alert); box-shadow: 0 0 10px var(--alert);
+  animation: hardBlink 0.6s steps(1) infinite;
+}
+@keyframes hardBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+/* =====================================================
+   EKG HEARTBEAT
+===================================================== */
+.ekg-pulse {
+  stroke-dasharray: 70 930;
+  animation: ekgRun 2.3s linear infinite;
+  filter: drop-shadow(0 0 6px rgba(255, 0, 51, 0.95));
+}
+@keyframes ekgRun { 0% { stroke-dashoffset: 1000; } 100% { stroke-dashoffset: 0; } }
+
+.pulse-line { animation: heartbeatGlow 1.25s ease-in-out infinite; }
+@keyframes heartbeatGlow {
+  0%, 100% { opacity: .45; box-shadow: 0 0 8px rgba(255, 0, 51, 0.35); }
+  12% { opacity: 1; box-shadow: 0 0 26px rgba(255, 0, 51, 0.95); }
+  24% { opacity: .55; }
+  36% { opacity: 1; box-shadow: 0 0 30px rgba(255, 0, 51, 1); }
+  48% { opacity: .5; }
+}
+
+/* =====================================================
+   NAV FLICKER / LOGO / REC DOT
+===================================================== */
+.flicker-hover:hover { animation: neonFlicker 0.5s linear; color: var(--alert) !important; text-shadow: 0 0 10px rgba(255, 0, 0, 0.9); }
+@keyframes neonFlicker {
+  0% { opacity: 1; } 8% { opacity: .15; } 16% { opacity: 1; }
+  28% { opacity: .35; } 36% { opacity: 1; } 54% { opacity: .6; }
+  62%, 100% { opacity: 1; }
+}
+
+.logo-ul { position: relative; }
+.logo-ul::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -3px; height: 2px;
+  background: linear-gradient(90deg, var(--blood), var(--toxic));
+  box-shadow: 0 0 10px rgba(255, 0, 51, 0.8);
+  transform: scaleX(0); transform-origin: left; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.logo-ul:hover::after { transform: scaleX(1); }
+
+.rec-dot { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--alert); box-shadow: 0 0 12px var(--alert); flex-shrink: 0; }
+.rec-dot::after {
+  content: ''; position: absolute; inset: -4px; border-radius: 50%;
+  border: 1px solid rgba(255, 0, 51, 0.75);
+  animation: pingRing 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes pingRing { 0% { transform: scale(0.55); opacity: 1; } 100% { transform: scale(1.9); opacity: 0; } }
+
+/* =====================================================
+   SLASH UNDERLINE (section titles)
+===================================================== */
+.slash { position: relative; white-space: nowrap; font-style: normal; }
+.slash::after {
+  content: ''; position: absolute; left: -3%; right: -3%; bottom: 6%; height: 4px;
+  background: var(--alert); box-shadow: 0 0 14px rgba(255, 0, 51, 0.9);
+  transform: scaleX(0) skewX(-24deg); transform-origin: center;
+}
+.slash.on::after { transform: scaleX(1) skewX(-24deg); transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s; }
+
+/* =====================================================
+   VOID BUTTON — red flood from below
+===================================================== */
+.btn-void {
+  position: relative; overflow: hidden;
+  background: #000; border: 1px solid rgba(255, 0, 51, 0.55); color: #fff;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.14), inset 0 0 14px rgba(139, 0, 0, 0.16);
+  transition: box-shadow 0.3s, border-color 0.3s;
+}
+.btn-void::before {
+  content: ''; position: absolute; inset: 0; z-index: 0;
+  background: linear-gradient(to top, var(--blood), var(--alert));
+  transform: translateY(102%); transition: transform 0.38s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.btn-void:hover::before { transform: translateY(0); }
+.btn-void:hover { box-shadow: 0 0 34px rgba(255, 0, 51, 0.55); border-color: var(--alert); }
+.btn-void:active { transform: scale(0.97); }
+.btn-void > * { position: relative; z-index: 1; }
+
+/* =====================================================
+   TRACE BEAM — laser outline around project cards
+===================================================== */
+.trace-wrap { position: relative; padding: 1px; overflow: hidden; border-radius: 14px; }
+.trace-beam {
+  position: absolute; top: 50%; left: 50%; width: 160%; aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background: conic-gradient(from 0deg, transparent 0deg, transparent 292deg, rgba(255, 0, 51, 0) 316deg, rgba(255, 0, 51, 0.85) 342deg, #ffd9d9 354deg, transparent 360deg);
+  opacity: 0; transition: opacity 0.35s;
+  animation: beamSpin 2.6s linear infinite;
+  pointer-events: none;
+}
+.trace-wrap:hover .trace-beam { opacity: 1; }
+@keyframes beamSpin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+.spot {
+  position: absolute; inset: 0; border-radius: inherit; opacity: 0; transition: opacity 0.45s;
+  background: radial-gradient(62% 46% at 50% 0%, rgba(255, 0, 51, 0.26), transparent 72%);
+  pointer-events: none;
+}
+.proj-card { transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.45s; }
+.trace-wrap:hover .proj-card {
+  transform: translateY(-10px) translateZ(30px);
+  box-shadow: 0 34px 70px -18px rgba(139, 0, 0, 0.65), 0 0 44px rgba(255, 0, 51, 0.18);
+}
+.trace-wrap:hover .spot { opacity: 1; }
+
+/* =====================================================
+   RED PILLS / TAGS
+===================================================== */
+.tag-red {
+  position: relative; overflow: hidden;
+  background: rgba(139, 0, 0, 0.28); border: 1px solid rgba(255, 0, 51, 0.4); color: #ffb4b4;
+  transition: color 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+.tag-red::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(110deg, transparent 32%, rgba(255, 90, 90, 0.55) 50%, transparent 68%);
+  transform: translateX(-130%); transition: transform 0.7s ease;
+}
+.tag-red:hover { color: #fff; border-color: var(--alert); box-shadow: 0 0 16px rgba(255, 0, 51, 0.4); }
+.tag-red:hover::before { transform: translateX(130%); }
+
+/* =====================================================
+   HACKED COUNTER FLASH
+===================================================== */
+.counter-flash {
+  color: #fff !important;
+  text-shadow: 0 0 18px var(--alert), 0 0 44px rgba(255, 0, 51, 0.65);
+  animation: cflash 0.45s ease-out;
+}
+@keyframes cflash { 0% { transform: scale(1.28); } 100% { transform: scale(1); } }
+
+/* =====================================================
+   CLASSIFIED / REDACTION
+===================================================== */
+.redact {
+  background: #000; color: transparent; padding: 0 0.22em; cursor: help;
+  box-shadow: inset 0 0 0 1px rgba(255, 0, 0, 0.3);
+  transition: color 0.25s, background 0.25s, text-shadow 0.25s;
+}
+.redact:hover {
+  background: rgba(139, 0, 0, 0.3); color: #ffdada;
+  text-shadow: 0 0 14px rgba(255, 0, 51, 0.85);
+}
+
+.classified-stamp {
+  border: 3px solid currentColor; padding: 6px 26px; letter-spacing: 0.4em;
+  text-shadow: 0 0 22px rgba(255, 0, 0, 0.6);
+  box-shadow: inset 0 0 18px rgba(255, 0, 0, 0.25), 0 0 24px rgba(255, 0, 0, 0.2);
+}
+
+.grow-border { position: relative; }
+.grow-border::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: linear-gradient(to top, var(--blood), var(--alert));
+  box-shadow: 0 0 12px rgba(255, 0, 51, 0.65);
+  transform: scaleY(0); transform-origin: bottom;
+  transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s;
+}
+.grow-border.grown::before { transform: scaleY(1); }
+
+/* =====================================================
+   HOLOGRAPHIC FOIL (certs)
+===================================================== */
+.holo {
+  position: absolute; inset: 0; border-radius: inherit; opacity: 0; transition: opacity 0.4s;
+  background: linear-gradient(115deg, transparent 18%, rgba(255, 0, 51, 0.38) 34%, rgba(255, 120, 0, 0.30) 43%, rgba(255, 0, 200, 0.30) 52%, rgba(255, 40, 80, 0.38) 62%, transparent 82%);
+  background-size: 260% 260%; mix-blend-mode: screen; pointer-events: none;
+}
+.holo-on:hover .holo { opacity: 1; animation: holoShift 1.5s linear infinite; }
+@keyframes holoShift { 0% { background-position: 0% 0%; } 100% { background-position: 220% 220%; } }
+
+.stamp {
+  display: inline-block; border: 2px solid var(--alert); color: var(--alert);
+  padding: 3px 12px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.34em;
+  transform: rotate(-11deg);
+  box-shadow: 0 0 16px rgba(255, 0, 51, 0.45), inset 0 0 10px rgba(255, 0, 51, 0.28);
+}
+.heartbeat { animation: hbeat 1.4s ease-in-out infinite; }
+@keyframes hbeat {
+  0%, 100% { transform: scale(1) rotate(-11deg); }
+  14% { transform: scale(1.14) rotate(-11deg); }
+  28% { transform: scale(1) rotate(-11deg); }
+  42% { transform: scale(1.1) rotate(-11deg); }
+  56% { transform: scale(1) rotate(-11deg); }
+}
+
+/* flip */
+.flip-card { perspective: 1300px; }
+.flip-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.85s cubic-bezier(0.25, 0.8, 0.25, 1); }
+.flip-card:hover .flip-inner { transform: rotateY(180deg); }
+.flip-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.flip-back { transform: rotateY(180deg); }
+
+/* =====================================================
+   TIMELINE
+===================================================== */
+.tl-dot { position: relative; width: 18px; height: 18px; border-radius: 50%; background: #000; border: 2px solid var(--alert); box-shadow: 0 0 14px rgba(255, 0, 51, 0.8); }
+.tl-dot::before { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: var(--alert); box-shadow: 0 0 10px var(--alert); animation: dotPulse 1.8s ease-in-out infinite; }
+@keyframes dotPulse { 0%, 100% { transform: scale(0.8); opacity: 0.85; } 50% { transform: scale(1.15); opacity: 1; } }
+
+.sweep-hl {
+  background-image: linear-gradient(rgba(255, 0, 51, 0.4), rgba(255, 0, 51, 0.4));
+  background-repeat: no-repeat; background-size: 0% 42%; background-position: 0 62%;
+  transition: background-size 0.5s ease; padding: 0 2px;
+}
+.sweep-hl:hover { background-size: 100% 42%; }
+
+/* =====================================================
+   CUBES
+===================================================== */
+.cube { position: absolute; transform-style: preserve-3d; animation: cubeSpin 16s linear infinite; }
+.cube-face {
+  position: absolute; inset: 0;
+  border: 1px solid rgba(255, 0, 51, 0.55);
+  background: rgba(139, 0, 0, 0.07);
+  box-shadow: inset 0 0 14px rgba(255, 0, 0, 0.18);
+}
+@keyframes cubeSpin { from { transform: rotateX(0) rotateY(0); } to { transform: rotateX(360deg) rotateY(360deg); } }
+
+/* =====================================================
+   RADAR
+===================================================== */
+.radar-sweep {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(255, 0, 51, 0) 0deg, rgba(255, 0, 51, 0.30) 42deg, rgba(255, 0, 0, 0) 64deg);
+  animation: spin360 4.2s linear infinite;
+}
+@keyframes spin360 { to { transform: rotate(360deg); } }
+
+.blip { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: var(--alert); box-shadow: 0 0 12px var(--alert); }
+.blip::after { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 1px solid rgba(255, 0, 51, 0.8); animation: pingRing 2.2s ease-out infinite; }
+
+.ripple { position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(255, 0, 51, 0.55); animation: rip 2.4s ease-out infinite; pointer-events: none; }
+@keyframes rip { 0% { transform: scale(0.6); opacity: 0.9; } 100% { transform: scale(2.1); opacity: 0; } }
+
+.arc-hover { transition: color 0.2s; }
+.arc-hover:hover {
+  color: #fff !important;
+  text-shadow: 0 0 7px rgba(255, 0, 51, 0.95), 0 0 20px rgba(255, 0, 51, 0.55);
+  animation: arcJitter 0.28s steps(2) infinite;
+}
+@keyframes arcJitter {
+  0% { transform: translate(0, 0); } 25% { transform: translate(1px, -1px); }
+  50% { transform: translate(-1px, 1px); } 75% { transform: translate(1px, 1px); } 100% { transform: translate(0, 0); }
+}
+
+/* launch */
+.rocket { transition: transform 0.9s cubic-bezier(0.55, -0.3, 0.3, 1.3), opacity 0.9s; }
+.launched .rocket { transform: translateY(-280%) rotate(10deg); opacity: 0; }
+.flame { transform: scaleY(0); transform-origin: top; transition: transform 0.25s; }
+.launched .flame { transform: scaleY(1); animation: flameFlick 0.11s infinite alternate; }
+@keyframes flameFlick { from { transform: scaleY(0.75); } to { transform: scaleY(1.2); } }
+
+/* =====================================================
+   PRELOADER
+===================================================== */
+.preload-scan {
+  position: absolute; left: 0; right: 0; top: -4%; height: 2px;
+  background: var(--alert);
+  box-shadow: 0 0 30px 5px rgba(255, 0, 51, 0.85), 0 0 130px 34px rgba(139, 0, 0, 0.55);
+  animation: preScan 1.3s cubic-bezier(0.6, 0.05, 0.3, 1) forwards;
+}
+@keyframes preScan { to { top: 104%; } }
+
+/* =====================================================
+   SKILLS CANVAS
+===================================================== */
+.skill-canvas { width: 100%; height: 100%; display: block; }
+
+/* =====================================================
+   REDUCED MOTION
+===================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .cursor-fx { display: none !important; }
+  html, body { cursor: auto; }
+}
