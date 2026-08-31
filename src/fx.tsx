@@ -4,7 +4,7 @@ import { motion, useInView, useScroll } from 'framer-motion';
 
 /* =========================================================
    prefers-reduced-motion hook
-========================================================= */
+ ========================================================= */
 export function usePRM(): boolean {
   const [prm, setPrm] = useState(false);
   useEffect(() => {
@@ -18,48 +18,32 @@ export function usePRM(): boolean {
 }
 
 /* =========================================================
-   CUSTOM CURSOR — targeting reticle + trail
-========================================================= */
-const TRAIL_LEN = 14;
-
+   CUSTOM CURSOR — subtle glowing reticle
+ ========================================================= */
 export function CursorFX() {
-  const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
-  const trailRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const dotRef = useRef<HTMLDivElement>(null);
   const [hot, setHot] = useState(false);
   const prm = usePRM();
 
   useEffect(() => {
     if (prm) return;
     let mx = -100, my = -100, rx = -100, ry = -100;
-    const hist: Array<{ x: number; y: number }> = [];
     let raf = 0;
     let lastHot: boolean | null = null;
 
     const onMove = (e: MouseEvent) => {
       mx = e.clientX; my = e.clientY;
       const t = e.target as HTMLElement | null;
-      const isHot = !!t?.closest?.('a, button, [data-hover], .redact, .flip-card');
+      const isHot = !!t?.closest?.('a, button, [data-hover], .redact, .flip-card, .tilt-element');
       if (isHot !== lastHot) { lastHot = isHot; setHot(isHot); }
     };
 
     const loop = () => {
-      rx += (mx - rx) * 0.16;
-      ry += (my - ry) * 0.16;
+      rx += (mx - rx) * 0.14;
+      ry += (my - ry) * 0.14;
       if (dotRef.current) dotRef.current.style.transform = `translate(${mx}px, ${my}px) translate(-50%,-50%)`;
       if (ringRef.current) ringRef.current.style.transform = `translate(${rx}px, ${ry}px) translate(-50%,-50%)`;
-
-      hist.unshift({ x: mx, y: my });
-      if (hist.length > TRAIL_LEN) hist.pop();
-      for (let i = 0; i < TRAIL_LEN; i++) {
-        const el = trailRefs.current[i];
-        if (!el) continue;
-        const p = hist[Math.min(i * 2, hist.length - 1)];
-        if (p) {
-          el.style.opacity = String((1 - i / TRAIL_LEN) * 0.5);
-          el.style.transform = `translate(${p.x}px, ${p.y}px) translate(-50%,-50%) scale(${1 - i / TRAIL_LEN})`;
-        }
-      }
       raf = requestAnimationFrame(loop);
     };
 
@@ -75,43 +59,36 @@ export function CursorFX() {
 
   return (
     <div className="cursor-fx" aria-hidden>
-      {Array.from({ length: TRAIL_LEN }).map((_, i) => (
-        <div
-          key={i}
-          ref={(el) => { trailRefs.current[i] = el; }}
-          className="fixed top-0 left-0 w-[5px] h-[5px] rounded-full pointer-events-none z-[998]"
-          style={{ background: '#00f2fe', boxShadow: '0 0 6px rgba(0,242,254,0.8)', opacity: 0 }}
-        />
-      ))}
       <div
         ref={ringRef}
         className="fixed top-0 left-0 rounded-full border pointer-events-none z-[999] transition-[width,height,background-color] duration-300"
         style={{
-          width: hot ? 58 : 34,
-          height: hot ? 58 : 34,
-          borderColor: 'rgba(0,242,254,0.85)',
-          backgroundColor: hot ? 'rgba(0,242,254,0.14)' : 'transparent',
-          boxShadow: '0 0 18px rgba(0,242,254,0.4), inset 0 0 12px rgba(0,242,254,0.25)',
+          width: hot ? 48 : 28,
+          height: hot ? 48 : 28,
+          borderColor: hot ? 'rgba(168, 85, 247, 0.7)' : 'rgba(0, 242, 254, 0.5)',
+          backgroundColor: hot ? 'rgba(168, 85, 247, 0.08)' : 'transparent',
+          boxShadow: hot ? '0 0 14px rgba(168, 85, 247, 0.3)' : '0 0 10px rgba(0, 242, 254, 0.15)',
         }}
       />
       <div
         ref={dotRef}
-        className="fixed top-0 left-0 w-[6px] h-[6px] rounded-full pointer-events-none z-[999]"
-        style={{ background: '#fff', boxShadow: '0 0 10px rgba(255,255,255,0.9), 0 0 16px rgba(0,242,254,0.8)' }}
+        className="fixed top-0 left-0 w-[4px] h-[4px] rounded-full pointer-events-none z-[999]"
+        style={{ background: '#fff', boxShadow: '0 0 8px rgba(0, 242, 254, 0.8)' }}
       />
     </div>
   );
 }
 
 /* =========================================================
-   AMBIENT BACKGROUND — circuit traces + binary rain + grid
-========================================================= */
-interface Trace { pts: Array<{ x: number; y: number }>; segLens: number[]; total: number; speed: number; off: number; }
-interface RainCol { x: number; y: number; speed: number; chars: string[]; }
+   AMBIENT BACKGROUND — 3D Neural Constellation & Blobs
+ ========================================================= */
+interface Particle { x: number; y: number; vx: number; vy: number; radius: number; }
+interface Blob { x: number; y: number; vx: number; vy: number; radius: number; color: string; }
 
 export function AmbientBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const prm = usePRM();
+  const mouseRef = useRef({ x: -1000, y: -1000 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -121,8 +98,8 @@ export function AmbientBackground() {
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     let w = 0, h = 0;
-    let traces: Trace[] = [];
-    let rain: RainCol[] = [];
+    let blobs: Blob[] = [];
+    let particles: Particle[] = [];
 
     const build = () => {
       w = window.innerWidth; h = window.innerHeight;
@@ -130,133 +107,120 @@ export function AmbientBackground() {
       canvas.style.width = `${w}px`; canvas.style.height = `${h}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      traces = [];
-      const nTraces = Math.max(10, Math.floor(w / 110));
-      for (let i = 0; i < nTraces; i++) {
-        const pts = [{ x: Math.random() * w, y: Math.random() * h }];
-        const segs = 3 + Math.floor(Math.random() * 4);
-        let horizontal = Math.random() > 0.5;
-        for (let s = 0; s < segs; s++) {
-          const prev = pts[pts.length - 1];
-          const len = 60 + Math.random() * 220;
-          const dir = Math.random() > 0.5 ? 1 : -1;
-          pts.push(horizontal
-            ? { x: prev.x + len * dir, y: prev.y }
-            : { x: prev.x, y: prev.y + len * dir });
-          horizontal = !horizontal;
-        }
-        const segLens: number[] = [];
-        let total = 0;
-        for (let s = 0; s < pts.length - 1; s++) {
-          const l = Math.hypot(pts[s + 1].x - pts[s].x, pts[s + 1].y - pts[s].y);
-          segLens.push(l); total += l;
-        }
-        traces.push({ pts, segLens, total, speed: 30 + Math.random() * 60, off: Math.random() * 1000 });
-      }
+      // Radial glowing background spots
+      blobs = [
+        { x: w * 0.25, y: h * 0.3, vx: 0.15, vy: 0.1, radius: Math.min(w * 0.3, 400), color: 'rgba(0, 242, 254, 0.04)' },
+        { x: w * 0.75, y: h * 0.6, vx: -0.1, vy: 0.15, radius: Math.min(w * 0.35, 450), color: 'rgba(168, 85, 247, 0.04)' },
+        { x: w * 0.5, y: h * 0.8, vx: 0.12, vy: -0.12, radius: Math.min(w * 0.28, 350), color: 'rgba(0, 242, 254, 0.03)' }
+      ];
 
-      rain = [];
-      const cols = Math.floor(w / 34);
-      for (let c = 0; c < cols; c++) {
-        const chars: string[] = [];
-        const n = 6 + Math.floor(Math.random() * 8);
-        for (let k = 0; k < n; k++) chars.push(Math.random() > 0.5 ? '1' : '0');
-        rain.push({ x: c * 34 + 8 + Math.random() * 10, y: Math.random() * h, speed: 0.25 + Math.random() * 0.7, chars });
-      }
-    };
-
-    const pointAt = (t: Trace, d: number) => {
-      let rem = ((d % t.total) + t.total) % t.total;
-      for (let i = 0; i < t.segLens.length; i++) {
-        if (rem <= t.segLens[i]) {
-          const a = t.pts[i], b = t.pts[i + 1];
-          const r = t.segLens[i] === 0 ? 0 : rem / t.segLens[i];
-          return { x: a.x + (b.x - a.x) * r, y: a.y + (b.y - a.y) * r };
-        }
-        rem -= t.segLens[i];
-      }
-      return t.pts[0];
-    };
-
-    const drawStatic = () => {
-      ctx.clearRect(0, 0, w, h);
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(0,242,254,0.02)';
-      for (const t of traces) {
-        ctx.beginPath();
-        ctx.moveTo(t.pts[0].x, t.pts[0].y);
-        for (let i = 1; i < t.pts.length; i++) ctx.lineTo(t.pts[i].x, t.pts[i].y);
-        ctx.stroke();
+      // Constellation particles (fewer nodes to maintain simple layout)
+      const count = Math.min(Math.floor((w * h) / 18000), 55);
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          radius: Math.random() * 1.5 + 1
+        });
       }
     };
 
     build();
 
+    const onMove = (e: MouseEvent) => {
+      mouseRef.current.x = e.clientX;
+      mouseRef.current.y = e.clientY;
+    };
+    window.addEventListener('mousemove', onMove, { passive: true });
+
     if (prm) {
-      drawStatic();
-      const onR = () => { build(); drawStatic(); };
+      // Draw static frame
+      ctx.clearRect(0, 0, w, h);
+      for (const b of blobs) {
+        const grad = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.radius);
+        grad.addColorStop(0, b.color);
+        grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath(); ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2); ctx.fill();
+      }
+      const onR = () => build();
       window.addEventListener('resize', onR);
-      return () => window.removeEventListener('resize', onR);
+      return () => {
+        window.removeEventListener('mousemove', onMove);
+        window.removeEventListener('resize', onR);
+      };
     }
 
     let raf = 0;
-    let last = performance.now();
     const loop = (now: number) => {
-      const dt = Math.min((now - last) / 1000, 0.05);
-      last = now;
       ctx.clearRect(0, 0, w, h);
 
-      // circuit traces
-      ctx.lineWidth = 1;
-      for (const t of traces) {
-        ctx.strokeStyle = 'rgba(0,242,254,0.02)';
-        ctx.beginPath();
-        ctx.moveTo(t.pts[0].x, t.pts[0].y);
-        for (let i = 1; i < t.pts.length; i++) ctx.lineTo(t.pts[i].x, t.pts[i].y);
-        ctx.stroke();
+      // 1. Draw glowing background blobs
+      for (const b of blobs) {
+        b.x += b.vx; b.y += b.vy;
+        if (b.x - b.radius < -100 || b.x + b.radius > w + 100) b.vx = -b.vx;
+        if (b.y - b.radius < -100 || b.y + b.radius > h + 100) b.vy = -b.vy;
 
-        // corner nodes
-        ctx.fillStyle = 'rgba(0,242,254,0.1)';
-        for (const p of t.pts) ctx.fillRect(p.x - 1.5, p.y - 1.5, 3, 3);
-
-        // traveling electric pulse
-        const d = (now / 1000) * t.speed + t.off;
-        const p1 = pointAt(t, d);
-        const p2 = pointAt(t, d - 26);
-        const grad = ctx.createLinearGradient(p2.x, p2.y, p1.x, p1.y);
-        grad.addColorStop(0, 'rgba(168,85,247,0)');
-        grad.addColorStop(1, 'rgba(0,242,254,0.75)');
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = 1.4;
-        ctx.beginPath();
-        ctx.moveTo(p2.x, p2.y);
-        ctx.lineTo(p1.x, p1.y);
-        ctx.stroke();
-        ctx.fillStyle = 'rgba(0,242,254,0.9)';
-        ctx.fillRect(p1.x - 1.5, p1.y - 1.5, 3, 3);
+        const grad = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.radius);
+        grad.addColorStop(0, b.color);
+        grad.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath(); ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2); ctx.fill();
       }
 
-      // binary rain (extremely subtle)
-      ctx.font = '11px JetBrains Mono, monospace';
-      for (const col of rain) {
-        col.y += col.speed * dt * 60;
-        if (col.y - col.chars.length * 16 > h) { col.y = -20; col.x = col.x + (Math.random() - 0.5) * 6; }
-        for (let k = 0; k < col.chars.length; k++) {
-          const yy = col.y - k * 16;
-          if (yy < -16 || yy > h + 16) continue;
-          const alpha = (1 - k / col.chars.length) * 0.30;
-          ctx.fillStyle = k === 0 ? `rgba(0,242,254,${alpha + 0.12})` : `rgba(168,85,247,${alpha})`;
-          ctx.fillText(col.chars[k], col.x, yy);
+      // 2. Draw neural constellation particles
+      ctx.lineWidth = 0.55;
+      const mouse = mouseRef.current;
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.vx; p.y += p.vy;
+
+        // Wrap boundaries
+        if (p.x < 0) p.x = w; else if (p.x > w) p.x = 0;
+        if (p.y < 0) p.y = h; else if (p.y > h) p.y = 0;
+
+        // Draw particle
+        ctx.fillStyle = 'rgba(168, 85, 247, 0.16)';
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill();
+
+        // Connect to neighbors
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 100) {
+            const alpha = (1 - dist / 100) * 0.08;
+            ctx.strokeStyle = `rgba(0, 242, 254, ${alpha})`;
+            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+          }
+        }
+
+        // Connect to mouse cursor
+        const mdx = p.x - mouse.x;
+        const mdy = p.y - mouse.y;
+        const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+        if (mdist < 140) {
+          const malpha = (1 - mdist / 140) * 0.12;
+          ctx.strokeStyle = `rgba(168, 85, 247, ${malpha})`;
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
         }
       }
 
       raf = requestAnimationFrame(loop);
     };
-    raf = requestAnimationFrame(loop);
 
+    raf = requestAnimationFrame(loop);
     const onResize = () => build();
     window.addEventListener('resize', onResize);
     return () => {
       cancelAnimationFrame(raf);
+      window.removeEventListener('mousemove', onMove);
       window.removeEventListener('resize', onResize);
     };
   }, [prm]);
@@ -272,7 +236,7 @@ export function AmbientBackground() {
 
 /* =========================================================
    SCROLL PROGRESS BAR
-========================================================= */
+ ========================================================= */
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll();
   return (
@@ -281,38 +245,32 @@ export function ScrollProgress() {
       style={{
         scaleX: scrollYProgress,
         background: 'linear-gradient(90deg, #a855f7, #00f2fe)',
-        boxShadow: '0 0 14px rgba(0, 242, 254, 0.9)',
+        boxShadow: '0 0 8px rgba(0, 242, 254, 0.4)',
       }}
     />
   );
 }
 
 /* =========================================================
-   PRELOADER — scan reveal
-========================================================= */
+   PRELOADER — simple spinner loading screen
+ ========================================================= */
 export function Preloader({ onReveal, onDone }: { onReveal: () => void; onDone: () => void }) {
   const [stage, setStage] = useState(0);
 
   useEffect(() => {
-    const t1 = setTimeout(() => { setStage(1); onReveal(); }, 1350);
-    const t2 = setTimeout(onDone, 2050);
+    const t1 = setTimeout(() => { setStage(1); onReveal(); }, 900);
+    const t2 = setTimeout(onDone, 1400);
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, [onReveal, onDone]);
 
   return (
     <AnimateUp stage={stage}>
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-5">
-        <div className="font-mono2 text-[11px] tracking-[0.5em] red uppercase animate-pulse">
-          Initializing Portfolio Core
-        </div>
-        <div className="font-display text-3xl md:text-4xl tracking-widest text-white">
-          SARVAJITH<span className="red">.IO</span>
-        </div>
-        <div className="font-mono2 text-[10px] tracking-[0.3em] text-zinc-600 uppercase">
-          // systems online
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+        <div className="preload-spinner" />
+        <div className="font-mono2 text-[10px] tracking-[0.4em] text-zinc-400 uppercase">
+          Initializing Portfolio
         </div>
       </div>
-      {stage === 0 && <div className="preload-scan" />}
     </AnimateUp>
   );
 }
@@ -320,9 +278,9 @@ export function Preloader({ onReveal, onDone }: { onReveal: () => void; onDone: 
 function AnimateUp({ stage, children }: { stage: number; children: ReactNode }) {
   return (
     <motion.div
-      className="fixed inset-0 z-[1000] bg-black"
+      className="fixed inset-0 z-[1000] bg-[#06070c]"
       animate={stage === 1 ? { y: '-100%' } : { y: 0 }}
-      transition={{ duration: 0.65, ease: [0.7, 0, 0.2, 1] }}
+      transition={{ duration: 0.55, ease: [0.7, 0, 0.2, 1] }}
     >
       {children}
     </motion.div>
@@ -331,19 +289,19 @@ function AnimateUp({ stage, children }: { stage: number; children: ReactNode }) 
 
 /* =========================================================
    SYSTEM ONLINE TOAST
-========================================================= */
+ ========================================================= */
 export function SystemToast() {
   return (
     <motion.div
-      initial={{ x: 140, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      exit={{ x: 140, opacity: 0 }}
-      transition={{ type: 'spring', stiffness: 260, damping: 24 }}
-      className="fixed bottom-6 right-6 z-[90] glass-red px-5 py-3.5 flex items-center gap-3"
+      initial={{ y: 50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: 50, opacity: 0 }}
+      transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+      className="fixed bottom-6 right-6 z-[90] glass-red px-4 py-2.5 flex items-center gap-2.5 border border-zinc-800"
     >
-      <span className="rec-dot" />
-      <div className="font-mono2 text-[11px] tracking-[0.3em] uppercase">
-        <span className="text-white">System</span> <span className="red">online</span>
+      <span className="w-1.5 h-1.5 rounded-full bg-[#00f2fe] animate-pulse" />
+      <div className="font-mono2 text-[10px] tracking-[0.25em] uppercase text-zinc-300">
+        System Initialized
       </div>
     </motion.div>
   );
@@ -351,7 +309,7 @@ export function SystemToast() {
 
 /* =========================================================
    REVEAL — intersection-observer driven entrance
-========================================================= */
+ ========================================================= */
 export function Reveal({
   children, delay = 0, x = 0, className = '',
 }: {
@@ -359,10 +317,10 @@ export function Reveal({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30, x }}
+      initial={{ opacity: 0, y: 20, x }}
       whileInView={{ opacity: 1, y: 0, x: 0 }}
       viewport={{ once: true, margin: '-70px' }}
-      transition={{ duration: 0.75, delay, ease: [0.2, 0.8, 0.2, 1] }}
+      transition={{ duration: 0.6, delay, ease: [0.2, 0.8, 0.2, 1] }}
       className={className}
     >
       {children}
@@ -371,8 +329,8 @@ export function Reveal({
 }
 
 /* =========================================================
-   SLASH WORD — italic red word with violent underline
-========================================================= */
+   SLASH WORD — italic word with underline
+ ========================================================= */
 export function SlashWord({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: '-60px' });
@@ -384,44 +342,43 @@ export function SlashWord({ children }: { children: ReactNode }) {
 }
 
 /* =========================================================
-   SECTION HEADER — massive ghost number + eyebrow
-========================================================= */
+   SECTION HEADER — subtle background numbers + clean title
+ ========================================================= */
 export function SectionHead({
   num, eyebrow, title, sub, align = 'left',
 }: {
   num: string; eyebrow: string; title: ReactNode; sub?: string; align?: 'left' | 'center';
 }) {
   return (
-    <div className={`relative mb-16 ${align === 'center' ? 'text-center' : ''}`}>
+    <div className={`relative mb-12 ${align === 'center' ? 'text-center' : ''}`}>
       <span
         aria-hidden
-        className="font-display absolute -top-14 md:-top-20 text-[7rem] md:text-[11rem] leading-none select-none pointer-events-none"
+        className="font-display absolute -top-8 md:-top-12 text-[5rem] md:text-[8rem] leading-none select-none pointer-events-none font-bold"
         style={{
-          color: 'rgba(0,242,254,0.04)',
-          textShadow: '0 0 60px rgba(0,242,254,0.15)',
+          color: 'rgba(255,255,255,0.02)',
           ...(align === 'center' ? { left: '50%', transform: 'translateX(-50%)' } : { right: 0 }),
         }}
       >
         {num}
       </span>
       <Reveal>
-        <div className={`font-mono2 text-[11px] md:text-xs tracking-[0.4em] uppercase red mb-4 flex items-center gap-3 ${align === 'center' ? 'justify-center' : ''}`}>
-          <span className="inline-block w-8 h-px bg-gradient-to-r from-transparent to-[#00f2fe]" />
+        <div className={`font-mono2 text-[10px] md:text-[11px] tracking-[0.4em] uppercase red mb-3 flex items-center gap-3 ${align === 'center' ? 'justify-center' : ''}`}>
+          <span className="inline-block w-6 h-px bg-gradient-to-r from-transparent to-[#00f2fe]" />
           {'//'} {eyebrow}
-          <span className="inline-block w-8 h-px bg-gradient-to-l from-transparent to-[#a855f7]" />
+          <span className="inline-block w-6 h-px bg-gradient-to-l from-transparent to-[#a855f7]" />
         </div>
-        <h2 className="font-display text-4xl md:text-6xl uppercase tracking-wide text-white leading-[1.05]">
+        <h2 className="font-display text-3xl md:text-5xl uppercase tracking-wide text-white leading-none">
           {title}
         </h2>
-        {sub && <p className={`dim mt-5 max-w-2xl leading-relaxed ${align === 'center' ? 'mx-auto' : ''}`}>{sub}</p>}
+        {sub && <p className={`dim mt-4 max-w-xl text-sm leading-relaxed ${align === 'center' ? 'mx-auto' : ''}`}>{sub}</p>}
       </Reveal>
     </div>
   );
 }
 
 /* =========================================================
-   HACK COUNTER — scrambled digits snapping with red flash
-========================================================= */
+   HACK COUNTER — digits snapping with flash
+ ========================================================= */
 export function HackCounter({ value, suffix = '' }: { value: number; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
@@ -433,7 +390,7 @@ export function HackCounter({ value, suffix = '' }: { value: number; suffix?: st
     if (!inView) return;
     if (prm) { setTxt(String(value)); return; }
     let frame = 0;
-    const total = 34;
+    const total = 20;
     const id = window.setInterval(() => {
       frame++;
       if (frame < total) {
@@ -441,10 +398,10 @@ export function HackCounter({ value, suffix = '' }: { value: number; suffix?: st
       } else {
         setTxt(String(value));
         setFlash(true);
-        window.setTimeout(() => setFlash(false), 480);
+        window.setTimeout(() => setFlash(false), 300);
         window.clearInterval(id);
       }
-    }, 36);
+    }, 40);
     return () => window.clearInterval(id);
   }, [inView, value, prm]);
 
