@@ -30,6 +30,8 @@ export function About() {
         <div className="grid lg:grid-cols-[1.5fr_1fr] gap-8">
           <Reveal>
             <div className="glass-red p-8 md:p-10 h-full rounded-2xl relative overflow-hidden border border-zinc-800/80 bg-zinc-900/10">
+              <div className="absolute -right-20 -bottom-20 w-80 h-80 rounded-full blur-3xl opacity-10" style={{ background: 'radial-gradient(circle, #a855f7 0%, transparent 70%)' }} />
+              
               <div className="relative">
                 <div className="flex items-center justify-between mb-6 border-b border-zinc-800/60 pb-4">
                   <span className="font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-500">OPERATOR DOSSIER // SARVAJITH SANKAR</span>
@@ -192,7 +194,7 @@ export function Experience() {
 }
 
 /* =========================================================
-   PROJECTS — clean glassmorphic pods
+   PROJECTS — 3D Tilt Project Cards
  ========================================================= */
 const PROJECTS = [
   {
@@ -229,61 +231,114 @@ const PROJECTS = [
   },
 ];
 
-function ProjectCard({ p, idx }: { p: (typeof PROJECTS)[number]; idx: number }) {
+function TiltProjectCard({ p, idx }: { p: (typeof PROJECTS)[number]; idx: number }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [rotX, setRotX] = useState(0);
+  const [rotY, setRotY] = useState(0);
+  const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
+  const prm = usePRM();
+
+  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (prm) return;
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    
+    // Normalized coords between -1 and 1
+    const x = (e.clientX - rect.left - width / 2) / (width / 2);
+    const y = (e.clientY - rect.top - height / 2) / (height / 2);
+    
+    // Dynamic tilt (max 6.5 degrees)
+    setRotX(-y * 6.5);
+    setRotY(x * 6.5);
+    
+    const glareX = ((e.clientX - rect.left) / width) * 100;
+    const glareY = ((e.clientY - rect.top) / height) * 100;
+    setGlare({ x: glareX, y: glareY, opacity: 0.22 });
+  };
+
+  const onMouseLeave = () => {
+    setRotX(0);
+    setRotY(0);
+    setGlare(prev => ({ ...prev, opacity: 0 }));
+  };
+
   return (
-    <Reveal delay={(idx % 2) * 0.1}>
-      <div className="proj-card glass-red p-6 rounded-2xl h-full flex flex-col justify-between border border-zinc-800/80 bg-zinc-900/10">
-        <div>
-          <div className="flex items-center justify-between mb-4 border-b border-zinc-800/40 pb-3">
-            <span className="font-mono2 text-[10px] tracking-[0.2em] uppercase text-zinc-500">PROJECT-{p.num}</span>
-            <span className="inline-flex items-center gap-1.5 font-mono2 text-[9px] tracking-[0.15em] uppercase text-[#6be5ff]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00f2fe]" />
-              {p.badge}
-            </span>
+    <Reveal delay={(idx % 2) * 0.08}>
+      <div className="perspective-container h-full">
+        <div 
+          ref={cardRef}
+          onMouseMove={onMouseMove}
+          onMouseLeave={onMouseLeave}
+          className="tilt-element proj-card glass-red p-6 rounded-2xl h-full flex flex-col justify-between border border-zinc-800/80 bg-zinc-900/10 cursor-pointer preserve-3d"
+          style={{
+            transform: prm ? 'none' : `rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.01)`,
+            transition: 'transform 0.18s ease-out, box-shadow 0.18s ease-out, border-color 0.3s',
+            boxShadow: prm ? 'none' : `0 12px 28px rgba(0,0,0,0.5), 0 0 20px rgba(0, 242, 254, ${Math.max(Math.abs(rotX), Math.abs(rotY)) * 0.018})`
+          }}
+          data-hover
+        >
+          {/* Specular glare gradient */}
+          <div 
+            className="gloss-overlay absolute inset-0 z-20 pointer-events-none transition-opacity duration-300 rounded-2xl"
+            style={{
+              opacity: glare.opacity,
+              background: `radial-gradient(circle 120px at ${glare.x}% ${glare.y}%, rgba(255, 255, 255, 0.12), transparent 80%)`
+            }}
+          />
+
+          <div className="tilt-child" style={{ transform: prm ? 'none' : 'translateZ(12px)' }}>
+            <div className="flex items-center justify-between mb-4 border-b border-zinc-800/40 pb-3">
+              <span className="font-mono2 text-[10px] tracking-[0.2em] uppercase text-zinc-500">PROJECT-{p.num}</span>
+              <span className="inline-flex items-center gap-1.5 font-mono2 text-[9px] tracking-[0.15em] uppercase text-[#6be5ff]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00f2fe]" />
+                {p.badge}
+              </span>
+            </div>
+
+            <h3 className="font-display text-xl uppercase tracking-wide text-white font-semibold">{p.title}</h3>
+            <p className="red font-mono2 text-[11px] mt-1.5 tracking-wide">{p.blurb}</p>
+            <p className="dim text-xs md:text-sm leading-relaxed mt-3">{p.body}</p>
+
+            <div className="flex flex-wrap gap-1.5 mt-4">
+              {p.tags.map((t) => (
+                <span key={t} className="tag-red font-mono2 text-[9px] px-2.5 py-0.5 rounded-full">{t}</span>
+              ))}
+            </div>
           </div>
 
-          <h3 className="font-display text-xl uppercase tracking-wide text-white font-semibold">{p.title}</h3>
-          <p className="red font-mono2 text-[11px] mt-1.5 tracking-wide">{p.blurb}</p>
-          <p className="dim text-xs md:text-sm leading-relaxed mt-3">{p.body}</p>
-
-          <div className="flex flex-wrap gap-1.5 mt-4">
-            {p.tags.map((t) => (
-              <span key={t} className="tag-red font-mono2 text-[9px] px-2.5 py-0.5 rounded-full">{t}</span>
-            ))}
+          <div className="flex gap-3 mt-6 justify-end items-center tilt-child" style={{ transform: prm ? 'none' : 'translateZ(8px)' }}>
+            {p.github && (
+              <a
+                href={p.github}
+                target="_blank"
+                rel="noreferrer"
+                className="p-1.5 border border-zinc-800 hover:border-zinc-700 bg-black/30 rounded-lg text-zinc-400 hover:text-[#00f2fe] transition-colors relative z-30"
+                aria-label="GitHub Repository"
+              >
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
+              </a>
+            )}
+            {p.demo && (
+              <a
+                href={p.demo}
+                target="_blank"
+                rel="noreferrer"
+                className="p-1.5 border border-zinc-800 hover:border-zinc-700 bg-black/30 rounded-lg text-zinc-400 hover:text-[#a855f7] transition-colors relative z-30"
+                aria-label="Live Demo"
+              >
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg>
+              </a>
+            )}
           </div>
-        </div>
-
-        <div className="flex gap-3 mt-6 justify-end items-center">
-          {p.github && (
-            <a
-              href={p.github}
-              target="_blank"
-              rel="noreferrer"
-              className="p-1.5 border border-zinc-800 hover:border-zinc-700 bg-black/30 rounded-lg text-zinc-400 hover:text-[#00f2fe] transition-colors"
-              aria-label="GitHub Repository"
-              data-hover
-            >
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
-              </svg>
-            </a>
-          )}
-          {p.demo && (
-            <a
-              href={p.demo}
-              target="_blank"
-              rel="noreferrer"
-              className="p-1.5 border border-zinc-800 hover:border-zinc-700 bg-black/30 rounded-lg text-zinc-400 hover:text-[#a855f7] transition-colors"
-              aria-label="Live Demo"
-              data-hover
-            >
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                <polyline points="15 3 21 3 21 9" />
-                <line x1="10" y1="14" x2="21" y2="3" />
-              </svg>
-            </a>
-          )}
         </div>
       </div>
     </Reveal>
@@ -302,7 +357,7 @@ export function Projects() {
         />
         <div className="grid md:grid-cols-2 gap-6">
           {PROJECTS.map((p, idx) => (
-            <ProjectCard key={p.num} p={p} idx={idx} />
+            <TiltProjectCard key={p.num} p={p} idx={idx} />
           ))}
         </div>
       </div>

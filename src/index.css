@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* =====================================================
-   THEME STYLING — SIMPLE & PREMIUM
+   THEME STYLING — HYBRID SYSTEM
  ===================================================== */
 :root {
   --void: #06070c;       /* Clean deep dark charcoal-navy base */
@@ -83,7 +83,7 @@ html, body {
 }
 
 /* =====================================================
-   CLEAN GRADIENT HEADER (REPLACED GLITCH)
+   GLITCH (CLEAN GRADIENT HEADER)
  ===================================================== */
 .glitch {
   position: relative;
@@ -256,3 +256,42 @@ html, body {
   animation: spin 0.8s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* =====================================================
+   TERMINAL GLOSS OVERLAYS
+ ===================================================== */
+.crt {
+  position: relative;
+  border-radius: 8px;
+}
+.crt::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 20;
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none;
+}
+.crt-flicker {
+  animation: crtFlicker 0.15s infinite;
+}
+@keyframes crtFlicker {
+  0% { opacity: 0.99; }
+  50% { opacity: 1; }
+  100% { opacity: 0.985; }
+}
+
+.grow-border {
+  position: relative;
+}
+.grow-border::after {
+  content: ''; position: absolute; left: -1px; top: 0; bottom: 0; width: 1px;
+  background: linear-gradient(180deg, var(--alert), var(--toxic));
+  transform: scaleY(0); transform-origin: top;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.grow-border.grown::after {
+  transform: scaleY(1);
+}

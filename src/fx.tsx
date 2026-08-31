@@ -80,13 +80,15 @@ export function CursorFX() {
 }
 
 /* =========================================================
-   AMBIENT BACKGROUND — slow glowing color blobs
+   AMBIENT BACKGROUND — 3D Neural Constellation & Blobs
  ========================================================= */
+interface Particle { x: number; y: number; vx: number; vy: number; radius: number; }
 interface Blob { x: number; y: number; vx: number; vy: number; radius: number; color: string; }
 
 export function AmbientBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const prm = usePRM();
+  const mouseRef = useRef({ x: -1000, y: -1000 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -97,6 +99,7 @@ export function AmbientBackground() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     let w = 0, h = 0;
     let blobs: Blob[] = [];
+    let particles: Particle[] = [];
 
     const build = () => {
       w = window.innerWidth; h = window.innerHeight;
@@ -104,17 +107,37 @@ export function AmbientBackground() {
       canvas.style.width = `${w}px`; canvas.style.height = `${h}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
+      // Radial glowing background spots
       blobs = [
         { x: w * 0.25, y: h * 0.3, vx: 0.15, vy: 0.1, radius: Math.min(w * 0.3, 400), color: 'rgba(0, 242, 254, 0.04)' },
         { x: w * 0.75, y: h * 0.6, vx: -0.1, vy: 0.15, radius: Math.min(w * 0.35, 450), color: 'rgba(168, 85, 247, 0.04)' },
         { x: w * 0.5, y: h * 0.8, vx: 0.12, vy: -0.12, radius: Math.min(w * 0.28, 350), color: 'rgba(0, 242, 254, 0.03)' }
       ];
+
+      // Constellation particles (fewer nodes to maintain simple layout)
+      const count = Math.min(Math.floor((w * h) / 18000), 55);
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          radius: Math.random() * 1.5 + 1
+        });
+      }
     };
 
     build();
 
+    const onMove = (e: MouseEvent) => {
+      mouseRef.current.x = e.clientX;
+      mouseRef.current.y = e.clientY;
+    };
+    window.addEventListener('mousemove', onMove, { passive: true });
+
     if (prm) {
-      // static drawing
+      // Draw static frame
       ctx.clearRect(0, 0, w, h);
       for (const b of blobs) {
         const grad = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.radius);
@@ -123,19 +146,21 @@ export function AmbientBackground() {
         ctx.fillStyle = grad;
         ctx.beginPath(); ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2); ctx.fill();
       }
-      const onR = () => { build(); };
+      const onR = () => build();
       window.addEventListener('resize', onR);
-      return () => window.removeEventListener('resize', onR);
+      return () => {
+        window.removeEventListener('mousemove', onMove);
+        window.removeEventListener('resize', onR);
+      };
     }
 
     let raf = 0;
-    const loop = () => {
+    const loop = (now: number) => {
       ctx.clearRect(0, 0, w, h);
 
+      // 1. Draw glowing background blobs
       for (const b of blobs) {
-        b.x += b.vx;
-        b.y += b.vy;
-
+        b.x += b.vx; b.y += b.vy;
         if (b.x - b.radius < -100 || b.x + b.radius > w + 100) b.vx = -b.vx;
         if (b.y - b.radius < -100 || b.y + b.radius > h + 100) b.vy = -b.vy;
 
@@ -143,9 +168,48 @@ export function AmbientBackground() {
         grad.addColorStop(0, b.color);
         grad.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2); ctx.fill();
+      }
+
+      // 2. Draw neural constellation particles
+      ctx.lineWidth = 0.55;
+      const mouse = mouseRef.current;
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.vx; p.y += p.vy;
+
+        // Wrap boundaries
+        if (p.x < 0) p.x = w; else if (p.x > w) p.x = 0;
+        if (p.y < 0) p.y = h; else if (p.y > h) p.y = 0;
+
+        // Draw particle
+        ctx.fillStyle = 'rgba(168, 85, 247, 0.16)';
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill();
+
+        // Connect to neighbors
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 100) {
+            const alpha = (1 - dist / 100) * 0.08;
+            ctx.strokeStyle = `rgba(0, 242, 254, ${alpha})`;
+            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+          }
+        }
+
+        // Connect to mouse cursor
+        const mdx = p.x - mouse.x;
+        const mdy = p.y - mouse.y;
+        const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+        if (mdist < 140) {
+          const malpha = (1 - mdist / 140) * 0.12;
+          ctx.strokeStyle = `rgba(168, 85, 247, ${malpha})`;
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+        }
       }
 
       raf = requestAnimationFrame(loop);
@@ -156,6 +220,7 @@ export function AmbientBackground() {
     window.addEventListener('resize', onResize);
     return () => {
       cancelAnimationFrame(raf);
+      window.removeEventListener('mousemove', onMove);
       window.removeEventListener('resize', onResize);
     };
   }, [prm]);
