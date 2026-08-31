@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
-import { Reveal, SectionHead, SlashWord, usePRM } from './fx';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Reveal, SectionHead, SlashWord } from './fx';
 
 /* =========================================================
    RESEARCH — semantic schema matching focus
@@ -10,21 +10,21 @@ export function Research() {
     <section id="research" className="relative py-28 md:py-36 scroll-mt-20">
       <div className="max-w-7xl mx-auto px-6">
         <SectionHead
-          num="06"
+          num="05"
           eyebrow="investigation"
           title={<>RESEARCH <SlashWord>INITIATIVES</SlashWord></>}
-          sub="Automating database mapping through neural embeddings and semantic alignment."
+          sub="Automating schema alignments in federated data integrations using dense neural representations."
         />
 
         <div className="grid lg:grid-cols-5 gap-6">
           <Reveal className="lg:col-span-3">
-            <div className="glass-red p-8 md:p-10 h-full relative overflow-hidden" style={{ background: 'rgba(10,15,30,0.3)', borderColor: 'rgba(168,85,247,0.15)' }}>
+            <div className="glass-red p-8 md:p-10 h-full relative overflow-hidden rounded-2xl border border-zinc-800/80 bg-zinc-900/10">
               <div className="absolute -right-20 -bottom-20 w-80 h-80 rounded-full blur-3xl opacity-10" style={{ background: 'radial-gradient(circle, #a855f7 0%, transparent 70%)' }} />
               
               <div className="relative">
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-6 border-b border-zinc-800/40 pb-4">
                   <span className="font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-500">PROJECT: SEMANTIC SCHEMA MATCHING</span>
-                  <span className="font-mono2 text-[10px] tracking-[0.2em] uppercase red">ACTIVE INQUIRY</span>
+                  <span className="font-mono2 text-[9px] tracking-[0.2em] uppercase red font-semibold">ACTIVE INQUIRY</span>
                 </div>
 
                 <h3 className="font-display text-2xl md:text-3xl text-white uppercase tracking-wide mb-4">
@@ -40,13 +40,13 @@ export function Research() {
                 </p>
 
                 <div className="mt-8 grid sm:grid-cols-2 gap-4">
-                  <div className="p-4 bg-black/40 border border-[rgba(0,242,254,0.12)]">
+                  <div className="p-4 bg-black/30 border border-zinc-800/60 rounded-xl">
                     <div className="font-mono2 text-xs red uppercase mb-1">// architecture</div>
-                    <div className="text-zinc-300 text-sm">Bi-encoder network matching column properties via dense vector similarity.</div>
+                    <div className="text-zinc-300 text-xs">Bi-encoder network matching column properties via dense vector similarity.</div>
                   </div>
-                  <div className="p-4 bg-black/40 border border-[rgba(168,85,247,0.12)]">
+                  <div className="p-4 bg-black/30 border border-zinc-800/60 rounded-xl">
                     <div className="font-mono2 text-xs red uppercase mb-1">// objective</div>
-                    <div className="text-zinc-300 text-sm">Eliminate manual mapping rules in virtual schemas and data virtualization layers.</div>
+                    <div className="text-zinc-300 text-xs">Eliminate manual mapping rules in virtual schemas and data virtualization layers.</div>
                   </div>
                 </div>
               </div>
@@ -54,25 +54,25 @@ export function Research() {
           </Reveal>
 
           <Reveal delay={0.12} className="lg:col-span-2">
-            <div className="glass-red p-8 h-full flex flex-col justify-between relative overflow-hidden" style={{ background: 'rgba(10,15,30,0.3)', borderColor: 'rgba(0,242,254,0.15)' }}>
+            <div className="glass-red p-8 h-full flex flex-col justify-between rounded-2xl border border-zinc-800/80 bg-zinc-900/10">
               <div>
-                <div className="font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-500 mb-6">METHODOLOGY STACK</div>
+                <div className="font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-500 mb-6 pb-2 border-b border-zinc-800/40">METHODOLOGY STACK</div>
                 <div className="space-y-4">
                   {[
                     { title: 'Dense Representation', desc: 'Encoding column metadata and sample values into high-dimensional vector spaces.' },
                     { title: 'Cosine Similarity matching', desc: 'Evaluating similarity thresholds to automatically align federated schemas.' },
                     { title: 'Synonym Resolution', desc: 'Handling vocabulary mismatches (e.g., "customer_id" vs "client_no") out-of-the-box.' }
                   ].map((m, idx) => (
-                    <div key={idx} className="border-l-2 border-[#00f2fe] pl-4 py-1">
+                    <div key={idx} className="border-l border-[#00f2fe] pl-4 py-1">
                       <div className="text-sm text-white font-semibold">{m.title}</div>
-                      <div className="text-xs text-zinc-400 mt-1">{m.desc}</div>
+                      <div className="text-xs text-zinc-400 mt-1 leading-normal">{m.desc}</div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="mt-8 pt-6 border-t border-[rgba(0,242,254,0.15)] flex items-center justify-between">
-                <span className="font-mono2 text-[10px] tracking-[0.25em] uppercase text-zinc-500">scope: academic &amp; systems</span>
+              <div className="mt-8 pt-6 border-t border-zinc-800/40 flex items-center justify-between">
+                <span className="font-mono2 text-[9px] tracking-[0.25em] uppercase text-zinc-500">scope: academic &amp; systems</span>
                 <svg className="w-5 h-5 red" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" strokeLinejoin="round" />
                 </svg>
@@ -86,159 +86,36 @@ export function Research() {
 }
 
 /* =========================================================
-   TERMINAL — embedded diagnostic panel for Now section
+   STATIC CODE EDITOR MOCKUP — clean profile config visual
  ========================================================= */
-const BOOT_LINES: Array<{ t: string; d: number; bright?: boolean }> = [
-  { t: 'SANKAR SECURE BIOS v6.6.6 — COLD BOOT', d: 150 },
-  { t: 'CPU ......... QUANTUM-CORE X99 @ 5.8GHz   [OK]', d: 120 },
-  { t: 'MEM ......... 64GB DDR5 ECC               [OK]', d: 110 },
-  { t: 'NET ......... HYPER-LINK UPLINK           [OK]', d: 130 },
-  { t: 'ACCESSING SECURE DATA PLATFORM...', d: 350 },
-  { t: '>>> ACCESS GRANTED <<<', d: 250, bright: true },
-];
-
-const PROFILE_JSON = `{
-  "operator": "Sarvajith Sankar",
-  "institutions": ["VIT Vellore", "IIT Madras"],
-  "focus": ["AI Agents", "ML Systems", "Security"],
-  "active_gpa": "~8.2 CGPA",
-  "status": "building_momentum",
-  "target_roles": ["AI Engineer", "ML Researcher"]
-}`;
-const CMD = 'cat now_profile.json';
-
-export function Terminal() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-90px' });
-  const prm = usePRM();
-
-  const [bootIdx, setBootIdx] = useState(0);
-  const [granted, setGranted] = useState(false);
-  const [errFlash, setErrFlash] = useState<string | null>(null);
-  const [termOn, setTermOn] = useState(false);
-  const [cmd, setCmd] = useState('');
-  const [out, setOut] = useState('');
-  const [done, setDone] = useState(false);
-  const err2 = useRef(false);
-
-  useEffect(() => {
-    if (!inView) return;
-    if (prm) {
-      setBootIdx(BOOT_LINES.length); setGranted(true); setTermOn(true);
-      setCmd(CMD); setOut(PROFILE_JSON); setDone(true);
-      return;
-    }
-    if (bootIdx < BOOT_LINES.length) {
-      const t = window.setTimeout(() => setBootIdx((i) => i + 1), BOOT_LINES[bootIdx].d);
-      return () => window.clearTimeout(t);
-    }
-    if (!granted) {
-      const t = window.setTimeout(() => setGranted(true), 300);
-      return () => window.clearTimeout(t);
-    }
-  }, [inView, bootIdx, granted, prm]);
-
-  useEffect(() => {
-    if (!granted || prm) return;
-    setErrFlash('ERR 0x2F :: HANDSHAKE REROUTING VIA NODE-7');
-    const t = window.setTimeout(() => setErrFlash(null), 800);
-    const t2 = window.setTimeout(() => setTermOn(true), 600);
-    return () => { window.clearTimeout(t); window.clearTimeout(t2); };
-  }, [granted, prm]);
-
-  useEffect(() => {
-    if (!termOn || done || prm) return;
-    if (cmd.length < CMD.length) {
-      const t = window.setTimeout(() => setCmd(CMD.slice(0, cmd.length + 1)), 50);
-      return () => window.clearTimeout(t);
-    }
-  }, [termOn, cmd, done, prm]);
-
-  useEffect(() => {
-    if (cmd !== CMD || done || prm) return;
-    if (out.length < PROFILE_JSON.length) {
-      if (!err2.current && out.length > 140) {
-        err2.current = true;
-        setErrFlash('WARN :: PACKET BUFFERING');
-        window.setTimeout(() => setErrFlash(null), 500);
-      }
-      const t = window.setTimeout(() => setOut(PROFILE_JSON.slice(0, out.length + 1)), 10);
-      return () => window.clearTimeout(t);
-    }
-    setDone(true);
-  }, [cmd, out, done, prm]);
-
+function CodeMockup() {
   return (
-    <div className="relative w-full" ref={ref}>
-      {/* boot sequence */}
-      {!termOn && (
-        <div className="font-mono2 text-xs min-h-[220px] leading-loose">
-          {BOOT_LINES.slice(0, bootIdx).map((l, i) => (
-            <div key={i} className={l.bright ? 'red font-bold text-sm tracking-[0.2em] crt-flicker' : 'text-[#00f2fe]'} style={l.bright ? { textShadow: '0 0 18px rgba(0,242,254,0.9)' } : undefined}>
-              {l.t}
-            </div>
-          ))}
-          {!granted && <span className="term-cursor" />}
-        </div>
-      )}
+    <div className="relative w-full border border-zinc-800/80 rounded-2xl overflow-hidden bg-[#070912]/95 shadow-2xl">
+      {/* header */}
+      <div className="flex items-center gap-2 px-4 py-3 bg-zinc-950/60 border-b border-zinc-900/80">
+        <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+        <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+        <span className="ml-3 font-mono2 text-[10px] tracking-[0.2em] uppercase text-zinc-500">
+          sarvajith_config.json
+        </span>
+      </div>
 
-      {/* terminal window */}
-      {termOn && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4 }}
-          style={{ transform: 'perspective(1100px) rotateX(1deg)' }}
-        >
-          <div className="crt crt-flicker overflow-hidden border border-[rgba(0,242,254,0.25)]" style={{ background: '#05070f', boxShadow: '0 15px 40px rgba(0,0,0,0.6), inset 0 0 30px rgba(0,0,0,0.95)' }}>
-            {/* header */}
-            <div className="flex items-center gap-3 px-4 py-2 bg-black/40 border-b border-[rgba(0,242,254,0.15)] relative z-10">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#1e1b4b] border border-[#a855f7]/40" />
-              <span className="w-2.5 h-2.5 rounded-full bg-[#1e1b4b] border border-[#a855f7]/40" />
-              <span className="w-2.5 h-2.5 rounded-full bg-[#00f2fe] shadow-[0_0_10px_rgba(0,242,254,0.8)]" />
-              <span className="ml-1 font-mono2 text-[9px] tracking-[0.3em] uppercase red">
-                TTY-01 // DIAGNOSTICS CONTROL
-              </span>
-              <span className="ml-auto rec-dot hidden sm:block" />
-            </div>
-
-            {/* body */}
-            <div className="p-4 md:p-6 font-mono2 text-[12px] md:text-[13px] leading-relaxed min-h-[220px] relative z-10" style={{ color: '#8df2f8' }}>
-              <div>
-                <span className="text-white">root@sarvajith</span>
-                <span className="text-zinc-600">:</span>
-                <span className="red">/now</span>
-                <span className="text-zinc-400">$ </span>
-                <span className="text-[#a855f7]">{cmd}</span>
-                {cmd.length < CMD.length && <span className="term-cursor" />}
-              </div>
-
-              {cmd === CMD && (
-                <pre className="mt-2 whitespace-pre-wrap text-[#00f2fe]" style={{ textShadow: '0 0 8px rgba(0,242,254,0.3)' }}>
-                  {out}
-                  {out.length < PROFILE_JSON.length && <span className="term-cursor" />}
-                </pre>
-              )}
-
-              {errFlash && (
-                <div className="mt-2 text-[#a855f7] font-bold crt-flicker">
-                  ⚠ {errFlash}
-                </div>
-              )}
-
-              {done && (
-                <div className="mt-3">
-                  <span className="text-white">root@sarvajith</span>
-                  <span className="text-zinc-600">:</span>
-                  <span className="red">/now</span>
-                  <span className="text-zinc-400">$ </span>
-                  <span className="term-cursor" />
-                </div>
-              )}
-            </div>
-          </div>
-        </motion.div>
-      )}
+      {/* editor space */}
+      <div className="p-5 font-mono2 text-[12px] md:text-[13px] leading-relaxed overflow-x-auto text-[#9cdcfe]">
+        <pre className="whitespace-pre">
+          <span className="text-[#cccccc]">{'{'}</span>{'\n'}
+          {'  '}<span className="text-[#9cdcfe]">"operator"</span><span className="text-[#cccccc]">:</span> <span className="text-[#ce9178]">"Sarvajith Sankar"</span><span className="text-[#cccccc]">,</span>{'\n'}
+          {'  '}<span className="text-[#9cdcfe]">"education"</span><span className="text-[#cccccc]">: [</span><span className="text-[#ce9178]">"VIT Vellore"</span><span className="text-[#cccccc]">,</span> <span className="text-[#ce9178]">"IIT Madras"</span><span className="text-[#cccccc]">],</span>{'\n'}
+          {'  '}<span className="text-[#9cdcfe]">"focus"</span><span className="text-[#cccccc]">: [</span><span className="text-[#ce9178]">"AI Agents"</span><span className="text-[#cccccc]">,</span> <span className="text-[#ce9178]">"ML Systems"</span><span className="text-[#cccccc]">,</span> <span className="text-[#ce9178]">"LLM Security"</span><span className="text-[#cccccc] Rhine">],</span>{'\n'}
+          {'  '}<span className="text-[#9cdcfe]">"status"</span><span className="text-[#cccccc]">:</span> <span className="text-[#ce9178]">"active_development"</span><span className="text-[#cccccc]">,</span>{'\n'}
+          {'  '}<span className="text-[#9cdcfe]">"metrics"</span><span className="text-[#cccccc]">: {`{`}</span>{'\n'}
+          {'    '}<span className="text-[#9cdcfe]">"gpa"</span><span className="text-[#cccccc]">:</span> <span className="text-[#b5cea8]">8.2</span><span className="text-[#cccccc]">,</span>{'\n'}
+          {'    '}<span className="text-[#9cdcfe]">"contributor"</span><span className="text-[#cccccc]">:</span> <span className="text-[#569cd6]">true</span>{'\n'}
+          {'  '}<span className="text-[#cccccc]">{`}`}</span>{'\n'}
+          <span className="text-[#cccccc]">{`}`}</span>
+        </pre>
+      </div>
     </div>
   );
 }
@@ -251,20 +128,20 @@ export function Now() {
     <section id="now" className="relative py-28 md:py-36 scroll-mt-20 topo">
       <div className="max-w-7xl mx-auto px-6">
         <SectionHead
-          num="07"
+          num="06"
           eyebrow="momentum"
           title={<>ACTIVE <SlashWord>VECTORS</SlashWord></>}
-          sub="What I'm building, learning, and targeting right now to stay ahead of the curve."
+          sub="Current development tracks, study plans, and engineering targets."
         />
 
-        <div className="grid lg:grid-cols-2 gap-12 items-stretch">
+        <div className="grid lg:grid-cols-2 gap-8 items-center">
           {/* LEFT — current logs */}
           <Reveal>
-            <div className="glass-red p-8 h-full flex flex-col justify-between" style={{ background: 'rgba(10,15,30,0.3)' }}>
+            <div className="glass-red p-8 h-full flex flex-col justify-between rounded-2xl border border-zinc-800/80 bg-zinc-900/10">
               <div className="space-y-6">
                 <div>
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#00f2fe] animate-pulse" />
+                    <span className="w-2 h-2 rounded-full bg-[#00f2fe] animate-pulse" />
                     <h3 className="font-display text-lg uppercase tracking-wider text-white">1. BUILDING</h3>
                   </div>
                   <p className="text-sm text-zinc-300 leading-relaxed pl-5">
@@ -274,7 +151,7 @@ export function Now() {
 
                 <div>
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#a855f7] animate-pulse" />
+                    <span className="w-2 h-2 rounded-full bg-[#a855f7] animate-pulse" />
                     <h3 className="font-display text-lg uppercase tracking-wider text-white">2. LEARNING</h3>
                   </div>
                   <p className="text-sm text-zinc-300 leading-relaxed pl-5">
@@ -293,16 +170,16 @@ export function Now() {
                 </div>
               </div>
 
-              <div className="mt-8 pt-5 border-t border-[rgba(0,242,254,0.15)] font-mono2 text-[10px] tracking-[0.25em] uppercase text-zinc-500">
+              <div className="mt-8 pt-5 border-t border-zinc-800/40 font-mono2 text-[9px] tracking-[0.25em] uppercase text-zinc-500">
                 STATUS: ACTIVE DEVELOPMENT // STACK REINFORCEMENT
               </div>
             </div>
           </Reveal>
 
-          {/* RIGHT — Terminal diagnostic view */}
+          {/* RIGHT — static code config view */}
           <Reveal delay={0.12}>
             <div className="h-full flex items-center justify-center">
-              <Terminal />
+              <CodeMockup />
             </div>
           </Reveal>
         </div>
@@ -312,11 +189,11 @@ export function Now() {
 }
 
 /* =========================================================
-   CONTACT — radar sweep + secure channel
+   CONTACT — clean communication channel list
  ========================================================= */
 const CHANNELS = [
   {
-    label: 'Direct Frequency', value: 'sarvajith2knot8@gmail.com', href: 'mailto:sarvajith2knot8@gmail.com',
+    label: 'Direct Email', value: 'sarvajith2knot8@gmail.com', href: 'mailto:sarvajith2knot8@gmail.com',
     icon: <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z M22 6l-10 7L2 6" strokeLinecap="round" strokeLinejoin="round" />,
   },
   {
@@ -329,235 +206,55 @@ const CHANNELS = [
   },
 ];
 
-function Radar() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const prm = usePRM();
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    let size = 0;
-    
-    const build = () => {
-      size = canvas.parentElement?.offsetWidth || 320;
-      canvas.width = size * dpr;
-      canvas.height = size * dpr;
-      canvas.style.width = `${size}px`;
-      canvas.style.height = `${size}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
-    build();
-
-    if (prm) {
-      ctx.strokeStyle = 'rgba(0, 242, 254, 0.2)';
-      ctx.lineWidth = 1;
-      const c = size / 2;
-      ctx.beginPath(); ctx.arc(c, c, c * 0.9, 0, Math.PI * 2); ctx.stroke();
-      ctx.beginPath(); ctx.arc(c, c, c * 0.65, 0, Math.PI * 2); ctx.stroke();
-      ctx.beginPath(); ctx.arc(c, c, c * 0.4, 0, Math.PI * 2); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(c, 0); ctx.lineTo(c, size); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(0, c); ctx.lineTo(size, c); ctx.stroke();
-      return;
-    }
-
-    let raf = 0;
-    const loop = (now: number) => {
-      ctx.clearRect(0, 0, size, size);
-      const c = size / 2;
-      
-      // Circles
-      ctx.strokeStyle = 'rgba(0, 242, 254, 0.15)';
-      ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.arc(c, c, c * 0.9, 0, Math.PI * 2); ctx.stroke();
-      ctx.beginPath(); ctx.arc(c, c, c * 0.65, 0, Math.PI * 2); ctx.stroke();
-      ctx.beginPath(); ctx.arc(c, c, c * 0.4, 0, Math.PI * 2); ctx.stroke();
-      
-      // Axes
-      ctx.beginPath(); ctx.moveTo(c, 10); ctx.lineTo(c, size - 10); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(10, c); ctx.lineTo(size - 10, c); ctx.stroke();
-      
-      // Radar sweep gradient
-      const sweepAngle = (now / 1200) % (Math.PI * 2);
-      ctx.save();
-      ctx.translate(c, c);
-      ctx.rotate(sweepAngle);
-      
-      const grad = ctx.createConicGradient(0, 0, 0);
-      grad.addColorStop(0, 'rgba(0, 242, 254, 0.25)');
-      grad.addColorStop(0.12, 'rgba(168, 85, 247, 0.05)');
-      grad.addColorStop(0.25, 'rgba(0, 0, 0, 0)');
-      grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-      
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(0, 0, c * 0.9, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-
-      // Pulsing blips
-      const blips = [
-        { x: c + c * 0.4, y: c - c * 0.3, tOffset: 0 },
-        { x: c - c * 0.5, y: c + c * 0.2, tOffset: 1200 },
-        { x: c + c * 0.2, y: c + c * 0.5, tOffset: 2400 }
-      ];
-
-      for (const blip of blips) {
-        const age = (now - blip.tOffset) % 3600;
-        const opacity = Math.max(0, 1 - age / 2500);
-        ctx.fillStyle = `rgba(0, 242, 254, ${opacity})`;
-        ctx.beginPath();
-        ctx.arc(blip.x, blip.y, 4, 0, Math.PI * 2);
-        ctx.fill();
-        
-        ctx.strokeStyle = `rgba(168, 85, 247, ${opacity * 0.5})`;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.arc(blip.x, blip.y, 4 + (age % 300) * 0.06, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
-
-    const onResize = () => build();
-    window.addEventListener('resize', onResize);
-
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener('resize', onResize);
-    };
-  }, [prm]);
-
-  return (
-    <div className="relative aspect-square max-w-sm mx-auto" data-hover>
-      <canvas ref={canvasRef} className="absolute inset-0 z-10" />
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="text-center">
-          <div className="font-display text-2xl red tracking-widest" style={{ textShadow: '0 0 16px rgba(0,242,254,0.6)' }}>SS-29</div>
-          <div className="font-mono2 text-[9px] tracking-[0.3em] uppercase text-zinc-500 mt-1">signal locked</div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function Contact() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-100px' });
-  const prm = usePRM();
-  const [statusIdx, setStatusIdx] = useState(prm ? 4 : 0);
   const [launched, setLaunched] = useState(false);
-
-  const statusLines = [
-    '> ESTABLISHING CONNECTION...',
-    '> SHIELD PROTOCOLS ... SECURE',
-    '> UPLINK DIRECTED VIA SECURE NODE ... OK',
-    '> CHANNEL SECURED'
-  ];
-
-  useEffect(() => {
-    if (!inView || prm) return;
-    if (statusIdx < statusLines.length) {
-      const t = window.setTimeout(() => setStatusIdx((i) => i + 1), 450);
-      return () => window.clearTimeout(t);
-    }
-  }, [inView, statusIdx, prm]);
-
-  const channelOpen = statusIdx >= statusLines.length;
 
   return (
     <section id="contact" className="relative py-28 md:py-36 scroll-mt-20 topo overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6" ref={ref}>
+      <div className="max-w-4xl mx-auto px-6">
         <SectionHead
-          num="08"
-          eyebrow="uplink channel"
-          title={<>SECURE <SlashWord>UPLINK</SlashWord></>}
-          sub="Direct contact frequencies monitored regularly. Select a connection mode."
+          num="07"
+          eyebrow="contact channel"
+          title={<>OPEN A <SlashWord>CHANNEL</SlashWord></>}
+          sub="Direct communication frequencies monitored regularly. Select a connection below."
+          align="center"
         />
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <Reveal>
-            <Radar />
-          </Reveal>
-
-          <div>
-            <Reveal>
-              <div className="font-mono2 text-xs md:text-sm space-y-1.5 mb-8 min-h-[110px]">
-                {statusLines.slice(0, statusIdx).map((l, i) => (
-                  <div key={i} className={i === statusLines.length - 1 ? 'red font-bold tracking-[0.2em]' : 'text-[#00f2fe]'}>
-                    {l} {i < 3 && <span className="text-zinc-600">▮</span>}
-                  </div>
-                ))}
-                {!prm && statusIdx < statusLines.length && <span className="term-cursor" />}
-              </div>
-            </Reveal>
-
-            <div className="space-y-4">
-              {CHANNELS.map((ch, idx) => (
-                <motion.div
-                  key={ch.label}
-                  initial={{ opacity: 0, x: 60 }}
-                  animate={channelOpen ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.55, delay: idx * 0.14 }}
-                >
-                  <a
-                    href={ch.href}
-                    target={ch.href.startsWith('http') ? '_blank' : undefined}
-                    rel="noreferrer"
-                    className="glass-red group flex items-center gap-5 p-5 hover:border-[rgba(0,242,254,0.55)] transition-colors"
-                  >
-                    <span className="relative w-12 h-12 shrink-0 rounded-full border border-[rgba(0,242,254,0.4)] bg-black/60 flex items-center justify-center red">
-                      <span className="ripple" style={{ borderColor: 'rgba(0,242,254,0.3)' }} />
-                      <span className="ripple" style={{ animationDelay: '0.8s', borderColor: 'rgba(168,85,247,0.3)' }} />
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-5 h-5 relative">
-                        {ch.icon}
-                      </svg>
-                    </span>
-                    <span className="flex-1 min-w-0">
-                      <span className="block font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-500">{ch.label}</span>
-                      <span className="arc-hover block text-white text-sm md:text-base truncate mt-1">{ch.value}</span>
-                    </span>
-                    <svg className="w-5 h-5 red opacity-0 group-hover:opacity-100 transition-opacity shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </a>
-                </motion.div>
-              ))}
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={channelOpen ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="mt-8"
-            >
+        <div className="space-y-4 max-w-xl mx-auto">
+          {CHANNELS.map((ch, idx) => (
+            <Reveal key={ch.label} delay={idx * 0.08}>
               <a
-                href="mailto:sarvajith2knot8@gmail.com"
-                onClick={() => { setLaunched(true); window.setTimeout(() => setLaunched(false), 1400); }}
-                className={`btn-void inline-flex items-center gap-4 px-8 py-4 font-mono2 text-xs tracking-[0.3em] uppercase ${launched ? 'launched' : ''}`}
+                href={ch.href}
+                target={ch.href.startsWith('http') ? '_blank' : undefined}
+                rel="noreferrer"
+                className="glass-red group flex items-center gap-5 p-5 hover:border-[rgba(0,242,254,0.45)] transition-colors rounded-xl border border-zinc-800 bg-zinc-900/10"
               >
-                <span className="flex items-center gap-4">
-                  <span className="relative inline-flex flex-col items-center overflow-visible">
-                    <svg className="rocket w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                      <path d="M12 2c3 2.5 5 6.5 5 10l-2.5 2.5h-5L7 12c0-3.5 2-7.5 5-10z" strokeLinejoin="round" />
-                      <path d="M9.5 14.5L7 21l2.5-1.5M14.5 14.5L17 21l-2.5-1.5M12 17v5" strokeLinecap="round" strokeLinejoin="round" />
-                      <circle cx="12" cy="9" r="1.6" />
-                    </svg>
-                    <svg className="flame w-2.5 h-3 absolute -bottom-2.5 red" viewBox="0 0 10 14" fill="currentColor">
-                      <path d="M5 0C7 4 9 6 9 9a4 4 0 11-8 0c0-3 2-5 4-9z" />
-                    </svg>
-                  </span>
-                  Launch message
+                <span className="relative w-12 h-12 shrink-0 rounded-full border border-zinc-800 bg-black/40 flex items-center justify-center red">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-5 h-5 relative">
+                    {ch.icon}
+                  </svg>
                 </span>
+                <span className="flex-1 min-w-0">
+                  <span className="block font-mono2 text-[9px] tracking-[0.3em] uppercase text-zinc-500">{ch.label}</span>
+                  <span className="block text-white text-sm md:text-base truncate mt-1">{ch.value}</span>
+                </span>
+                <svg className="w-5 h-5 red opacity-0 group-hover:opacity-100 transition-opacity shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </a>
-            </motion.div>
-          </div>
+            </Reveal>
+          ))}
         </div>
+
+        <Reveal className="mt-8 text-center">
+          <a
+            href="mailto:sarvajith2knot8@gmail.com"
+            onClick={() => { setLaunched(true); window.setTimeout(() => setLaunched(false), 1400); }}
+            className={`btn-void inline-flex items-center gap-4 px-8 py-4 font-mono2 text-xs tracking-[0.3em] uppercase rounded-xl ${launched ? 'launched' : ''}`}
+          >
+            Launch Message
+          </a>
+        </Reveal>
       </div>
     </section>
   );
@@ -568,10 +265,10 @@ export function Contact() {
  ========================================================= */
 export function Footer() {
   return (
-    <footer className="relative py-10 border-t border-[rgba(0,242,254,0.15)] bg-[#030408]">
+    <footer className="relative py-10 border-t border-zinc-800/80 bg-[#06070c]">
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <span className="rec-dot" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[#00f2fe]" />
           <span className="font-mono2 text-[11px] tracking-[0.25em] uppercase text-zinc-400">
             Designed &amp; built with precision <span className="red">·</span> VIT Vellore '29
           </span>

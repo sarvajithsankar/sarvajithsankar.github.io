@@ -3,39 +3,15 @@ import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { Reveal, SectionHead, SlashWord, usePRM } from './fx';
 
 /* =========================================================
-   ABOUT — premium recruiter-ready profile dossier
+   ABOUT — clean credentials & profile overview
  ========================================================= */
-function Redact({ children }: { children: React.ReactNode }) {
-  return <span className="redact">{children}</span>;
-}
-
 function GrowItem({ label, sub }: { label: string; sub: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
   return (
-    <div ref={ref} className={`grow-border ${inView ? 'grown' : ''} pl-4 py-3 bg-black/40 border border-[rgba(0,242,254,0.12)]`}>
+    <div ref={ref} className={`grow-border ${inView ? 'grown' : ''} pl-4 py-3 bg-black/20 border-l border-zinc-800`}>
       <div className="text-sm text-white font-semibold">{label}</div>
-      <div className="font-mono2 text-[10px] tracking-[0.2em] uppercase text-zinc-400 mt-1">{sub}</div>
-    </div>
-  );
-}
-
-function HexAvatar() {
-  return (
-    <div className="relative w-36 h-36 mx-auto">
-      <div className="absolute inset-0" style={{ animation: 'spin360 26s linear infinite' }}>
-        <svg viewBox="0 0 100 100" className="w-full h-full">
-          <polygon points="50,3 91,26.5 91,73.5 50,97 9,73.5 9,26.5" fill="none" stroke="rgba(0,242,254,0.7)" strokeWidth="1.6" style={{ filter: 'drop-shadow(0 0 6px rgba(0,242,254,0.7))' }} />
-        </svg>
-      </div>
-      <div className="absolute inset-[10%]" style={{ animation: 'spin360 40s linear infinite reverse' }}>
-        <svg viewBox="0 0 100 100" className="w-full h-full">
-          <polygon points="50,3 91,26.5 91,73.5 50,97 9,73.5 9,26.5" fill="rgba(10,15,30,0.15)" stroke="rgba(168,85,247,0.35)" strokeWidth="1" strokeDasharray="4 3" />
-        </svg>
-      </div>
-      <div className="absolute inset-0 flex items-center justify-center">
-        <span className="font-display text-4xl red" style={{ textShadow: '0 0 20px rgba(0,242,254,0.8)' }}>SS</span>
-      </div>
+      <div className="font-mono2 text-[10px] tracking-[0.2em] uppercase text-zinc-500 mt-1">{sub}</div>
     </div>
   );
 }
@@ -46,38 +22,28 @@ export function About() {
       <div className="max-w-7xl mx-auto px-6">
         <SectionHead
           num="01"
-          eyebrow="dossier"
-          title={<>THE <SlashWord>OPERATOR</SlashWord></>}
-          sub="CS sophomore building autonomous AI systems, neural retrieval architectures, and defense mechanisms for LLMs."
+          eyebrow="overview"
+          title={<>THE <SlashWord>ENGINEER</SlashWord></>}
+          sub="CS Sophomore B.Tech B.S. dual degree building robust machine learning applications and scalable AI systems."
         />
 
-        <div className="grid lg:grid-cols-5 gap-6">
-          <Reveal className="lg:col-span-3">
-            <div className="glass-red p-8 md:p-10 h-full relative overflow-hidden">
-              <motion.div
-                initial={{ opacity: 0.45, rotate: -16, scale: 1.15 }}
-                whileInView={{ opacity: 0.08, rotate: -18, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1.6, ease: 'easeOut' }}
-                className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
-              >
-                <span className="classified-stamp font-display text-5xl md:text-7xl red uppercase">VERIFIED</span>
-              </motion.div>
-
+        <div className="grid lg:grid-cols-[1.5fr_1fr] gap-8">
+          <Reveal>
+            <div className="glass-red p-8 md:p-10 h-full rounded-2xl relative overflow-hidden border border-zinc-800/80 bg-zinc-900/10">
               <div className="relative">
-                <div className="flex items-center justify-between mb-6">
-                  <span className="font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-400">FILE #SS-2029 // PROFILE OVERVIEW</span>
-                  <span className="font-mono2 text-[10px] tracking-[0.2em] uppercase red">LEVEL-5 CLEARANCE</span>
+                <div className="flex items-center justify-between mb-6 border-b border-zinc-800/60 pb-4">
+                  <span className="font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-500">OPERATOR DOSSIER // SARVAJITH SANKAR</span>
+                  <span className="font-mono2 text-[10px] tracking-[0.2em] uppercase red">LEVEL-1 CORE</span>
                 </div>
 
                 <p className="text-zinc-200 text-lg md:text-xl leading-relaxed">
-                  Pursuing a dual degree path: B.Tech in <span className="text-white font-semibold">Computer Engineering at VIT Vellore</span> and B.S. in <span className="text-white font-semibold">Data Science at IIT Madras</span> (2025-2029, current CGPA ~8.2). 
+                  Dual Degree: B.Tech in <span className="text-white font-semibold">Computer Engineering at VIT Vellore</span> + B.S. in <span className="text-white font-semibold">Data Science at IIT Madras</span> (2025-2029, current CGPA ~8.2).
                 </p>
-                <p className="dim mt-5 leading-relaxed">
-                  I bypass tutorial clones to architect and deploy production systems. My experience spans building <Redact>autonomous multi-agent research architectures</Redact> at Maveric Systems, deploying <Redact>defensive security middleware for LLMs</Redact>, and developing <Redact>semantic schema-matching algorithms</Redact> for federated databases. I focus on building secure, robust, and scalable AI infrastructure.
+                <p className="dim mt-4 leading-relaxed text-sm md:text-base">
+                  I write production-grade code. Previously an AI Intern at Maveric Systems where I built autonomous multi-agent research architectures. Developed TENET-AI, an LLM prompt injection protection middleware, and engineered ML matching algorithms to automate column alignments in federated databases.
                 </p>
 
-                <div className="mt-9 grid sm:grid-cols-3 gap-3">
+                <div className="mt-8 grid sm:grid-cols-3 gap-4 border-t border-zinc-800/60 pt-6">
                   <GrowItem label="VIT Vellore" sub="B.Tech Computer Eng." />
                   <GrowItem label="IIT Madras" sub="B.S. Data Science" />
                   <GrowItem label="Maveric Systems" sub="AI Eng. Intern" />
@@ -86,23 +52,20 @@ export function About() {
             </div>
           </Reveal>
 
-          <Reveal delay={0.12} className="lg:col-span-2">
-            <div className="glass-red p-8 h-full flex flex-col relative overflow-hidden">
-              <div className="absolute -bottom-16 -right-16 w-56 h-56 rounded-full blur-3xl" style={{ background: 'rgba(168,85,247,0.15)' }} />
-              <HexAvatar />
-              <div className="mt-6 flex items-center justify-center gap-2 font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-500">
-                <span className="rec-dot" /> subject: sankar, s.
+          <Reveal delay={0.12}>
+            <div className="glass-red p-8 h-full flex flex-col justify-between rounded-2xl border border-zinc-800/80 bg-zinc-900/10">
+              <div>
+                <span className="font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-500 block mb-4">ENGINEERING ETHOS</span>
+                <blockquote className="text-lg md:text-xl font-light leading-relaxed text-zinc-200">
+                  "I focus on shipping <span className="red font-medium">reliable systems</span> that solve complex backend, security, and machine learning problems, prioritizing depth and robust implementation."
+                </blockquote>
               </div>
 
-              <blockquote className="mt-6 text-lg md:text-xl font-light leading-relaxed text-zinc-200 flex-1">
-                "Depth over breadth. I design and implement <span className="red font-medium">production AI and systems software</span> where reliability and security are primary objectives."
-              </blockquote>
-
-              <div className="mt-6 pt-5 border-t border-[rgba(0,242,254,0.15)] grid grid-cols-2 gap-3 font-mono2 text-[10px] tracking-[0.18em] uppercase">
+              <div className="mt-8 pt-5 border-t border-zinc-800/60 grid grid-cols-2 gap-3 font-mono2 text-[10px] tracking-[0.18em] uppercase">
                 <div><span className="text-zinc-500">Focus:</span> <span className="text-zinc-300">AI / Systems</span></div>
-                <div><span className="text-zinc-500">Alignment:</span> <span className="red">Neural Systems</span></div>
+                <div><span className="text-zinc-500">Alignment:</span> <span className="red">Systems</span></div>
                 <div><span className="text-zinc-500">Status:</span> <span className="text-zinc-300">High Agency</span></div>
-                <div><span className="text-zinc-500">GPA:</span> <span className="red">~8.2 CGPA</span></div>
+                <div><span className="text-zinc-500">CGPA:</span> <span className="red">~8.2</span></div>
               </div>
             </div>
           </Reveal>
@@ -113,7 +76,7 @@ export function About() {
 }
 
 /* =========================================================
-   EXPERIENCE — self-drawing timeline
+   EXPERIENCE — clean chronicle timeline
  ========================================================= */
 const EXPERIENCE = [
   {
@@ -163,19 +126,19 @@ export function Experience() {
       <div className="max-w-6xl mx-auto px-6">
         <SectionHead
           num="02"
-          eyebrow="rap sheet"
-          title={<>CHRONICLE OF <SlashWord>OPERATIONS</SlashWord></>}
-          sub="Where I've engineered solutions. The line draws itself on scroll."
+          eyebrow="record"
+          title={<>WORK <SlashWord>HISTORY</SlashWord></>}
+          sub="Professional background and technical operations."
         />
 
         <div ref={trackRef} className="relative">
-          <div className="absolute left-[9px] md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-px" style={{ background: 'rgba(0,242,254,0.25)', boxShadow: '0 0 14px rgba(0,242,254,0.3)' }} />
+          <div className="absolute left-[9px] md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-px bg-zinc-800" />
           <motion.div
-            className="absolute left-[9px] md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-[2px] origin-top"
+            className="absolute left-[9px] md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-px origin-top"
             style={{
               scaleY,
-              background: 'linear-gradient(180deg, #a855f7, #00f2fe, #00f2fe)',
-              boxShadow: '0 0 18px rgba(0,242,254,0.7)',
+              background: 'linear-gradient(180deg, #a855f7, #00f2fe)',
+              boxShadow: '0 0 10px rgba(0,242,254,0.4)',
             }}
           />
 
@@ -186,31 +149,31 @@ export function Experience() {
                 <div key={idx} className="relative md:flex md:items-center">
                   <motion.span
                     initial={{ scale: 0 }}
-                    whileInView={{ scale: [0, 1.5, 1] }}
+                    whileInView={{ scale: [0, 1.3, 1] }}
                     viewport={{ once: true, margin: '-60px' }}
-                    transition={{ duration: 0.6, ease: 'easeOut' }}
-                    className="tl-dot absolute left-0 md:left-1/2 md:-translate-x-1/2 top-1 md:top-1/2 md:-translate-y-1/2"
+                    transition={{ duration: 0.5, ease: 'easeOut' }}
+                    className="tl-dot absolute left-0 md:left-1/2 md:-translate-x-1/2 top-1.5 md:top-1/2 md:-translate-y-1/2"
                   />
                   <motion.div
-                    initial={{ opacity: 0, x: leftSide ? -80 : 80 }}
+                    initial={{ opacity: 0, x: leftSide ? -40 : 40 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: '-60px' }}
-                    transition={{ duration: 0.75, ease: [0.2, 0.8, 0.2, 1] }}
-                    className={`ml-10 md:ml-0 md:w-[calc(50%-44px)] ${leftSide ? 'md:mr-auto md:text-right' : 'md:ml-auto'}`}
+                    transition={{ duration: 0.6, ease: 'easeOut' }}
+                    className={`ml-10 md:ml-0 md:w-[calc(50%-40px)] ${leftSide ? 'md:mr-auto md:text-right' : 'md:ml-auto'}`}
                   >
-                    <div className={`glass-red p-6 md:p-7 hover:border-[rgba(0,242,254,0.45)] transition-colors ${leftSide ? 'md:[direction:rtl]' : ''}`}>
+                    <div className={`glass-red p-6 rounded-xl hover:border-zinc-700 transition-colors ${leftSide ? 'md:[direction:rtl]' : ''}`}>
                       <div className="[direction:ltr]">
-                        <div className={`flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-2 ${leftSide ? 'md:justify-end' : ''}`}>
-                          <h3 className="font-display text-xl md:text-2xl uppercase tracking-wide text-white">{e.role}</h3>
-                          <span className="font-mono2 text-[10px] tracking-[0.2em] red whitespace-nowrap">{e.date}</span>
+                        <div className={`flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-1 ${leftSide ? 'md:justify-end' : ''}`}>
+                          <h3 className="font-display text-lg md:text-xl uppercase tracking-wide text-white font-semibold">{e.role}</h3>
+                          <span className="font-mono2 text-[10px] tracking-[0.15em] red whitespace-nowrap">{e.date}</span>
                         </div>
-                        <div className={`text-sm mb-4 ${leftSide ? 'md:text-right' : ''}`}>
+                        <div className={`text-xs mb-3 ${leftSide ? 'md:text-right' : ''}`}>
                           <span className="sweep-hl text-white font-medium inline-block">{e.org}</span>
                           <span className="dim"> · {e.loc}</span>
                         </div>
                         <ul className={`space-y-1.5 ${leftSide ? 'md:[&>li]:flex-row-reverse' : ''}`}>
                           {e.points.map((pt) => (
-                            <li key={pt} className="dim text-sm flex items-start gap-2">
+                            <li key={pt} className="dim text-xs md:text-sm flex items-start gap-2">
                               <span className="red mt-0.5">▸</span><span>{pt}</span>
                             </li>
                           ))}
@@ -229,11 +192,11 @@ export function Experience() {
 }
 
 /* =========================================================
-   PROJECTS — trace-beam cards with spotlights & links
+   PROJECTS — clean glassmorphic pods
  ========================================================= */
 const PROJECTS = [
   {
-    num: '001', title: 'TENET-AI', badge: 'ACTIVE SYSTEM',
+    num: '001', title: 'TENET-AI', badge: 'ACTIVE MIDWARE',
     blurb: 'Defensive security middleware protecting LLM endpoints.',
     body: 'Built real-time validation pipelines, semantic jailbreak detectors, and token-level input sanitizers to shield generative AI APIs from injection attacks.',
     tags: ['Python', 'LLM Security', 'Middleware', 'Regex'],
@@ -269,68 +232,58 @@ const PROJECTS = [
 function ProjectCard({ p, idx }: { p: (typeof PROJECTS)[number]; idx: number }) {
   return (
     <Reveal delay={(idx % 2) * 0.1}>
-      <div className="trace-wrap h-full">
-        <div className="trace-beam" />
-        <div className="proj-card glass-red p-7 md:p-8 h-full relative overflow-hidden" style={{ background: 'rgba(10,15,30,0.3)', boxShadow: 'inset 0 0 40px rgba(0,242,254,0.05), 0 0 30px rgba(0,0,0,0.3)' }}>
-          <div className="spot" />
-          <span aria-hidden className="font-display absolute -top-5 right-2 text-[6.5rem] md:text-[7.5rem] leading-none select-none pointer-events-none" style={{ color: 'rgba(0,242,254,0.03)', textShadow: '0 0 40px rgba(0,242,254,0.08)' }}>
-            {p.num}
-          </span>
-
-          <div className="relative flex flex-col h-full justify-between">
-            <div>
-              <div className="flex items-center justify-between mb-7">
-                <span className="font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-500">OP-{p.num}</span>
-                <span className="inline-flex items-center gap-2 font-mono2 text-[9px] tracking-[0.25em] uppercase px-2.5 py-1 border border-[rgba(0,242,254,0.3)] text-[#6be5ff] bg-black/50">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#00f2fe] animate-ping" />
-                  {p.badge}
-                </span>
-              </div>
-
-              <h3 className="font-display text-2xl md:text-3xl uppercase tracking-wide text-white">{p.title}</h3>
-              <p className="red font-mono2 text-xs mt-2 tracking-wide">{p.blurb}</p>
-              <p className="dim text-sm leading-relaxed mt-4">{p.body}</p>
-
-              <div className="flex flex-wrap gap-2 mt-6">
-                {p.tags.map((t) => (
-                  <span key={t} className="tag-red font-mono2 text-[10px] px-3 py-1 rounded-full">{t}</span>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex gap-4 mt-6 justify-end items-center relative z-20">
-              {p.github && (
-                <a
-                  href={p.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="p-2 border border-zinc-800 hover:border-[rgba(0,242,254,0.5)] bg-black/40 text-zinc-400 hover:text-[#00f2fe] transition-colors"
-                  aria-label="GitHub Repository"
-                  data-hover
-                >
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
-                  </svg>
-                </a>
-              )}
-              {p.demo && (
-                <a
-                  href={p.demo}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="p-2 border border-zinc-800 hover:border-[rgba(168,85,247,0.5)] bg-black/40 text-zinc-400 hover:text-[#a855f7] transition-colors"
-                  aria-label="Live Demo"
-                  data-hover
-                >
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                    <polyline points="15 3 21 3 21 9" />
-                    <line x1="10" y1="14" x2="21" y2="3" />
-                  </svg>
-                </a>
-              )}
-            </div>
+      <div className="proj-card glass-red p-6 rounded-2xl h-full flex flex-col justify-between border border-zinc-800/80 bg-zinc-900/10">
+        <div>
+          <div className="flex items-center justify-between mb-4 border-b border-zinc-800/40 pb-3">
+            <span className="font-mono2 text-[10px] tracking-[0.2em] uppercase text-zinc-500">PROJECT-{p.num}</span>
+            <span className="inline-flex items-center gap-1.5 font-mono2 text-[9px] tracking-[0.15em] uppercase text-[#6be5ff]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#00f2fe]" />
+              {p.badge}
+            </span>
           </div>
+
+          <h3 className="font-display text-xl uppercase tracking-wide text-white font-semibold">{p.title}</h3>
+          <p className="red font-mono2 text-[11px] mt-1.5 tracking-wide">{p.blurb}</p>
+          <p className="dim text-xs md:text-sm leading-relaxed mt-3">{p.body}</p>
+
+          <div className="flex flex-wrap gap-1.5 mt-4">
+            {p.tags.map((t) => (
+              <span key={t} className="tag-red font-mono2 text-[9px] px-2.5 py-0.5 rounded-full">{t}</span>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex gap-3 mt-6 justify-end items-center">
+          {p.github && (
+            <a
+              href={p.github}
+              target="_blank"
+              rel="noreferrer"
+              className="p-1.5 border border-zinc-800 hover:border-zinc-700 bg-black/30 rounded-lg text-zinc-400 hover:text-[#00f2fe] transition-colors"
+              aria-label="GitHub Repository"
+              data-hover
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+              </svg>
+            </a>
+          )}
+          {p.demo && (
+            <a
+              href={p.demo}
+              target="_blank"
+              rel="noreferrer"
+              className="p-1.5 border border-zinc-800 hover:border-zinc-700 bg-black/30 rounded-lg text-zinc-400 hover:text-[#a855f7] transition-colors"
+              aria-label="Live Demo"
+              data-hover
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+            </a>
+          )}
         </div>
       </div>
     </Reveal>
@@ -344,8 +297,8 @@ export function Projects() {
         <SectionHead
           num="03"
           eyebrow="arsenal"
-          title={<>SELECTED <SlashWord>WEAPONS</SlashWord></>}
-          sub="Engineering operations I've actually shipped. Confident systems built for scalability and performance."
+          title={<>PROJECTS &amp; <SlashWord>WEAPONS</SlashWord></>}
+          sub="Production-grade AI applications and pipeline modules."
         />
         <div className="grid md:grid-cols-2 gap-6">
           {PROJECTS.map((p, idx) => (
@@ -358,7 +311,7 @@ export function Projects() {
 }
 
 /* =========================================================
-   SKILLS & CREDENTIALS — network graph + certs tab grid
+   SKILLS & CREDENTIALS — network graph + credentials grid
  ========================================================= */
 const NODES: Array<{ l: string; x: number; y: number; g: number }> = [
   { l: 'C', x: 0.09, y: 0.30, g: 0 }, { l: 'C++17', x: 0.17, y: 0.46, g: 0 },
@@ -385,7 +338,6 @@ const EDGES: Array<[number, number]> = [
   [2, 7], [2, 9], [1, 14], [4, 17], [18, 19], [8, 10], [15, 5], [16, 18],
 ];
 
-/* CERTIFICATIONS SUB-DATA */
 const CERTS = [
   {
     title: 'Mastercard Cybersecurity', issuer: 'Forage', date: 'MAY 2026', icon: 'SHIELD',
@@ -423,7 +375,7 @@ function CertIcon({ kind }: { kind: string }) {
     TOWER: <><path d="M12 21V9M12 9l-5 12M12 9l5 12" strokeLinecap="round" /><path d="M7.5 4.5a7 7 0 019 0M9.3 6.8a4 4 0 015.4 0" strokeLinecap="round" /><circle cx="12" cy="9" r="1.4" /></>,
   };
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
       {paths[kind]}
     </svg>
   );
@@ -431,11 +383,10 @@ function CertIcon({ kind }: { kind: string }) {
 
 function Seal() {
   return (
-    <svg viewBox="0 0 80 80" className="w-16 h-16 opacity-15" aria-hidden>
-      <circle cx="40" cy="40" r="36" fill="none" stroke="#00f2fe" strokeWidth="2" strokeDasharray="5 3" />
-      <circle cx="40" cy="40" r="27" fill="none" stroke="#00f2fe" strokeWidth="1" />
-      <text x="40" y="37" textAnchor="middle" fill="#00f2fe" fontSize="9" fontFamily="JetBrains Mono, monospace" letterSpacing="1">VERIFIED</text>
-      <text x="40" y="49" textAnchor="middle" fill="#00f2fe" fontSize="7" fontFamily="JetBrains Mono, monospace">SS·2029</text>
+    <svg viewBox="0 0 80 80" className="w-14 h-14 opacity-10" aria-hidden>
+      <circle cx="40" cy="40" r="36" fill="none" stroke="#00f2fe" strokeWidth="1.5" strokeDasharray="4 2" />
+      <text x="40" y="37" textAnchor="middle" fill="#00f2fe" fontSize="8" fontFamily="JetBrains Mono, monospace" letterSpacing="1">VERIFIED</text>
+      <text x="40" y="47" textAnchor="middle" fill="#00f2fe" fontSize="6" fontFamily="JetBrains Mono, monospace">SS·2029</text>
     </svg>
   );
 }
@@ -443,32 +394,32 @@ function Seal() {
 function CertCard({ c, idx }: { c: (typeof CERTS)[number]; idx: number }) {
   return (
     <Reveal delay={(idx % 3) * 0.08}>
-      <div className="flip-card h-60">
+      <div className="flip-card h-52">
         <div className="flip-inner">
           {/* FRONT */}
-          <div className="flip-face glass-red holo-on relative p-6 flex flex-col justify-between overflow-hidden">
+          <div className="flip-face glass-red holo-on relative p-5 flex flex-col justify-between overflow-hidden rounded-xl border border-zinc-800/80 bg-zinc-900/10">
             <div className="holo" />
-            <div className="absolute -top-3 -right-3"><Seal /></div>
+            <div className="absolute -top-2 -right-2"><Seal /></div>
             <div>
-              <div className="w-12 h-12 rounded-sm border border-[rgba(0,242,254,0.3)] bg-black/50 flex items-center justify-center red mb-5" style={{ boxShadow: '0 0 18px rgba(0,242,254,0.15), inset 0 0 10px rgba(0,242,254,0.1)' }}>
+              <div className="w-10 h-10 rounded-lg border border-zinc-800 bg-black/40 flex items-center justify-center red mb-4">
                 <CertIcon kind={c.icon} />
               </div>
-              <h3 className="font-display text-xl uppercase tracking-wide text-white leading-snug">{c.title}</h3>
+              <h3 className="font-display text-base uppercase tracking-wide text-white leading-snug font-semibold">{c.title}</h3>
             </div>
-            <div className="flex items-center justify-between">
-              <span className="font-mono2 text-[10px] tracking-[0.25em] uppercase text-zinc-500">{c.issuer}</span>
-              <span className="font-mono2 text-[10px] tracking-[0.2em] red">{c.date}</span>
+            <div className="flex items-center justify-between border-t border-zinc-800/40 pt-3">
+              <span className="font-mono2 text-[9px] tracking-[0.2em] uppercase text-zinc-500">{c.issuer}</span>
+              <span className="font-mono2 text-[9px] tracking-[0.15em] red">{c.date}</span>
             </div>
           </div>
           {/* BACK */}
-          <div className="flip-face flip-back glass-red p-6 flex flex-col justify-between relative overflow-hidden" style={{ background: 'rgba(10,15,30,0.4)' }}>
+          <div className="flip-face flip-back glass-red p-5 flex flex-col justify-between relative overflow-hidden rounded-xl border border-zinc-800/80 bg-zinc-900/20" style={{ background: 'rgba(10,15,30,0.3)' }}>
             <div>
-              <div className="font-mono2 text-[10px] tracking-[0.35em] uppercase red mb-4">// credentials</div>
-              <p className="text-zinc-300 text-sm leading-relaxed">{c.back}</p>
+              <div className="font-mono2 text-[9px] tracking-[0.25em] uppercase red mb-2">// credentials</div>
+              <p className="text-zinc-300 text-xs leading-relaxed">{c.back}</p>
             </div>
-            <div className="flex items-end justify-between">
-              <span className="font-mono2 text-[10px] tracking-[0.2em] uppercase text-zinc-500">{c.issuer}</span>
-              <span className="stamp heartbeat">VERIFIED</span>
+            <div className="flex items-end justify-between border-t border-zinc-800/40 pt-3">
+              <span className="font-mono2 text-[9px] tracking-[0.15em] uppercase text-zinc-500">{c.issuer}</span>
+              <span className="stamp">VERIFIED</span>
             </div>
           </div>
         </div>
@@ -512,7 +463,7 @@ export function Skills() {
       ctx.lineWidth = 1;
       for (const [a, b] of EDGES) {
         const pa = pos(a), pb = pos(b);
-        ctx.strokeStyle = 'rgba(0,242,254,0.08)';
+        ctx.strokeStyle = 'rgba(0,242,254,0.06)';
         ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y); ctx.stroke();
       }
     };
@@ -524,54 +475,48 @@ export function Skills() {
       for (let e = 0; e < EDGES.length; e++) {
         const [a, b] = EDGES[e];
         const pa = pos(a), pb = pos(b);
-        const t = ((now / 1000) * (0.22 + (e % 5) * 0.05) + e * 0.37) % 1;
+        const t = ((now / 1000) * (0.2 + (e % 5) * 0.04) + e * 0.3) % 1;
         const px = pa.x + (pb.x - pa.x) * t;
         const py = pa.y + (pb.y - pa.y) * t;
-        ctx.fillStyle = 'rgba(168,85,247,0.7)';
-        ctx.beginPath(); ctx.arc(px, py, 1.6, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(168,85,247,0.5)';
+        ctx.beginPath(); ctx.arc(px, py, 1.2, 0, Math.PI * 2); ctx.fill();
       }
 
       ripplesRef.current = ripplesRef.current.filter((r) => now - r.t < 800);
       for (const r of ripplesRef.current) {
         const p = (now - r.t) / 800;
-        ctx.strokeStyle = `rgba(0,242,254,${0.5 * (1 - p)})`;
-        ctx.lineWidth = 1.5;
-        ctx.beginPath(); ctx.arc(r.x, r.y, 8 + p * 46, 0, Math.PI * 2); ctx.stroke();
+        ctx.strokeStyle = `rgba(0,242,254,${0.35 * (1 - p)})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.arc(r.x, r.y, 6 + p * 36, 0, Math.PI * 2); ctx.stroke();
       }
 
       if (hov >= 0) {
         for (const [a, b] of EDGES) {
           if (a !== hov && b !== hov) continue;
           const pa = pos(a), pb = pos(b);
-          ctx.strokeStyle = 'rgba(0,242,254,0.4)';
-          ctx.shadowColor = '#00f2fe'; ctx.shadowBlur = 8;
+          ctx.strokeStyle = 'rgba(0,242,254,0.3)';
           ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y); ctx.stroke();
-          ctx.shadowBlur = 0;
         }
       }
 
-      ctx.font = '11px JetBrains Mono, monospace';
+      ctx.font = '10px JetBrains Mono, monospace';
       ctx.textAlign = 'center';
       for (let i = 0; i < NODES.length; i++) {
         const p = pos(i);
         const isHov = i === hov;
         const isNeighbor = hov >= 0 && EDGES.some(([a, b]) => (a === hov && b === i) || (b === hov && a === i));
-        const r = isHov ? 7 : isNeighbor ? 5 : 3.5;
+        const r = isHov ? 5.5 : isNeighbor ? 4 : 3;
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
-        ctx.fillStyle = isHov ? '#00f2fe' : isNeighbor ? 'rgba(0,242,254,0.85)' : 'rgba(168,85,247,0.6)';
-        if (isHov) { ctx.shadowColor = '#00f2fe'; ctx.shadowBlur = 18; }
+        ctx.fillStyle = isHov ? '#00f2fe' : isNeighbor ? 'rgba(0,242,254,0.7)' : 'rgba(168,85,247,0.5)';
         ctx.fill();
-        ctx.shadowBlur = 0;
 
-        ctx.strokeStyle = 'rgba(0,242,254,0.2)';
-        ctx.beginPath(); ctx.arc(p.x, p.y, r + 4, 0, Math.PI * 2); ctx.stroke();
+        ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+        ctx.beginPath(); ctx.arc(p.x, p.y, r + 3, 0, Math.PI * 2); ctx.stroke();
 
-        ctx.fillStyle = isHov ? '#ffffff' : isNeighbor ? '#d8f8ff' : 'rgba(220,220,230,0.72)';
-        if (isHov) { ctx.shadowColor = '#00f2fe'; ctx.shadowBlur = 10; }
-        ctx.fillText(NODES[i].l, p.x, p.y + r + 16);
-        ctx.shadowBlur = 0;
+        ctx.fillStyle = isHov ? '#ffffff' : isNeighbor ? '#d2f8ff' : 'rgba(200,200,210,0.65)';
+        ctx.fillText(NODES[i].l, p.x, p.y + r + 13);
       }
     };
 
@@ -589,7 +534,7 @@ export function Skills() {
     const onMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
       const mx = e.clientX - rect.left, my = e.clientY - rect.top;
-      let best = -1, bd = 26 * 26;
+      let best = -1, bd = 24 * 24;
       for (let i = 0; i < NODES.length; i++) {
         const p = pos(i);
         const d = (p.x - mx) * (p.x - mx) + (p.y - my) * (p.y - my);
@@ -621,25 +566,25 @@ export function Skills() {
     <section id="skills" className="relative py-28 md:py-36 scroll-mt-20">
       <div className="max-w-7xl mx-auto px-6">
         <SectionHead
-          num="05"
+          num="04"
           eyebrow="armory"
           title={<>THE <SlashWord>ARSENAL</SlashWord></>}
-          sub="Interactive semantic network of technologies and core systems. Hover nodes to see structural weights."
+          sub="Interactive semantic network of technologies and frameworks. Hover nodes to view connection trails."
         />
         <Reveal>
-          <div ref={wrapRef} className="glass-red relative h-[440px] md:h-[540px] overflow-hidden mb-16" data-hover>
+          <div ref={wrapRef} className="glass-red relative h-[400px] md:h-[480px] overflow-hidden mb-16 rounded-2xl border border-zinc-800/80 bg-zinc-900/10" data-hover>
             <canvas ref={canvasRef} className="skill-canvas absolute inset-0" />
-            <div className="absolute bottom-4 left-5 font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-500 flex items-center gap-2">
-              <span className="rec-dot" /> 22 nodes // tracking nominal
+            <div className="absolute bottom-4 left-5 font-mono2 text-[9px] tracking-[0.25em] uppercase text-zinc-500 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#00f2fe] animate-pulse" /> 22 nodes // online
             </div>
           </div>
         </Reveal>
 
-        {/* Credentials subsection integrated directly here */}
-        <div className="mt-20">
-          <div className="font-mono2 text-[11px] md:text-xs tracking-[0.4em] uppercase red mb-8 flex items-center gap-3">
-            <span className="inline-block w-8 h-px bg-[#00f2fe]" />
-            {'//'} professional credentials
+        {/* Credentials subsection */}
+        <div className="mt-24">
+          <div className="font-mono2 text-[10px] md:text-[11px] tracking-[0.3em] uppercase red mb-6 flex items-center gap-3">
+            <span className="inline-block w-6 h-px bg-[#00f2fe]" />
+            {'//'} certifications
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {CERTS.map((c, idx) => (
