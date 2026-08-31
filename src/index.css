@@ -4,17 +4,17 @@
    HOSTILE SYSTEM — THEME
 ===================================================== */
 :root {
-  --void: #000000;
-  --blood: #8b0000;
-  --alert: #ff0000;
-  --toxic: #ff0033;
-  --ice: #ffffff;
-  --ash: #9d9daa;
-  --glass-bg: rgba(139, 0, 0, 0.08);
-  --glass-border: rgba(255, 0, 0, 0.2);
-  --font-display: 'Anton', Impact, 'Arial Narrow', sans-serif;
-  --font-body: 'Space Grotesk', 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'Courier New', monospace;
+  --void: #030408;       /* Deep navy-black base */
+  --blood: #0c1c28;      /* Deep teal-navy for shadow gradients */
+  --alert: #00f2fe;      /* Electric teal accent */
+  --toxic: #a855f7;      /* Electric violet accent */
+  --ice: #f8fafc;        /* Slate ice white */
+  --ash: #94a3b8;        /* Muted slate ash */
+  --glass-bg: rgba(10, 15, 30, 0.65); /* Glass base */
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
 * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
@@ -34,14 +34,14 @@ html, body {
   .cursor-fx { display: none !important; }
 }
 
-::selection { background: rgba(255, 0, 51, 0.45); color: #fff; }
+::selection { background: rgba(0, 242, 254, 0.35); color: #fff; }
 
 ::-webkit-scrollbar { width: 9px; }
-::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-track { background: #06070c; }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #8b0000, #ff0033);
-  border-radius: 0;
-  box-shadow: 0 0 10px rgba(255, 0, 51, 0.5);
+  background: linear-gradient(180deg, var(--alert), var(--toxic));
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
 }
 
 .font-display { font-family: var(--font-display); }
@@ -50,14 +50,19 @@ html, body {
 .dim { color: var(--ash); }
 
 /* =====================================================
-   GLASS — CRIMSON
+   GLASS — PREMIUM SLATE / TEAL
 ===================================================== */
 .glass-red {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  backdrop-filter: blur(20px) saturate(130%);
-  -webkit-backdrop-filter: blur(20px) saturate(130%);
-  box-shadow: 0 0 40px rgba(139, 0, 0, 0.22), inset 0 0 26px rgba(139, 0, 0, 0.10);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), inset 0 0 32px rgba(255, 255, 255, 0.02);
+  transition: border-color 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.glass-red:hover {
+  border-color: rgba(0, 242, 254, 0.35);
+  box-shadow: 0 8px 32px 0 rgba(0, 242, 254, 0.05), inset 0 0 32px rgba(255, 255, 255, 0.02), 0 0 15px rgba(0, 242, 254, 0.1);
 }
 
 /* =====================================================
@@ -66,22 +71,22 @@ html, body {
 .red-grid {
   position: fixed; inset: 0; z-index: 1; pointer-events: none;
   background-image:
-    linear-gradient(rgba(255, 0, 0, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 0, 0, 0.045) 1px, transparent 1px);
-  background-size: 44px 44px;
-  mask-image: radial-gradient(ellipse at center, black 35%, transparent 92%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black 35%, transparent 92%);
+    linear-gradient(rgba(0, 242, 254, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 242, 254, 0.015) 1px, transparent 1px);
+  background-size: 54px 54px;
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 90%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 90%);
 }
 
 .vignette {
   position: fixed; inset: 0; z-index: 35; pointer-events: none;
-  background: radial-gradient(ellipse at center, transparent 52%, rgba(0, 0, 0, 0.82) 100%);
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(3, 4, 8, 0.85) 100%);
 }
 
 .topo {
   background-image:
-    repeating-radial-gradient(circle at 18% 28%, rgba(255, 0, 0, 0.05) 0 1px, transparent 1px 64px),
-    repeating-radial-gradient(circle at 82% 72%, rgba(255, 0, 0, 0.04) 0 1px, transparent 1px 88px);
+    repeating-radial-gradient(circle at 18% 28%, rgba(0, 242, 254, 0.02) 0 1px, transparent 1px 64px),
+    repeating-radial-gradient(circle at 82% 72%, rgba(168, 85, 247, 0.015) 0 1px, transparent 1px 88px);
 }
 
 /* =====================================================
@@ -92,8 +97,8 @@ html, body {
   content: attr(data-text);
   position: absolute; inset: 0; opacity: 0; pointer-events: none;
 }
-.glitch::before { color: #ff0000; z-index: -1; animation: glitchA 3.4s infinite steps(1); }
-.glitch::after  { color: #00a2ff; z-index: -2; animation: glitchB 3.4s infinite steps(1); }
+.glitch::before { color: var(--alert); z-index: -1; animation: glitchA 3.4s infinite steps(1); }
+.glitch::after  { color: var(--toxic); z-index: -2; animation: glitchB 3.4s infinite steps(1); }
 
 @keyframes glitchA {
   0%, 90% { opacity: 0; transform: none; clip-path: inset(0); }
@@ -113,9 +118,9 @@ html, body {
 }
 @keyframes glitchSkew {
   0%, 90%, 100% { transform: none; text-shadow: none; }
-  92% { transform: skewX(5deg); text-shadow: -3px 0 #ff0000, 3px 0 #00e5ff; }
-  94% { transform: skewX(-4deg); text-shadow: 3px 0 #00ff88, -3px 0 #ff0033; }
-  96% { transform: skewX(2deg); text-shadow: -2px 0 #00a2ff, 2px 0 #ff0000; }
+  92% { transform: skewX(5deg); text-shadow: -3px 0 var(--alert), 3px 0 var(--toxic); }
+  94% { transform: skewX(-4deg); text-shadow: 3px 0 var(--alert), -3px 0 var(--toxic); }
+  96% { transform: skewX(2deg); text-shadow: -2px 0 var(--alert), 2px 0 var(--toxic); }
 }
 .violent { animation: glitchSkew 0.28s infinite; }
 
@@ -124,7 +129,7 @@ html, body {
 ===================================================== */
 .scanline-sweep {
   position: absolute; left: 0; right: 0; height: 140px; top: -18%;
-  background: linear-gradient(to bottom, transparent, rgba(255, 0, 51, 0.10), rgba(255, 0, 0, 0.32), transparent);
+  background: linear-gradient(to bottom, transparent, rgba(0, 242, 254, 0.05), rgba(168, 85, 247, 0.15), transparent);
   filter: blur(1px);
   animation: sweep 6.5s linear infinite;
   pointer-events: none;
@@ -134,11 +139,11 @@ html, body {
 .crt { position: relative; border-radius: 22px; }
 .crt::before {
   content: ''; position: absolute; inset: 0; border-radius: inherit; z-index: 5; pointer-events: none;
-  background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.028) 0 1px, transparent 1px 3px);
+  background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 0 1px, transparent 1px 3px);
 }
 .crt::after {
   content: ''; position: absolute; inset: 0; border-radius: inherit; z-index: 6; pointer-events: none;
-  box-shadow: inset 0 0 130px rgba(0, 0, 0, 0.92), inset 0 0 44px rgba(139, 0, 0, 0.28);
+  box-shadow: inset 0 0 130px rgba(0, 0, 0, 0.95), inset 0 0 44px rgba(168, 85, 247, 0.15);
 }
 .crt-flicker { animation: crtFlicker 5s infinite; }
 @keyframes crtFlicker {
@@ -154,28 +159,28 @@ html, body {
 @keyframes hardBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 
 /* =====================================================
-   EKG HEARTBEAT
+   EKG HEARTBEAT (NEURAL IMPULSE)
 ===================================================== */
 .ekg-pulse {
   stroke-dasharray: 70 930;
   animation: ekgRun 2.3s linear infinite;
-  filter: drop-shadow(0 0 6px rgba(255, 0, 51, 0.95));
+  filter: drop-shadow(0 0 6px var(--alert));
 }
 @keyframes ekgRun { 0% { stroke-dashoffset: 1000; } 100% { stroke-dashoffset: 0; } }
 
 .pulse-line { animation: heartbeatGlow 1.25s ease-in-out infinite; }
 @keyframes heartbeatGlow {
-  0%, 100% { opacity: .45; box-shadow: 0 0 8px rgba(255, 0, 51, 0.35); }
-  12% { opacity: 1; box-shadow: 0 0 26px rgba(255, 0, 51, 0.95); }
+  0%, 100% { opacity: .45; box-shadow: 0 0 8px rgba(0, 242, 254, 0.25); }
+  12% { opacity: 1; box-shadow: 0 0 26px rgba(0, 242, 254, 0.85); }
   24% { opacity: .55; }
-  36% { opacity: 1; box-shadow: 0 0 30px rgba(255, 0, 51, 1); }
+  36% { opacity: 1; box-shadow: 0 0 30px rgba(168, 85, 247, 0.8); }
   48% { opacity: .5; }
 }
 
 /* =====================================================
    NAV FLICKER / LOGO / REC DOT
 ===================================================== */
-.flicker-hover:hover { animation: neonFlicker 0.5s linear; color: var(--alert) !important; text-shadow: 0 0 10px rgba(255, 0, 0, 0.9); }
+.flicker-hover:hover { animation: neonFlicker 0.5s linear; color: var(--alert) !important; text-shadow: 0 0 10px rgba(0, 242, 254, 0.8); }
 @keyframes neonFlicker {
   0% { opacity: 1; } 8% { opacity: .15; } 16% { opacity: 1; }
   28% { opacity: .35; } 36% { opacity: 1; } 54% { opacity: .6; }
@@ -186,7 +191,7 @@ html, body {
 .logo-ul::after {
   content: ''; position: absolute; left: 0; right: 0; bottom: -3px; height: 2px;
   background: linear-gradient(90deg, var(--blood), var(--toxic));
-  box-shadow: 0 0 10px rgba(255, 0, 51, 0.8);
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.8);
   transform: scaleX(0); transform-origin: left; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .logo-ul:hover::after { transform: scaleX(1); }
@@ -194,7 +199,7 @@ html, body {
 .rec-dot { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--alert); box-shadow: 0 0 12px var(--alert); flex-shrink: 0; }
 .rec-dot::after {
   content: ''; position: absolute; inset: -4px; border-radius: 50%;
-  border: 1px solid rgba(255, 0, 51, 0.75);
+  border: 1px solid rgba(0, 242, 254, 0.75);
   animation: pingRing 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 @keyframes pingRing { 0% { transform: scale(0.55); opacity: 1; } 100% { transform: scale(1.9); opacity: 0; } }
@@ -205,18 +210,18 @@ html, body {
 .slash { position: relative; white-space: nowrap; font-style: normal; }
 .slash::after {
   content: ''; position: absolute; left: -3%; right: -3%; bottom: 6%; height: 4px;
-  background: var(--alert); box-shadow: 0 0 14px rgba(255, 0, 51, 0.9);
+  background: var(--alert); box-shadow: 0 0 14px rgba(0, 242, 254, 0.8);
   transform: scaleX(0) skewX(-24deg); transform-origin: center;
 }
 .slash.on::after { transform: scaleX(1) skewX(-24deg); transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s; }
 
 /* =====================================================
-   VOID BUTTON — red flood from below
+   VOID BUTTON — teal flood from below
 ===================================================== */
 .btn-void {
   position: relative; overflow: hidden;
-  background: #000; border: 1px solid rgba(255, 0, 51, 0.55); color: #fff;
-  box-shadow: 0 0 20px rgba(255, 0, 0, 0.14), inset 0 0 14px rgba(139, 0, 0, 0.16);
+  background: #000; border: 1px solid rgba(0, 242, 254, 0.45); color: #fff;
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.1), inset 0 0 14px rgba(0, 242, 254, 0.05);
   transition: box-shadow 0.3s, border-color 0.3s;
 }
 .btn-void::before {
@@ -225,7 +230,7 @@ html, body {
   transform: translateY(102%); transition: transform 0.38s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .btn-void:hover::before { transform: translateY(0); }
-.btn-void:hover { box-shadow: 0 0 34px rgba(255, 0, 51, 0.55); border-color: var(--alert); }
+.btn-void:hover { box-shadow: 0 0 34px rgba(0, 242, 254, 0.4); border-color: var(--alert); }
 .btn-void:active { transform: scale(0.97); }
 .btn-void > * { position: relative; z-index: 1; }
 
@@ -236,7 +241,7 @@ html, body {
 .trace-beam {
   position: absolute; top: 50%; left: 50%; width: 160%; aspect-ratio: 1;
   transform: translate(-50%, -50%);
-  background: conic-gradient(from 0deg, transparent 0deg, transparent 292deg, rgba(255, 0, 51, 0) 316deg, rgba(255, 0, 51, 0.85) 342deg, #ffd9d9 354deg, transparent 360deg);
+  background: conic-gradient(from 0deg, transparent 0deg, transparent 292deg, rgba(0, 242, 254, 0) 316deg, rgba(0, 242, 254, 0.85) 342deg, #dcfcff 354deg, transparent 360deg);
   opacity: 0; transition: opacity 0.35s;
   animation: beamSpin 2.6s linear infinite;
   pointer-events: none;
@@ -246,30 +251,30 @@ html, body {
 
 .spot {
   position: absolute; inset: 0; border-radius: inherit; opacity: 0; transition: opacity 0.45s;
-  background: radial-gradient(62% 46% at 50% 0%, rgba(255, 0, 51, 0.26), transparent 72%);
+  background: radial-gradient(62% 46% at 50% 0%, rgba(0, 242, 254, 0.2), transparent 72%);
   pointer-events: none;
 }
 .proj-card { transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.45s; }
 .trace-wrap:hover .proj-card {
-  transform: translateY(-10px) translateZ(30px);
-  box-shadow: 0 34px 70px -18px rgba(139, 0, 0, 0.65), 0 0 44px rgba(255, 0, 51, 0.18);
+  transform: translateY(-8px) translateZ(25px);
+  box-shadow: 0 24px 50px -15px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 242, 254, 0.15);
 }
 .trace-wrap:hover .spot { opacity: 1; }
 
 /* =====================================================
-   RED PILLS / TAGS
+   TEAL PILLS / TAGS
 ===================================================== */
 .tag-red {
   position: relative; overflow: hidden;
-  background: rgba(139, 0, 0, 0.28); border: 1px solid rgba(255, 0, 51, 0.4); color: #ffb4b4;
+  background: rgba(6, 182, 212, 0.08); border: 1px solid rgba(6, 182, 212, 0.25); color: #e2e8f0;
   transition: color 0.25s, border-color 0.25s, box-shadow 0.25s;
 }
 .tag-red::before {
   content: ''; position: absolute; inset: 0;
-  background: linear-gradient(110deg, transparent 32%, rgba(255, 90, 90, 0.55) 50%, transparent 68%);
+  background: linear-gradient(110deg, transparent 32%, rgba(0, 242, 254, 0.35) 50%, transparent 68%);
   transform: translateX(-130%); transition: transform 0.7s ease;
 }
-.tag-red:hover { color: #fff; border-color: var(--alert); box-shadow: 0 0 16px rgba(255, 0, 51, 0.4); }
+.tag-red:hover { color: #fff; border-color: var(--alert); box-shadow: 0 0 16px rgba(0, 242, 254, 0.25); }
 .tag-red:hover::before { transform: translateX(130%); }
 
 /* =====================================================
@@ -277,7 +282,7 @@ html, body {
 ===================================================== */
 .counter-flash {
   color: #fff !important;
-  text-shadow: 0 0 18px var(--alert), 0 0 44px rgba(255, 0, 51, 0.65);
+  text-shadow: 0 0 18px var(--alert), 0 0 44px rgba(0, 242, 254, 0.45);
   animation: cflash 0.45s ease-out;
 }
 @keyframes cflash { 0% { transform: scale(1.28); } 100% { transform: scale(1); } }
@@ -287,25 +292,25 @@ html, body {
 ===================================================== */
 .redact {
   background: #000; color: transparent; padding: 0 0.22em; cursor: help;
-  box-shadow: inset 0 0 0 1px rgba(255, 0, 0, 0.3);
+  box-shadow: inset 0 0 0 1px rgba(168, 85, 247, 0.3);
   transition: color 0.25s, background 0.25s, text-shadow 0.25s;
 }
 .redact:hover {
-  background: rgba(139, 0, 0, 0.3); color: #ffdada;
-  text-shadow: 0 0 14px rgba(255, 0, 51, 0.85);
+  background: rgba(168, 85, 247, 0.2); color: #f3e8ff;
+  text-shadow: 0 0 14px rgba(168, 85, 247, 0.85);
 }
 
 .classified-stamp {
   border: 3px solid currentColor; padding: 6px 26px; letter-spacing: 0.4em;
-  text-shadow: 0 0 22px rgba(255, 0, 0, 0.6);
-  box-shadow: inset 0 0 18px rgba(255, 0, 0, 0.25), 0 0 24px rgba(255, 0, 0, 0.2);
+  text-shadow: 0 0 22px rgba(168, 85, 247, 0.4);
+  box-shadow: inset 0 0 18px rgba(168, 85, 247, 0.15), 0 0 24px rgba(168, 85, 247, 0.15);
 }
 
 .grow-border { position: relative; }
 .grow-border::before {
   content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
   background: linear-gradient(to top, var(--blood), var(--alert));
-  box-shadow: 0 0 12px rgba(255, 0, 51, 0.65);
+  box-shadow: 0 0 12px rgba(0, 242, 254, 0.55);
   transform: scaleY(0); transform-origin: bottom;
   transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s;
 }
@@ -316,17 +321,17 @@ html, body {
 ===================================================== */
 .holo {
   position: absolute; inset: 0; border-radius: inherit; opacity: 0; transition: opacity 0.4s;
-  background: linear-gradient(115deg, transparent 18%, rgba(255, 0, 51, 0.38) 34%, rgba(255, 120, 0, 0.30) 43%, rgba(255, 0, 200, 0.30) 52%, rgba(255, 40, 80, 0.38) 62%, transparent 82%);
+  background: linear-gradient(115deg, transparent 18%, rgba(0, 242, 254, 0.25) 34%, rgba(168, 85, 247, 0.25) 52%, rgba(0, 242, 254, 0.25) 62%, transparent 82%);
   background-size: 260% 260%; mix-blend-mode: screen; pointer-events: none;
 }
 .holo-on:hover .holo { opacity: 1; animation: holoShift 1.5s linear infinite; }
 @keyframes holoShift { 0% { background-position: 0% 0%; } 100% { background-position: 220% 220%; } }
 
 .stamp {
-  display: inline-block; border: 2px solid var(--alert); color: var(--alert);
+  display: inline-block; border: 2px solid var(--toxic); color: var(--toxic);
   padding: 3px 12px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.34em;
   transform: rotate(-11deg);
-  box-shadow: 0 0 16px rgba(255, 0, 51, 0.45), inset 0 0 10px rgba(255, 0, 51, 0.28);
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.3), inset 0 0 10px rgba(168, 85, 247, 0.18);
 }
 .heartbeat { animation: hbeat 1.4s ease-in-out infinite; }
 @keyframes hbeat {
@@ -347,12 +352,12 @@ html, body {
 /* =====================================================
    TIMELINE
 ===================================================== */
-.tl-dot { position: relative; width: 18px; height: 18px; border-radius: 50%; background: #000; border: 2px solid var(--alert); box-shadow: 0 0 14px rgba(255, 0, 51, 0.8); }
+.tl-dot { position: relative; width: 18px; height: 18px; border-radius: 50%; background: #000; border: 2px solid var(--alert); box-shadow: 0 0 14px rgba(0, 242, 254, 0.6); }
 .tl-dot::before { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: var(--alert); box-shadow: 0 0 10px var(--alert); animation: dotPulse 1.8s ease-in-out infinite; }
 @keyframes dotPulse { 0%, 100% { transform: scale(0.8); opacity: 0.85; } 50% { transform: scale(1.15); opacity: 1; } }
 
 .sweep-hl {
-  background-image: linear-gradient(rgba(255, 0, 51, 0.4), rgba(255, 0, 51, 0.4));
+  background-image: linear-gradient(rgba(0, 242, 254, 0.2), rgba(0, 242, 254, 0.2));
   background-repeat: no-repeat; background-size: 0% 42%; background-position: 0 62%;
   transition: background-size 0.5s ease; padding: 0 2px;
 }
@@ -364,9 +369,9 @@ html, body {
 .cube { position: absolute; transform-style: preserve-3d; animation: cubeSpin 16s linear infinite; }
 .cube-face {
   position: absolute; inset: 0;
-  border: 1px solid rgba(255, 0, 51, 0.55);
-  background: rgba(139, 0, 0, 0.07);
-  box-shadow: inset 0 0 14px rgba(255, 0, 0, 0.18);
+  border: 1px solid rgba(0, 242, 254, 0.35);
+  background: rgba(10, 15, 30, 0.2);
+  box-shadow: inset 0 0 14px rgba(0, 242, 254, 0.08);
 }
 @keyframes cubeSpin { from { transform: rotateX(0) rotateY(0); } to { transform: rotateX(360deg) rotateY(360deg); } }
 
@@ -375,21 +380,21 @@ html, body {
 ===================================================== */
 .radar-sweep {
   position: absolute; inset: 0; border-radius: 50%;
-  background: conic-gradient(from 0deg, rgba(255, 0, 51, 0) 0deg, rgba(255, 0, 51, 0.30) 42deg, rgba(255, 0, 0, 0) 64deg);
+  background: conic-gradient(from 0deg, rgba(0, 242, 254, 0) 0deg, rgba(0, 242, 254, 0.20) 42deg, rgba(0, 242, 254, 0) 64deg);
   animation: spin360 4.2s linear infinite;
 }
 @keyframes spin360 { to { transform: rotate(360deg); } }
 
 .blip { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: var(--alert); box-shadow: 0 0 12px var(--alert); }
-.blip::after { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 1px solid rgba(255, 0, 51, 0.8); animation: pingRing 2.2s ease-out infinite; }
+.blip::after { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 1px solid rgba(0, 242, 254, 0.8); animation: pingRing 2.2s ease-out infinite; }
 
-.ripple { position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(255, 0, 51, 0.55); animation: rip 2.4s ease-out infinite; pointer-events: none; }
+.ripple { position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(0, 242, 254, 0.4); animation: rip 2.4s ease-out infinite; pointer-events: none; }
 @keyframes rip { 0% { transform: scale(0.6); opacity: 0.9; } 100% { transform: scale(2.1); opacity: 0; } }
 
 .arc-hover { transition: color 0.2s; }
 .arc-hover:hover {
   color: #fff !important;
-  text-shadow: 0 0 7px rgba(255, 0, 51, 0.95), 0 0 20px rgba(255, 0, 51, 0.55);
+  text-shadow: 0 0 7px rgba(0, 242, 254, 0.95), 0 0 20px rgba(0, 242, 254, 0.55);
   animation: arcJitter 0.28s steps(2) infinite;
 }
 @keyframes arcJitter {
@@ -410,7 +415,7 @@ html, body {
 .preload-scan {
   position: absolute; left: 0; right: 0; top: -4%; height: 2px;
   background: var(--alert);
-  box-shadow: 0 0 30px 5px rgba(255, 0, 51, 0.85), 0 0 130px 34px rgba(139, 0, 0, 0.55);
+  box-shadow: 0 0 30px 5px rgba(0, 242, 254, 0.85), 0 0 130px 34px rgba(0, 242, 254, 0.35);
   animation: preScan 1.3s cubic-bezier(0.6, 0.05, 0.3, 1) forwards;
 }
 @keyframes preScan { to { top: 104%; } }

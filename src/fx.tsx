@@ -80,7 +80,7 @@ export function CursorFX() {
           key={i}
           ref={(el) => { trailRefs.current[i] = el; }}
           className="fixed top-0 left-0 w-[5px] h-[5px] rounded-full pointer-events-none z-[998]"
-          style={{ background: '#ff0033', boxShadow: '0 0 6px rgba(255,0,51,0.8)', opacity: 0 }}
+          style={{ background: '#00f2fe', boxShadow: '0 0 6px rgba(0,242,254,0.8)', opacity: 0 }}
         />
       ))}
       <div
@@ -89,15 +89,15 @@ export function CursorFX() {
         style={{
           width: hot ? 58 : 34,
           height: hot ? 58 : 34,
-          borderColor: 'rgba(255,0,51,0.85)',
-          backgroundColor: hot ? 'rgba(255,0,51,0.14)' : 'transparent',
-          boxShadow: '0 0 18px rgba(255,0,51,0.4), inset 0 0 12px rgba(255,0,51,0.25)',
+          borderColor: 'rgba(0,242,254,0.85)',
+          backgroundColor: hot ? 'rgba(0,242,254,0.14)' : 'transparent',
+          boxShadow: '0 0 18px rgba(0,242,254,0.4), inset 0 0 12px rgba(0,242,254,0.25)',
         }}
       />
       <div
         ref={dotRef}
         className="fixed top-0 left-0 w-[6px] h-[6px] rounded-full pointer-events-none z-[999]"
-        style={{ background: '#fff', boxShadow: '0 0 10px rgba(255,255,255,0.9), 0 0 16px rgba(255,0,51,0.8)' }}
+        style={{ background: '#fff', boxShadow: '0 0 10px rgba(255,255,255,0.9), 0 0 16px rgba(0,242,254,0.8)' }}
       />
     </div>
   );
@@ -180,7 +180,7 @@ export function AmbientBackground() {
     const drawStatic = () => {
       ctx.clearRect(0, 0, w, h);
       ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(255,0,0,0.055)';
+      ctx.strokeStyle = 'rgba(0,242,254,0.02)';
       for (const t of traces) {
         ctx.beginPath();
         ctx.moveTo(t.pts[0].x, t.pts[0].y);
@@ -208,14 +208,14 @@ export function AmbientBackground() {
       // circuit traces
       ctx.lineWidth = 1;
       for (const t of traces) {
-        ctx.strokeStyle = 'rgba(255,0,0,0.055)';
+        ctx.strokeStyle = 'rgba(0,242,254,0.02)';
         ctx.beginPath();
         ctx.moveTo(t.pts[0].x, t.pts[0].y);
         for (let i = 1; i < t.pts.length; i++) ctx.lineTo(t.pts[i].x, t.pts[i].y);
         ctx.stroke();
 
         // corner nodes
-        ctx.fillStyle = 'rgba(255,0,51,0.22)';
+        ctx.fillStyle = 'rgba(0,242,254,0.1)';
         for (const p of t.pts) ctx.fillRect(p.x - 1.5, p.y - 1.5, 3, 3);
 
         // traveling electric pulse
@@ -223,15 +223,15 @@ export function AmbientBackground() {
         const p1 = pointAt(t, d);
         const p2 = pointAt(t, d - 26);
         const grad = ctx.createLinearGradient(p2.x, p2.y, p1.x, p1.y);
-        grad.addColorStop(0, 'rgba(255,0,51,0)');
-        grad.addColorStop(1, 'rgba(255,0,51,0.75)');
+        grad.addColorStop(0, 'rgba(168,85,247,0)');
+        grad.addColorStop(1, 'rgba(0,242,254,0.75)');
         ctx.strokeStyle = grad;
         ctx.lineWidth = 1.4;
         ctx.beginPath();
         ctx.moveTo(p2.x, p2.y);
         ctx.lineTo(p1.x, p1.y);
         ctx.stroke();
-        ctx.fillStyle = 'rgba(255,80,80,0.9)';
+        ctx.fillStyle = 'rgba(0,242,254,0.9)';
         ctx.fillRect(p1.x - 1.5, p1.y - 1.5, 3, 3);
       }
 
@@ -244,7 +244,7 @@ export function AmbientBackground() {
           const yy = col.y - k * 16;
           if (yy < -16 || yy > h + 16) continue;
           const alpha = (1 - k / col.chars.length) * 0.30;
-          ctx.fillStyle = k === 0 ? `rgba(255,0,51,${alpha + 0.12})` : `rgba(139,0,0,${alpha})`;
+          ctx.fillStyle = k === 0 ? `rgba(0,242,254,${alpha + 0.12})` : `rgba(168,85,247,${alpha})`;
           ctx.fillText(col.chars[k], col.x, yy);
         }
       }
@@ -280,8 +280,8 @@ export function ScrollProgress() {
       className="fixed top-0 left-0 right-0 h-[2px] z-[80] origin-left"
       style={{
         scaleX: scrollYProgress,
-        background: 'linear-gradient(90deg, #8b0000, #ff0033, #ff0000)',
-        boxShadow: '0 0 14px rgba(255,0,51,0.9)',
+        background: 'linear-gradient(90deg, #a855f7, #00f2fe)',
+        boxShadow: '0 0 14px rgba(0, 242, 254, 0.9)',
       }}
     />
   );
@@ -303,13 +303,13 @@ export function Preloader({ onReveal, onDone }: { onReveal: () => void; onDone: 
     <AnimateUp stage={stage}>
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-5">
         <div className="font-mono2 text-[11px] tracking-[0.5em] red uppercase animate-pulse">
-          Loading hostile interface
+          Initializing Portfolio Core
         </div>
         <div className="font-display text-3xl md:text-4xl tracking-widest text-white">
-          SARVAJITH<span className="red">.SYS</span>
+          SARVAJITH<span className="red">.IO</span>
         </div>
         <div className="font-mono2 text-[10px] tracking-[0.3em] text-zinc-600 uppercase">
-          // do not look away
+          // systems online
         </div>
       </div>
       {stage === 0 && <div className="preload-scan" />}
@@ -397,8 +397,8 @@ export function SectionHead({
         aria-hidden
         className="font-display absolute -top-14 md:-top-20 text-[7rem] md:text-[11rem] leading-none select-none pointer-events-none"
         style={{
-          color: 'rgba(255,0,0,0.07)',
-          textShadow: '0 0 60px rgba(139,0,0,0.35)',
+          color: 'rgba(0,242,254,0.04)',
+          textShadow: '0 0 60px rgba(0,242,254,0.15)',
           ...(align === 'center' ? { left: '50%', transform: 'translateX(-50%)' } : { right: 0 }),
         }}
       >
@@ -406,9 +406,9 @@ export function SectionHead({
       </span>
       <Reveal>
         <div className={`font-mono2 text-[11px] md:text-xs tracking-[0.4em] uppercase red mb-4 flex items-center gap-3 ${align === 'center' ? 'justify-center' : ''}`}>
-          <span className="inline-block w-8 h-px bg-gradient-to-r from-transparent to-[#ff0033]" />
+          <span className="inline-block w-8 h-px bg-gradient-to-r from-transparent to-[#00f2fe]" />
           {'//'} {eyebrow}
-          <span className="inline-block w-8 h-px bg-gradient-to-l from-transparent to-[#ff0033]" />
+          <span className="inline-block w-8 h-px bg-gradient-to-l from-transparent to-[#a855f7]" />
         </div>
         <h2 className="font-display text-4xl md:text-6xl uppercase tracking-wide text-white leading-[1.05]">
           {title}

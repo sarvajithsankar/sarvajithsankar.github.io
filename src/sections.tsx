@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { Reveal, SectionHead, SlashWord, usePRM } from './fx';
 
 /* =========================================================
-   ABOUT — classified document
-========================================================= */
+   ABOUT — premium recruiter-ready profile dossier
+ ========================================================= */
 function Redact({ children }: { children: React.ReactNode }) {
   return <span className="redact">{children}</span>;
 }
@@ -13,9 +13,9 @@ function GrowItem({ label, sub }: { label: string; sub: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
   return (
-    <div ref={ref} className={`grow-border ${inView ? 'grown' : ''} pl-4 py-3 bg-black/40 border border-[rgba(255,0,0,0.12)]`}>
+    <div ref={ref} className={`grow-border ${inView ? 'grown' : ''} pl-4 py-3 bg-black/40 border border-[rgba(0,242,254,0.12)]`}>
       <div className="text-sm text-white font-semibold">{label}</div>
-      <div className="font-mono2 text-[10px] tracking-[0.2em] uppercase text-zinc-500 mt-1">{sub}</div>
+      <div className="font-mono2 text-[10px] tracking-[0.2em] uppercase text-zinc-400 mt-1">{sub}</div>
     </div>
   );
 }
@@ -25,16 +25,16 @@ function HexAvatar() {
     <div className="relative w-36 h-36 mx-auto">
       <div className="absolute inset-0" style={{ animation: 'spin360 26s linear infinite' }}>
         <svg viewBox="0 0 100 100" className="w-full h-full">
-          <polygon points="50,3 91,26.5 91,73.5 50,97 9,73.5 9,26.5" fill="none" stroke="rgba(255,0,51,0.7)" strokeWidth="1.6" style={{ filter: 'drop-shadow(0 0 6px rgba(255,0,51,0.7))' }} />
+          <polygon points="50,3 91,26.5 91,73.5 50,97 9,73.5 9,26.5" fill="none" stroke="rgba(0,242,254,0.7)" strokeWidth="1.6" style={{ filter: 'drop-shadow(0 0 6px rgba(0,242,254,0.7))' }} />
         </svg>
       </div>
       <div className="absolute inset-[10%]" style={{ animation: 'spin360 40s linear infinite reverse' }}>
         <svg viewBox="0 0 100 100" className="w-full h-full">
-          <polygon points="50,3 91,26.5 91,73.5 50,97 9,73.5 9,26.5" fill="rgba(139,0,0,0.15)" stroke="rgba(255,0,51,0.35)" strokeWidth="1" strokeDasharray="4 3" />
+          <polygon points="50,3 91,26.5 91,73.5 50,97 9,73.5 9,26.5" fill="rgba(10,15,30,0.15)" stroke="rgba(168,85,247,0.35)" strokeWidth="1" strokeDasharray="4 3" />
         </svg>
       </div>
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="font-display text-4xl red" style={{ textShadow: '0 0 20px rgba(255,0,51,0.8)' }}>SS</span>
+        <span className="font-display text-4xl red" style={{ textShadow: '0 0 20px rgba(0,242,254,0.8)' }}>SS</span>
       </div>
     </div>
   );
@@ -48,13 +48,12 @@ export function About() {
           num="01"
           eyebrow="dossier"
           title={<>THE <SlashWord>OPERATOR</SlashWord></>}
-          sub="Declassified on scroll. Hover the redacted bars — if you dare."
+          sub="CS sophomore building autonomous AI systems, neural retrieval architectures, and defense mechanisms for LLMs."
         />
 
         <div className="grid lg:grid-cols-5 gap-6">
           <Reveal className="lg:col-span-3">
             <div className="glass-red p-8 md:p-10 h-full relative overflow-hidden">
-              {/* classified watermark */}
               <motion.div
                 initial={{ opacity: 0.45, rotate: -16, scale: 1.15 }}
                 whileInView={{ opacity: 0.08, rotate: -18, scale: 1 }}
@@ -62,33 +61,26 @@ export function About() {
                 transition={{ duration: 1.6, ease: 'easeOut' }}
                 className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
               >
-                <span className="classified-stamp font-display text-5xl md:text-7xl red uppercase">Classified</span>
+                <span className="classified-stamp font-display text-5xl md:text-7xl red uppercase">VERIFIED</span>
               </motion.div>
 
               <div className="relative">
                 <div className="flex items-center justify-between mb-6">
-                  <span className="font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-500">FILE #SS-2029 // PERSONNEL DOSSIER</span>
-                  <span className="font-mono2 text-[10px] tracking-[0.2em] uppercase red">TOP SECRET</span>
+                  <span className="font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-400">FILE #SS-2029 // PROFILE OVERVIEW</span>
+                  <span className="font-mono2 text-[10px] tracking-[0.2em] uppercase red">LEVEL-5 CLEARANCE</span>
                 </div>
 
                 <p className="text-zinc-200 text-lg md:text-xl leading-relaxed">
-                  I'm a <span className="text-white font-semibold">second-year student</span> pursuing B.Tech in
-                  Computer Science Engineering at <span className="text-white">VIT Vellore</span> while
-                  simultaneously enrolled in a <span className="text-white">B.S. in Data Science at IIT Madras</span>.
+                  Pursuing a dual degree path: B.Tech in <span className="text-white font-semibold">Computer Engineering at VIT Vellore</span> and B.S. in <span className="text-white font-semibold">Data Science at IIT Madras</span> (2025-2029, current CGPA ~8.2). 
                 </p>
                 <p className="dim mt-5 leading-relaxed">
-                  I build real systems — not tutorial clones. My work includes an{' '}
-                  <Redact>autonomous AI research agent</Redact> at Maveric Systems, a{' '}
-                  <Redact>SIEM prototype in C++17</Redact>, a{' '}
-                  <Redact>phishing URL detection ML system</Redact>, and a Gemini-powered AI campus
-                  assistant. My trajectory points toward{' '}
-                  <Redact>cloud-native cybersecurity</Redact>.
+                  I bypass tutorial clones to architect and deploy production systems. My experience spans building <Redact>autonomous multi-agent research architectures</Redact> at Maveric Systems, deploying <Redact>defensive security middleware for LLMs</Redact>, and developing <Redact>semantic schema-matching algorithms</Redact> for federated databases. I focus on building secure, robust, and scalable AI infrastructure.
                 </p>
 
                 <div className="mt-9 grid sm:grid-cols-3 gap-3">
-                  <GrowItem label="VIT Vellore" sub="B.Tech CSE" />
+                  <GrowItem label="VIT Vellore" sub="B.Tech Computer Eng." />
                   <GrowItem label="IIT Madras" sub="B.S. Data Science" />
-                  <GrowItem label="Maveric Systems" sub="EX — AI Eng. Intern" />
+                  <GrowItem label="Maveric Systems" sub="AI Eng. Intern" />
                 </div>
               </div>
             </div>
@@ -96,22 +88,21 @@ export function About() {
 
           <Reveal delay={0.12} className="lg:col-span-2">
             <div className="glass-red p-8 h-full flex flex-col relative overflow-hidden">
-              <div className="absolute -bottom-16 -right-16 w-56 h-56 rounded-full blur-3xl" style={{ background: 'rgba(139,0,0,0.4)' }} />
+              <div className="absolute -bottom-16 -right-16 w-56 h-56 rounded-full blur-3xl" style={{ background: 'rgba(168,85,247,0.15)' }} />
               <HexAvatar />
               <div className="mt-6 flex items-center justify-center gap-2 font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-500">
                 <span className="rec-dot" /> subject: sankar, s.
               </div>
 
               <blockquote className="mt-6 text-lg md:text-xl font-light leading-relaxed text-zinc-200 flex-1">
-                "Depth over breadth. I'd rather master three domains at the level where I can{' '}
-                <span className="red font-medium">ship production systems</span>, than dabble in thirty."
+                "Depth over breadth. I design and implement <span className="red font-medium">production AI and systems software</span> where reliability and security are primary objectives."
               </blockquote>
 
-              <div className="mt-6 pt-5 border-t border-[rgba(255,0,0,0.15)] grid grid-cols-2 gap-3 font-mono2 text-[10px] tracking-[0.18em] uppercase">
-                <div><span className="text-zinc-600">threat model:</span> <span className="text-zinc-300">chaos</span></div>
-                <div><span className="text-zinc-600">alignment:</span> <span className="red">systems</span></div>
-                <div><span className="text-zinc-600">status:</span> <span className="text-zinc-300">second-year</span></div>
-                <div><span className="text-zinc-600">danger lvl:</span> <span className="red">rising</span></div>
+              <div className="mt-6 pt-5 border-t border-[rgba(0,242,254,0.15)] grid grid-cols-2 gap-3 font-mono2 text-[10px] tracking-[0.18em] uppercase">
+                <div><span className="text-zinc-500">Focus:</span> <span className="text-zinc-300">AI / Systems</span></div>
+                <div><span className="text-zinc-500">Alignment:</span> <span className="red">Neural Systems</span></div>
+                <div><span className="text-zinc-500">Status:</span> <span className="text-zinc-300">High Agency</span></div>
+                <div><span className="text-zinc-500">GPA:</span> <span className="red">~8.2 CGPA</span></div>
               </div>
             </div>
           </Reveal>
@@ -122,32 +113,156 @@ export function About() {
 }
 
 /* =========================================================
-   PROJECTS — trace-beam cards with spotlights
-========================================================= */
+   EXPERIENCE — self-drawing timeline
+ ========================================================= */
+const EXPERIENCE = [
+  {
+    role: 'AI Engineering Intern', org: 'Maveric Systems Limited', loc: 'Chennai',
+    date: 'Jun 2026 – Present', points: [
+      'Architected and deployed an autonomous AI research agent using multi-source retrieval (RAG) and LLM orchestration.',
+      'Designed custom context-aware agentic workflows to automate deep business and academic research, optimizing token usage.'
+    ],
+  },
+  {
+    role: 'Open Source Contributor', org: 'SSoC Season 5', loc: 'GitHub',
+    date: 'May 2026 – Present', points: [
+      'Built TENET-AI, a defensive security middleware for Large Language Models to shield APIs from prompt injection and jailbreaks.',
+      'Implemented real-time semantic validation checkers and token-level input sanitizers to guard agentic execution pipelines.'
+    ],
+  },
+  {
+    role: 'Web Development Intern', org: 'InAmigos Foundation', loc: 'Remote',
+    date: 'Dec 2025 – Feb 2026', points: [
+      'Engineered and optimized highly responsive user interfaces, improving asset delivery speeds and overall rendering performance.',
+      'Refactored legacy UI components into modular, reusable components using modern ES6+ Javascript standards.'
+    ],
+  },
+  {
+    role: 'Junior Core Member (ML Focus)', org: 'IEEE Computer Society VIT', loc: 'VIT Vellore',
+    date: 'Jan 2026 – Present', points: [
+      'Conducting technical workshops on neural network architectures, predictive modeling, and machine learning pipeline designs.',
+      'Collaborated on ML prediction engines, including telecom customer churn predictive analytics.'
+    ],
+  },
+  {
+    role: 'Core Member & Vice President', org: 'Rotaract Club VIT / GDG / OWASP', loc: 'VIT Vellore',
+    date: 'Jan 2026 – Present', points: [
+      'Coordinating developer meetups, capture-the-flag (CTF) cybersecurity competitions, and technical publicity campaigns.',
+      'Active leadership in community-driven dev events, including graVITas Publicity & Marketing Core operations.'
+    ],
+  },
+];
+
+export function Experience() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: trackRef, offset: ['start 0.78', 'end 0.55'] });
+  const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+  return (
+    <section id="experience" className="relative py-28 md:py-36 scroll-mt-20 topo">
+      <div className="max-w-6xl mx-auto px-6">
+        <SectionHead
+          num="02"
+          eyebrow="rap sheet"
+          title={<>CHRONICLE OF <SlashWord>OPERATIONS</SlashWord></>}
+          sub="Where I've engineered solutions. The line draws itself on scroll."
+        />
+
+        <div ref={trackRef} className="relative">
+          <div className="absolute left-[9px] md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-px" style={{ background: 'rgba(0,242,254,0.25)', boxShadow: '0 0 14px rgba(0,242,254,0.3)' }} />
+          <motion.div
+            className="absolute left-[9px] md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-[2px] origin-top"
+            style={{
+              scaleY,
+              background: 'linear-gradient(180deg, #a855f7, #00f2fe, #00f2fe)',
+              boxShadow: '0 0 18px rgba(0,242,254,0.7)',
+            }}
+          />
+
+          <div className="space-y-12 md:space-y-16">
+            {EXPERIENCE.map((e, idx) => {
+              const leftSide = idx % 2 === 0;
+              return (
+                <div key={idx} className="relative md:flex md:items-center">
+                  <motion.span
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: [0, 1.5, 1] }}
+                    viewport={{ once: true, margin: '-60px' }}
+                    transition={{ duration: 0.6, ease: 'easeOut' }}
+                    className="tl-dot absolute left-0 md:left-1/2 md:-translate-x-1/2 top-1 md:top-1/2 md:-translate-y-1/2"
+                  />
+                  <motion.div
+                    initial={{ opacity: 0, x: leftSide ? -80 : 80 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: '-60px' }}
+                    transition={{ duration: 0.75, ease: [0.2, 0.8, 0.2, 1] }}
+                    className={`ml-10 md:ml-0 md:w-[calc(50%-44px)] ${leftSide ? 'md:mr-auto md:text-right' : 'md:ml-auto'}`}
+                  >
+                    <div className={`glass-red p-6 md:p-7 hover:border-[rgba(0,242,254,0.45)] transition-colors ${leftSide ? 'md:[direction:rtl]' : ''}`}>
+                      <div className="[direction:ltr]">
+                        <div className={`flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-2 ${leftSide ? 'md:justify-end' : ''}`}>
+                          <h3 className="font-display text-xl md:text-2xl uppercase tracking-wide text-white">{e.role}</h3>
+                          <span className="font-mono2 text-[10px] tracking-[0.2em] red whitespace-nowrap">{e.date}</span>
+                        </div>
+                        <div className={`text-sm mb-4 ${leftSide ? 'md:text-right' : ''}`}>
+                          <span className="sweep-hl text-white font-medium inline-block">{e.org}</span>
+                          <span className="dim"> · {e.loc}</span>
+                        </div>
+                        <ul className={`space-y-1.5 ${leftSide ? 'md:[&>li]:flex-row-reverse' : ''}`}>
+                          {e.points.map((pt) => (
+                            <li key={pt} className="dim text-sm flex items-start gap-2">
+                              <span className="red mt-0.5">▸</span><span>{pt}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* =========================================================
+   PROJECTS — trace-beam cards with spotlights & links
+ ========================================================= */
 const PROJECTS = [
   {
-    num: '001', title: 'Sentinel-Vault', badge: 'SYSTEM ACTIVE',
-    blurb: 'High-performance SIEM prototype built from scratch in C++17.',
-    body: 'Custom AVL Tree for O(log n) real-time IP blacklisting, Merge Sort for event timeline reconstruction, RAID 1 vault with automated mirror recovery.',
-    tags: ['C++17', 'AVL Trees', 'RAID 1', 'Cybersecurity'],
+    num: '001', title: 'TENET-AI', badge: 'ACTIVE SYSTEM',
+    blurb: 'Defensive security middleware protecting LLM endpoints.',
+    body: 'Built real-time validation pipelines, semantic jailbreak detectors, and token-level input sanitizers to shield generative AI APIs from injection attacks.',
+    tags: ['Python', 'LLM Security', 'Middleware', 'Regex'],
+    github: 'https://github.com/sarvajithsankar/TENET-AI',
+    demo: 'https://github.com/sarvajithsankar/TENET-AI'
   },
   {
-    num: '002', title: 'Phishermen', badge: 'DEPLOYED',
-    blurb: 'Full-stack ML phishing URL detector, live on Vercel.',
-    body: 'Feature extraction pipeline with URL structure analysis, lexical & host-based signals. Deployed end-to-end for real-time classification.',
-    tags: ['Python', 'ML', 'Vercel'],
+    num: '002', title: 'RAG Assistant', badge: 'DEPLOYED',
+    blurb: 'Document Q&A assistant leveraging vector embeddings.',
+    body: 'Integrated Gemini API with ChromaDB vector store and Streamlit interface, enabling semantically-accurate document retrieval with verified citations.',
+    tags: ['Python', 'Gemini API', 'ChromaDB', 'Streamlit'],
+    github: 'https://github.com/sarvajithsankar/RAG-Assistant',
+    demo: 'https://github.com/sarvajithsankar/RAG-Assistant'
   },
   {
-    num: '003', title: 'VIT Smart Assistant', badge: 'SYSTEM ACTIVE',
-    blurb: 'Gemini-powered campus chatbot with RAG architecture.',
-    body: 'ChromaDB vector store, conversation memory, and a dark-mode Streamlit UI. Answers campus queries from curated documents with citations.',
-    tags: ['Python', 'RAG', 'Gemini API'],
+    num: '003', title: 'Semantic Schema Matcher', badge: 'RESEARCH PROTOTYPE',
+    blurb: 'Automated column mapping engine for database integration.',
+    body: 'Utilized sentence embeddings and semantic matching algorithms to automate column mapping across heterogeneous schemas, bypassing manual integration overhead.',
+    tags: ['Python', 'PyTorch', 'Embeddings', 'SQL'],
+    github: 'https://github.com/sarvajithsankar/schema-matching',
+    demo: 'https://github.com/sarvajithsankar/schema-matching'
   },
   {
-    num: '004', title: 'Customer Churn Prediction', badge: 'DEPLOYED',
-    blurb: 'ML pipeline on a 7000+ record telecom dataset.',
-    body: 'Gradient Boosting with 77% recall on the minority class. Built under IEEE CS VIT as a collaborative operation.',
-    tags: ['Scikit-learn', 'Pandas', 'NumPy'],
+    num: '004', title: 'Engagement Predictor', badge: 'DEPLOYED',
+    blurb: 'Audience engagement forecasting tool for short-form media.',
+    body: 'Engineered a machine learning pipeline using XGBoost and Scikit-learn to analyze visual, audio, and metadata features from short-form video datasets.',
+    tags: ['Python', 'ML', 'Scikit-learn', 'XGBoost'],
+    github: 'https://github.com/sarvajithsankar/video-engagement',
+    demo: 'https://github.com/sarvajithsankar/video-engagement'
   },
 ];
 
@@ -156,30 +271,64 @@ function ProjectCard({ p, idx }: { p: (typeof PROJECTS)[number]; idx: number }) 
     <Reveal delay={(idx % 2) * 0.1}>
       <div className="trace-wrap h-full">
         <div className="trace-beam" />
-        <div className="proj-card glass-red p-7 md:p-8 h-full relative overflow-hidden" style={{ background: 'rgba(139,0,0,0.10)', boxShadow: 'inset 0 0 40px rgba(139,0,0,0.18), 0 0 30px rgba(139,0,0,0.15)' }}>
+        <div className="proj-card glass-red p-7 md:p-8 h-full relative overflow-hidden" style={{ background: 'rgba(10,15,30,0.3)', boxShadow: 'inset 0 0 40px rgba(0,242,254,0.05), 0 0 30px rgba(0,0,0,0.3)' }}>
           <div className="spot" />
-          {/* massive ghost number */}
-          <span aria-hidden className="font-display absolute -top-5 right-2 text-[6.5rem] md:text-[7.5rem] leading-none select-none pointer-events-none" style={{ color: 'rgba(255,0,0,0.09)', textShadow: '0 0 40px rgba(139,0,0,0.4)' }}>
+          <span aria-hidden className="font-display absolute -top-5 right-2 text-[6.5rem] md:text-[7.5rem] leading-none select-none pointer-events-none" style={{ color: 'rgba(0,242,254,0.03)', textShadow: '0 0 40px rgba(0,242,254,0.08)' }}>
             {p.num}
           </span>
 
-          <div className="relative">
-            <div className="flex items-center justify-between mb-7">
-              <span className="font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-500">OP-{p.num}</span>
-              <span className="inline-flex items-center gap-2 font-mono2 text-[9px] tracking-[0.25em] uppercase px-2.5 py-1 border border-[rgba(255,0,51,0.5)] text-[#ff5c5c] bg-black/50">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#ff0033] animate-ping" />
-                {p.badge}
-              </span>
+          <div className="relative flex flex-col h-full justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-7">
+                <span className="font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-500">OP-{p.num}</span>
+                <span className="inline-flex items-center gap-2 font-mono2 text-[9px] tracking-[0.25em] uppercase px-2.5 py-1 border border-[rgba(0,242,254,0.3)] text-[#6be5ff] bg-black/50">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00f2fe] animate-ping" />
+                  {p.badge}
+                </span>
+              </div>
+
+              <h3 className="font-display text-2xl md:text-3xl uppercase tracking-wide text-white">{p.title}</h3>
+              <p className="red font-mono2 text-xs mt-2 tracking-wide">{p.blurb}</p>
+              <p className="dim text-sm leading-relaxed mt-4">{p.body}</p>
+
+              <div className="flex flex-wrap gap-2 mt-6">
+                {p.tags.map((t) => (
+                  <span key={t} className="tag-red font-mono2 text-[10px] px-3 py-1 rounded-full">{t}</span>
+                ))}
+              </div>
             </div>
 
-            <h3 className="font-display text-2xl md:text-3xl uppercase tracking-wide text-white">{p.title}</h3>
-            <p className="red font-mono2 text-xs mt-2 tracking-wide">{p.blurb}</p>
-            <p className="dim text-sm leading-relaxed mt-4">{p.body}</p>
-
-            <div className="flex flex-wrap gap-2 mt-6">
-              {p.tags.map((t) => (
-                <span key={t} className="tag-red font-mono2 text-[10px] px-3 py-1 rounded-full">{t}</span>
-              ))}
+            <div className="flex gap-4 mt-6 justify-end items-center relative z-20">
+              {p.github && (
+                <a
+                  href={p.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="p-2 border border-zinc-800 hover:border-[rgba(0,242,254,0.5)] bg-black/40 text-zinc-400 hover:text-[#00f2fe] transition-colors"
+                  aria-label="GitHub Repository"
+                  data-hover
+                >
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                  </svg>
+                </a>
+              )}
+              {p.demo && (
+                <a
+                  href={p.demo}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="p-2 border border-zinc-800 hover:border-[rgba(168,85,247,0.5)] bg-black/40 text-zinc-400 hover:text-[#a855f7] transition-colors"
+                  aria-label="Live Demo"
+                  data-hover
+                >
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -193,10 +342,10 @@ export function Projects() {
     <section id="projects" className="relative py-28 md:py-36 scroll-mt-20 topo">
       <div className="max-w-7xl mx-auto px-6">
         <SectionHead
-          num="02"
+          num="03"
           eyebrow="arsenal"
           title={<>SELECTED <SlashWord>WEAPONS</SlashWord></>}
-          sub="Systems I've actually shipped. Each one left a scar and taught me something a textbook never could."
+          sub="Engineering operations I've actually shipped. Confident systems built for scalability and performance."
         />
         <div className="grid md:grid-cols-2 gap-6">
           {PROJECTS.map((p, idx) => (
@@ -209,8 +358,8 @@ export function Projects() {
 }
 
 /* =========================================================
-   SKILLS — pulsing network graph
-========================================================= */
+   SKILLS & CREDENTIALS — network graph + certs tab grid
+ ========================================================= */
 const NODES: Array<{ l: string; x: number; y: number; g: number }> = [
   { l: 'C', x: 0.09, y: 0.30, g: 0 }, { l: 'C++17', x: 0.17, y: 0.46, g: 0 },
   { l: 'Python', x: 0.08, y: 0.62, g: 0 }, { l: 'JavaScript', x: 0.18, y: 0.76, g: 0 },
@@ -235,6 +384,98 @@ const EDGES: Array<[number, number]> = [
   [19, 20], [20, 21], [19, 21],
   [2, 7], [2, 9], [1, 14], [4, 17], [18, 19], [8, 10], [15, 5], [16, 18],
 ];
+
+/* CERTIFICATIONS SUB-DATA */
+const CERTS = [
+  {
+    title: 'Mastercard Cybersecurity', issuer: 'Forage', date: 'MAY 2026', icon: 'SHIELD',
+    back: 'Simulated threat analysis, security posture auditing and incident response plans.',
+  },
+  {
+    title: 'Intro to Cybersecurity', issuer: 'Cisco', date: 'APR 2026', icon: 'LOCK',
+    back: 'Foundations of network security architectures, cryptography, and systems vulnerability assessment.',
+  },
+  {
+    title: 'Open Source Contributor', issuer: 'SSoC S5', date: '2026', icon: 'FORK',
+    back: 'Contributed to defensive LLM security middleware infrastructure (TENET-AI) for Social Summer of Code.',
+  },
+  {
+    title: 'Pandas Certification', issuer: 'Kaggle', date: '2026', icon: 'FRAME',
+    back: 'Data analysis pipelines, matrix manipulation, indexing, and feature engineering.',
+  },
+  {
+    title: 'Cloud Foundations', issuer: 'Google Cloud', date: '2026', icon: 'CLOUD',
+    back: 'GCP core infrastructure: Identity and Access Management (IAM), Compute Engine, BigQuery, and networking architectures.',
+  },
+  {
+    title: 'Cloud & Verizon Sim.', issuer: 'Forage', date: '2026', icon: 'TOWER',
+    back: 'Architected enterprise cloud migrations and load-balanced network infrastructures.',
+  },
+];
+
+function CertIcon({ kind }: { kind: string }) {
+  const paths: Record<string, React.ReactNode> = {
+    SHIELD: <path d="M12 2L4 6v6c0 5 3.5 9.5 8 10 4.5-.5 8-5 8-10V6l-8-4z" strokeLinejoin="round" />,
+    LOCK: <><rect x="4" y="11" width="16" height="10" rx="1" /><path d="M8 11V7a4 4 0 018 0v4" /></>,
+    FORK: <><circle cx="6" cy="5" r="2.2" /><circle cx="18" cy="5" r="2.2" /><circle cx="12" cy="19" r="2.2" /><path d="M6 7.2V10a3 3 0 003 3h6a3 3 0 003-3V7.2M12 13v3.8" strokeLinecap="round" /></>,
+    FRAME: <><path d="M3 3v18h18" strokeLinecap="round" /><path d="M7 14l4-4 3 3 5-6" strokeLinecap="round" strokeLinejoin="round" /></>,
+    CLOUD: <path d="M17.5 19a4.5 4.5 0 000-9 6 6 0 00-11.7 1.7A4 4 0 006 19h11.5z" strokeLinejoin="round" />,
+    TOWER: <><path d="M12 21V9M12 9l-5 12M12 9l5 12" strokeLinecap="round" /><path d="M7.5 4.5a7 7 0 019 0M9.3 6.8a4 4 0 015.4 0" strokeLinecap="round" /><circle cx="12" cy="9" r="1.4" /></>,
+  };
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6">
+      {paths[kind]}
+    </svg>
+  );
+}
+
+function Seal() {
+  return (
+    <svg viewBox="0 0 80 80" className="w-16 h-16 opacity-15" aria-hidden>
+      <circle cx="40" cy="40" r="36" fill="none" stroke="#00f2fe" strokeWidth="2" strokeDasharray="5 3" />
+      <circle cx="40" cy="40" r="27" fill="none" stroke="#00f2fe" strokeWidth="1" />
+      <text x="40" y="37" textAnchor="middle" fill="#00f2fe" fontSize="9" fontFamily="JetBrains Mono, monospace" letterSpacing="1">VERIFIED</text>
+      <text x="40" y="49" textAnchor="middle" fill="#00f2fe" fontSize="7" fontFamily="JetBrains Mono, monospace">SS·2029</text>
+    </svg>
+  );
+}
+
+function CertCard({ c, idx }: { c: (typeof CERTS)[number]; idx: number }) {
+  return (
+    <Reveal delay={(idx % 3) * 0.08}>
+      <div className="flip-card h-60">
+        <div className="flip-inner">
+          {/* FRONT */}
+          <div className="flip-face glass-red holo-on relative p-6 flex flex-col justify-between overflow-hidden">
+            <div className="holo" />
+            <div className="absolute -top-3 -right-3"><Seal /></div>
+            <div>
+              <div className="w-12 h-12 rounded-sm border border-[rgba(0,242,254,0.3)] bg-black/50 flex items-center justify-center red mb-5" style={{ boxShadow: '0 0 18px rgba(0,242,254,0.15), inset 0 0 10px rgba(0,242,254,0.1)' }}>
+                <CertIcon kind={c.icon} />
+              </div>
+              <h3 className="font-display text-xl uppercase tracking-wide text-white leading-snug">{c.title}</h3>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="font-mono2 text-[10px] tracking-[0.25em] uppercase text-zinc-500">{c.issuer}</span>
+              <span className="font-mono2 text-[10px] tracking-[0.2em] red">{c.date}</span>
+            </div>
+          </div>
+          {/* BACK */}
+          <div className="flip-face flip-back glass-red p-6 flex flex-col justify-between relative overflow-hidden" style={{ background: 'rgba(10,15,30,0.4)' }}>
+            <div>
+              <div className="font-mono2 text-[10px] tracking-[0.35em] uppercase red mb-4">// credentials</div>
+              <p className="text-zinc-300 text-sm leading-relaxed">{c.back}</p>
+            </div>
+            <div className="flex items-end justify-between">
+              <span className="font-mono2 text-[10px] tracking-[0.2em] uppercase text-zinc-500">{c.issuer}</span>
+              <span className="stamp heartbeat">VERIFIED</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Reveal>
+  );
+}
 
 export function Skills() {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -271,7 +512,7 @@ export function Skills() {
       ctx.lineWidth = 1;
       for (const [a, b] of EDGES) {
         const pa = pos(a), pb = pos(b);
-        ctx.strokeStyle = 'rgba(255,0,0,0.13)';
+        ctx.strokeStyle = 'rgba(0,242,254,0.08)';
         ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y); ctx.stroke();
       }
     };
@@ -280,39 +521,35 @@ export function Skills() {
       drawBase();
       const hov = hoverRef.current;
 
-      // traveling pulses along edges
       for (let e = 0; e < EDGES.length; e++) {
         const [a, b] = EDGES[e];
         const pa = pos(a), pb = pos(b);
         const t = ((now / 1000) * (0.22 + (e % 5) * 0.05) + e * 0.37) % 1;
         const px = pa.x + (pb.x - pa.x) * t;
         const py = pa.y + (pb.y - pa.y) * t;
-        ctx.fillStyle = 'rgba(255,0,51,0.75)';
+        ctx.fillStyle = 'rgba(168,85,247,0.7)';
         ctx.beginPath(); ctx.arc(px, py, 1.6, 0, Math.PI * 2); ctx.fill();
       }
 
-      // ripples
       ripplesRef.current = ripplesRef.current.filter((r) => now - r.t < 800);
       for (const r of ripplesRef.current) {
         const p = (now - r.t) / 800;
-        ctx.strokeStyle = `rgba(255,0,51,${0.5 * (1 - p)})`;
+        ctx.strokeStyle = `rgba(0,242,254,${0.5 * (1 - p)})`;
         ctx.lineWidth = 1.5;
         ctx.beginPath(); ctx.arc(r.x, r.y, 8 + p * 46, 0, Math.PI * 2); ctx.stroke();
       }
 
-      // brighten hovered edges
       if (hov >= 0) {
         for (const [a, b] of EDGES) {
           if (a !== hov && b !== hov) continue;
           const pa = pos(a), pb = pos(b);
-          ctx.strokeStyle = 'rgba(255,0,51,0.6)';
-          ctx.shadowColor = '#ff0033'; ctx.shadowBlur = 8;
+          ctx.strokeStyle = 'rgba(0,242,254,0.4)';
+          ctx.shadowColor = '#00f2fe'; ctx.shadowBlur = 8;
           ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y); ctx.stroke();
           ctx.shadowBlur = 0;
         }
       }
 
-      // nodes + labels
       ctx.font = '11px JetBrains Mono, monospace';
       ctx.textAlign = 'center';
       for (let i = 0; i < NODES.length; i++) {
@@ -323,16 +560,16 @@ export function Skills() {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
-        ctx.fillStyle = isHov ? '#ff0033' : isNeighbor ? 'rgba(255,0,51,0.9)' : 'rgba(255,0,51,0.55)';
-        if (isHov) { ctx.shadowColor = '#ff0033'; ctx.shadowBlur = 18; }
+        ctx.fillStyle = isHov ? '#00f2fe' : isNeighbor ? 'rgba(0,242,254,0.85)' : 'rgba(168,85,247,0.6)';
+        if (isHov) { ctx.shadowColor = '#00f2fe'; ctx.shadowBlur = 18; }
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        ctx.strokeStyle = 'rgba(255,0,51,0.35)';
+        ctx.strokeStyle = 'rgba(0,242,254,0.2)';
         ctx.beginPath(); ctx.arc(p.x, p.y, r + 4, 0, Math.PI * 2); ctx.stroke();
 
-        ctx.fillStyle = isHov ? '#ffffff' : isNeighbor ? '#ffb4b4' : 'rgba(220,220,230,0.72)';
-        if (isHov) { ctx.shadowColor = '#ff0033'; ctx.shadowBlur = 10; }
+        ctx.fillStyle = isHov ? '#ffffff' : isNeighbor ? '#d8f8ff' : 'rgba(220,220,230,0.72)';
+        if (isHov) { ctx.shadowColor = '#00f2fe'; ctx.shadowBlur = 10; }
         ctx.fillText(NODES[i].l, p.x, p.y + r + 16);
         ctx.shadowBlur = 0;
       }
@@ -384,121 +621,30 @@ export function Skills() {
     <section id="skills" className="relative py-28 md:py-36 scroll-mt-20">
       <div className="max-w-7xl mx-auto px-6">
         <SectionHead
-          num="03"
+          num="05"
           eyebrow="armory"
           title={<>THE <SlashWord>ARSENAL</SlashWord></>}
-          sub="A live network of everything I wield — hover a node and watch the infection spread."
+          sub="Interactive semantic network of technologies and core systems. Hover nodes to see structural weights."
         />
         <Reveal>
-          <div ref={wrapRef} className="glass-red relative h-[440px] md:h-[540px] overflow-hidden" data-hover>
+          <div ref={wrapRef} className="glass-red relative h-[440px] md:h-[540px] overflow-hidden mb-16" data-hover>
             <canvas ref={canvasRef} className="skill-canvas absolute inset-0" />
-            <div className="absolute bottom-4 left-5 font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-600 flex items-center gap-2">
-              <span className="rec-dot" /> 22 nodes // signal nominal
+            <div className="absolute bottom-4 left-5 font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-500 flex items-center gap-2">
+              <span className="rec-dot" /> 22 nodes // tracking nominal
             </div>
           </div>
         </Reveal>
-      </div>
-    </section>
-  );
-}
 
-/* =========================================================
-   EXPERIENCE — self-drawing bloodline timeline
-========================================================= */
-const EXPERIENCE = [
-  {
-    role: 'AI Engineering Intern — EX', org: 'Maveric Systems Limited', loc: 'Chennai',
-    date: 'Jun 2026', points: ['Autonomous AI research agent', 'Production ML systems'],
-  },
-  {
-    role: 'Open Source Contributor · TENET-AI', org: 'SSoC Season 5', loc: 'Remote',
-    date: 'May 2026 – Present', points: ['Contributing to open-source AI infrastructure'],
-  },
-  {
-    role: 'Publicity & Marketing', org: 'graVITas VIT', loc: 'VIT Vellore',
-    date: 'Apr 2026 – Present', points: ['Outreach for the flagship technical fest'],
-  },
-  {
-    role: 'Junior Core Member', org: 'IEEE Computer Society VIT', loc: 'VIT Vellore',
-    date: 'Jan 2026 – Present', points: ['Workshops, ML projects, peer learning'],
-  },
-  {
-    role: 'Core Member & VP', org: 'Rotaract Club VIT + Bala Vidya Mandir', loc: 'VIT Vellore',
-    date: 'Jan 2026 – Present', points: ['Community service and leadership'],
-  },
-];
-
-export function Experience() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: trackRef, offset: ['start 0.78', 'end 0.55'] });
-  const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
-
-  return (
-    <section id="experience" className="relative py-28 md:py-36 scroll-mt-20 topo">
-      <div className="max-w-6xl mx-auto px-6">
-        <SectionHead
-          num="04"
-          eyebrow="rap sheet"
-          title={<>BLOOD <SlashWord>TRAIL</SlashWord></>}
-          sub="Where I've operated. The line draws itself — like it was always going to."
-        />
-
-        <div ref={trackRef} className="relative">
-          {/* faint full-length glow */}
-          <div className="absolute left-[9px] md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-px" style={{ background: 'rgba(139,0,0,0.35)', boxShadow: '0 0 14px rgba(139,0,0,0.5)' }} />
-          {/* self-drawing bright line */}
-          <motion.div
-            className="absolute left-[9px] md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-[2px] origin-top"
-            style={{
-              scaleY,
-              background: 'linear-gradient(180deg, #8b0000, #ff0033, #ff0000)',
-              boxShadow: '0 0 18px rgba(255,0,51,0.85)',
-            }}
-          />
-
-          <div className="space-y-12 md:space-y-16">
-            {EXPERIENCE.map((e, idx) => {
-              const leftSide = idx % 2 === 0;
-              return (
-                <div key={idx} className="relative md:flex md:items-center">
-                  {/* node */}
-                  <motion.span
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: [0, 1.5, 1] }}
-                    viewport={{ once: true, margin: '-60px' }}
-                    transition={{ duration: 0.6, ease: 'easeOut' }}
-                    className="tl-dot absolute left-0 md:left-1/2 md:-translate-x-1/2 top-1 md:top-1/2 md:-translate-y-1/2"
-                  />
-                  <motion.div
-                    initial={{ opacity: 0, x: leftSide ? -80 : 80, boxShadow: '0 0 60px rgba(255,0,51,0.5)' }}
-                    whileInView={{ opacity: 1, x: 0, boxShadow: '0 0 0px rgba(255,0,51,0)' }}
-                    viewport={{ once: true, margin: '-60px' }}
-                    transition={{ duration: 0.75, ease: [0.2, 0.8, 0.2, 1] }}
-                    className={`ml-10 md:ml-0 md:w-[calc(50%-44px)] ${leftSide ? 'md:mr-auto md:text-right' : 'md:ml-auto'}`}
-                  >
-                    <div className={`glass-red p-6 md:p-7 hover:border-[rgba(255,0,51,0.5)] transition-colors ${leftSide ? 'md:[direction:rtl]' : ''}`}>
-                      <div className="[direction:ltr]">
-                        <div className={`flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-2 ${leftSide ? 'md:justify-end' : ''}`}>
-                          <h3 className="font-display text-xl md:text-2xl uppercase tracking-wide text-white">{e.role}</h3>
-                          <span className="font-mono2 text-[10px] tracking-[0.2em] red whitespace-nowrap">{e.date}</span>
-                        </div>
-                        <div className={`text-sm mb-4 ${leftSide ? 'md:text-right' : ''}`}>
-                          <span className="sweep-hl text-white font-medium inline-block">{e.org}</span>
-                          <span className="dim"> · {e.loc}</span>
-                        </div>
-                        <ul className={`space-y-1.5 ${leftSide ? 'md:[&>li]:flex-row-reverse' : ''}`}>
-                          {e.points.map((pt) => (
-                            <li key={pt} className="dim text-sm flex items-start gap-2">
-                              <span className="red mt-0.5">▸</span><span>{pt}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-              );
-            })}
+        {/* Credentials subsection integrated directly here */}
+        <div className="mt-20">
+          <div className="font-mono2 text-[11px] md:text-xs tracking-[0.4em] uppercase red mb-8 flex items-center gap-3">
+            <span className="inline-block w-8 h-px bg-[#00f2fe]" />
+            {'//'} professional credentials
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {CERTS.map((c, idx) => (
+              <CertCard key={c.title} c={c} idx={idx} />
+            ))}
           </div>
         </div>
       </div>

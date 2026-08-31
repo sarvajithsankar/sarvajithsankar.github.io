@@ -5,17 +5,18 @@ import {
 } from './fx';
 import { Hero } from './hero';
 import { About, Experience, Projects, Skills } from './sections';
-import { Certifications, Contact, Footer, Terminal } from './sections2';
+import { Contact, Footer, Now, Research } from './sections2';
 
 /* =========================================================
    NAVBAR — transparent until scroll, border draws itself
-========================================================= */
+ ========================================================= */
 const NAV_LINKS = [
   { label: 'Dossier', href: '#about' },
+  { label: 'Chronicle', href: '#experience' },
   { label: 'Arsenal', href: '#projects' },
   { label: 'Skills', href: '#skills' },
-  { label: 'Record', href: '#experience' },
-  { label: 'Certs', href: '#certs' },
+  { label: 'Research', href: '#research' },
+  { label: 'Now', href: '#now' },
   { label: 'Contact', href: '#contact' },
 ];
 
@@ -36,17 +37,17 @@ function Navbar({ visible }: { visible: boolean }) {
       animate={visible ? { y: 0, opacity: 1 } : {}}
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className={`fixed top-0 left-0 right-0 z-[70] transition-colors duration-500 ${
-        scrolled ? 'bg-black/85 backdrop-blur-md' : 'bg-transparent'
+        scrolled ? 'bg-[#030408]/90 backdrop-blur-md' : 'bg-transparent'
       }`}
     >
-      {/* self-drawing red border */}
+      {/* self-drawing border */}
       <span
         className={`absolute bottom-0 left-0 right-0 h-px origin-left transition-transform duration-700 ease-out ${
           scrolled ? 'scale-x-100' : 'scale-x-0'
         }`}
         style={{
-          background: 'linear-gradient(90deg, #8b0000, #ff0033 60%, rgba(255,0,51,0.2))',
-          boxShadow: '0 0 14px rgba(255,0,51,0.85)',
+          background: 'linear-gradient(90deg, #a855f7, #00f2fe 60%, rgba(0,242,254,0.2))',
+          boxShadow: '0 0 14px rgba(0,242,254,0.65)',
         }}
       />
 
@@ -70,18 +71,18 @@ function Navbar({ visible }: { visible: boolean }) {
         <div className="hidden md:flex items-center gap-2.5">
           <span className="rec-dot" />
           <span className="font-mono2 text-[10px] tracking-[0.25em] uppercase text-zinc-400">
-            EX AI Intern <span className="red">@</span> Maveric
+            AI Intern <span className="red">@</span> Maveric
           </span>
         </div>
 
         <button
           onClick={() => setOpen(!open)}
           aria-label="Menu"
-          className="lg:hidden w-11 h-11 flex flex-col items-center justify-center gap-[5px] border border-[rgba(255,0,51,0.4)] bg-black/60"
+          className="lg:hidden w-11 h-11 flex flex-col items-center justify-center gap-[5px] border border-[rgba(0,242,254,0.4)] bg-black/60"
         >
-          <span className={`block w-5 h-px bg-[#ff0033] transition-transform duration-300 ${open ? 'translate-y-[6px] rotate-45' : ''}`} />
-          <span className={`block w-5 h-px bg-[#ff0033] transition-opacity duration-300 ${open ? 'opacity-0' : ''}`} />
-          <span className={`block w-5 h-px bg-[#ff0033] transition-transform duration-300 ${open ? '-translate-y-[6px] -rotate-45' : ''}`} />
+          <span className={`block w-5 h-px bg-[#00f2fe] transition-transform duration-300 ${open ? 'translate-y-[6px] rotate-45' : ''}`} />
+          <span className={`block w-5 h-px bg-[#00f2fe] transition-opacity duration-300 ${open ? 'opacity-0' : ''}`} />
+          <span className={`block w-5 h-px bg-[#00f2fe] transition-transform duration-300 ${open ? '-translate-y-[6px] -rotate-45' : ''}`} />
         </button>
       </div>
 
@@ -92,7 +93,7 @@ function Navbar({ visible }: { visible: boolean }) {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.35 }}
-            className="lg:hidden overflow-hidden bg-black/95 backdrop-blur-xl border-t border-[rgba(255,0,0,0.2)]"
+            className="lg:hidden overflow-hidden bg-[#030408]/95 backdrop-blur-xl border-t border-[rgba(0,242,254,0.2)]"
           >
             <div className="px-6 py-4 flex flex-col">
               {NAV_LINKS.map((l, i) => (
@@ -100,7 +101,7 @@ function Navbar({ visible }: { visible: boolean }) {
                   key={l.href}
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="flicker-hover py-3.5 font-mono2 text-xs tracking-[0.3em] uppercase text-zinc-300 border-b border-[rgba(255,0,0,0.12)] flex items-center gap-3"
+                  className="flicker-hover py-3.5 font-mono2 text-xs tracking-[0.3em] uppercase text-zinc-300 border-b border-[rgba(0,242,254,0.12)] flex items-center gap-3"
                 >
                   <span className="red">0{i + 1}</span> {l.label}
                 </a>
@@ -108,7 +109,7 @@ function Navbar({ visible }: { visible: boolean }) {
               <div className="py-4 flex items-center gap-2.5">
                 <span className="rec-dot" />
                 <span className="font-mono2 text-[10px] tracking-[0.25em] uppercase text-zinc-500">
-                  EX AI Intern <span className="red">@</span> Maveric
+                  AI Intern <span className="red">@</span> Maveric
                 </span>
               </div>
             </div>
@@ -121,7 +122,7 @@ function Navbar({ visible }: { visible: boolean }) {
 
 /* =========================================================
    APP
-========================================================= */
+ ========================================================= */
 export default function App() {
   const [revealed, setRevealed] = useState(false);
   const [booted, setBooted] = useState(false);
@@ -135,7 +136,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-black text-white overflow-x-clip">
+    <div className="relative min-h-screen bg-[#030408] text-white overflow-x-clip">
       <AmbientBackground />
       <CursorFX />
       <ScrollProgress />
@@ -149,11 +150,11 @@ export default function App() {
       <main className="relative z-10">
         <Hero ready={revealed} />
         <About />
+        <Experience />
         <Projects />
         <Skills />
-        <Experience />
-        <Certifications />
-        <Terminal />
+        <Research />
+        <Now />
         <Contact />
       </main>
 
