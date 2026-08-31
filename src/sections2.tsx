@@ -3,113 +3,82 @@ import { motion, useInView } from 'framer-motion';
 import { Reveal, SectionHead, SlashWord, usePRM } from './fx';
 
 /* =========================================================
-   CERTIFICATIONS — holographic foil + 3D flip + VERIFIED stamp
-========================================================= */
-const CERTS = [
-  {
-    title: 'Mastercard Cybersecurity', issuer: 'Forage', date: 'MAY 2026', icon: 'SHIELD',
-    back: 'Job simulation covering threat analysis, security posture and incident response workflows.',
-  },
-  {
-    title: 'Intro to Cybersecurity', issuer: 'Cisco', date: 'APR 2026', icon: 'LOCK',
-    back: 'Foundations of network security, cryptography, and risk management.',
-  },
-  {
-    title: 'Open Source Contributor', issuer: 'SSoC S5', date: '2026', icon: 'FORK',
-    back: 'Contributing to open-source AI infrastructure as part of Social Summer of Code Season 5.',
-  },
-  {
-    title: 'Pandas Certification', issuer: 'Kaggle', date: '2026', icon: 'FRAME',
-    back: 'Data manipulation, grouping, indexing, and advanced DataFrame operations.',
-  },
-  {
-    title: 'Cloud Foundations', issuer: 'Google Cloud', date: '2026', icon: 'CLOUD',
-    back: 'GCP core services: Compute, Storage, IAM, networking, and billing fundamentals.',
-  },
-  {
-    title: 'Cloud & Verizon Sim.', issuer: 'Forage', date: '2026', icon: 'TOWER',
-    back: 'Cloud architecture simulation covering infrastructure design and migration planning.',
-  },
-];
-
-function CertIcon({ kind }: { kind: string }) {
-  const paths: Record<string, React.ReactNode> = {
-    SHIELD: <path d="M12 2L4 6v6c0 5 3.5 9.5 8 10 4.5-.5 8-5 8-10V6l-8-4z" strokeLinejoin="round" />,
-    LOCK: <><rect x="4" y="11" width="16" height="10" rx="1" /><path d="M8 11V7a4 4 0 018 0v4" /></>,
-    FORK: <><circle cx="6" cy="5" r="2.2" /><circle cx="18" cy="5" r="2.2" /><circle cx="12" cy="19" r="2.2" /><path d="M6 7.2V10a3 3 0 003 3h6a3 3 0 003-3V7.2M12 13v3.8" strokeLinecap="round" /></>,
-    FRAME: <><path d="M3 3v18h18" strokeLinecap="round" /><path d="M7 14l4-4 3 3 5-6" strokeLinecap="round" strokeLinejoin="round" /></>,
-    CLOUD: <path d="M17.5 19a4.5 4.5 0 000-9 6 6 0 00-11.7 1.7A4 4 0 006 19h11.5z" strokeLinejoin="round" />,
-    TOWER: <><path d="M12 21V9M12 9l-5 12M12 9l5 12" strokeLinecap="round" /><path d="M7.5 4.5a7 7 0 019 0M9.3 6.8a4 4 0 015.4 0" strokeLinecap="round" /><circle cx="12" cy="9" r="1.4" /></>,
-  };
+   RESEARCH — semantic schema matching focus
+ ========================================================= */
+export function Research() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6">
-      {paths[kind]}
-    </svg>
-  );
-}
-
-function Seal() {
-  return (
-    <svg viewBox="0 0 80 80" className="w-16 h-16 opacity-15" aria-hidden>
-      <circle cx="40" cy="40" r="36" fill="none" stroke="#ff0033" strokeWidth="2" strokeDasharray="5 3" />
-      <circle cx="40" cy="40" r="27" fill="none" stroke="#ff0033" strokeWidth="1" />
-      <text x="40" y="37" textAnchor="middle" fill="#ff0033" fontSize="9" fontFamily="JetBrains Mono, monospace" letterSpacing="1">VERIFIED</text>
-      <text x="40" y="49" textAnchor="middle" fill="#ff0033" fontSize="7" fontFamily="JetBrains Mono, monospace">SS·2029</text>
-    </svg>
-  );
-}
-
-function CertCard({ c, idx }: { c: (typeof CERTS)[number]; idx: number }) {
-  return (
-    <Reveal delay={(idx % 3) * 0.08}>
-      <div className="flip-card h-60">
-        <div className="flip-inner">
-          {/* FRONT */}
-          <div className="flip-face glass-red holo-on relative p-6 flex flex-col justify-between overflow-hidden">
-            <div className="holo" />
-            <div className="absolute -top-3 -right-3"><Seal /></div>
-            <div>
-              <div className="w-12 h-12 rounded-sm border border-[rgba(255,0,51,0.5)] bg-black/50 flex items-center justify-center red mb-5" style={{ boxShadow: '0 0 18px rgba(255,0,51,0.25), inset 0 0 10px rgba(139,0,0,0.3)' }}>
-                <CertIcon kind={c.icon} />
-              </div>
-              <h3 className="font-display text-xl uppercase tracking-wide text-white leading-snug">{c.title}</h3>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="font-mono2 text-[10px] tracking-[0.25em] uppercase text-zinc-500">{c.issuer}</span>
-              <span className="font-mono2 text-[10px] tracking-[0.2em] red">{c.date}</span>
-            </div>
-          </div>
-          {/* BACK */}
-          <div className="flip-face flip-back glass-red p-6 flex flex-col justify-between relative overflow-hidden" style={{ background: 'rgba(139,0,0,0.16)' }}>
-            <div>
-              <div className="font-mono2 text-[10px] tracking-[0.35em] uppercase red mb-4">// intel</div>
-              <p className="text-zinc-200 text-sm leading-relaxed">{c.back}</p>
-            </div>
-            <div className="flex items-end justify-between">
-              <span className="font-mono2 text-[10px] tracking-[0.2em] uppercase text-zinc-500">{c.issuer}</span>
-              <span className="stamp heartbeat">VERIFIED</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Reveal>
-  );
-}
-
-export function Certifications() {
-  return (
-    <section id="certs" className="relative py-28 md:py-36 scroll-mt-20">
+    <section id="research" className="relative py-28 md:py-36 scroll-mt-20">
       <div className="max-w-7xl mx-auto px-6">
         <SectionHead
-          num="05"
-          eyebrow="clearance stamps"
-          title={<>PROOF OF <SlashWord>POWER</SlashWord></>}
-          sub="Hover to flip the file. The back is where the truth lives."
+          num="06"
+          eyebrow="investigation"
+          title={<>RESEARCH <SlashWord>INITIATIVES</SlashWord></>}
+          sub="Automating database mapping through neural embeddings and semantic alignment."
         />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {CERTS.map((c, idx) => (
-            <CertCard key={c.title} c={c} idx={idx} />
-          ))}
+
+        <div className="grid lg:grid-cols-5 gap-6">
+          <Reveal className="lg:col-span-3">
+            <div className="glass-red p-8 md:p-10 h-full relative overflow-hidden" style={{ background: 'rgba(10,15,30,0.3)', borderColor: 'rgba(168,85,247,0.15)' }}>
+              <div className="absolute -right-20 -bottom-20 w-80 h-80 rounded-full blur-3xl opacity-10" style={{ background: 'radial-gradient(circle, #a855f7 0%, transparent 70%)' }} />
+              
+              <div className="relative">
+                <div className="flex items-center justify-between mb-6">
+                  <span className="font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-500">PROJECT: SEMANTIC SCHEMA MATCHING</span>
+                  <span className="font-mono2 text-[10px] tracking-[0.2em] uppercase red">ACTIVE INQUIRY</span>
+                </div>
+
+                <h3 className="font-display text-2xl md:text-3xl text-white uppercase tracking-wide mb-4">
+                  Federated Database Integration
+                </h3>
+
+                <p className="text-zinc-300 leading-relaxed text-sm md:text-base">
+                  Heterogeneous database systems typically require manual schema matching, creating a massive data integration bottleneck. My research focuses on automating this virtual database layer mapping using pre-trained sentence transformer embeddings.
+                </p>
+
+                <p className="dim mt-4 leading-relaxed text-sm">
+                  By mapping semantic contexts instead of syntactic string matching, the engine resolves synonyms and homonyms across database columns, achieving over 90% mapping precision. This approach reduces data integration overhead in federated data systems by bypassing manual mapping rules.
+                </p>
+
+                <div className="mt-8 grid sm:grid-cols-2 gap-4">
+                  <div className="p-4 bg-black/40 border border-[rgba(0,242,254,0.12)]">
+                    <div className="font-mono2 text-xs red uppercase mb-1">// architecture</div>
+                    <div className="text-zinc-300 text-sm">Bi-encoder network matching column properties via dense vector similarity.</div>
+                  </div>
+                  <div className="p-4 bg-black/40 border border-[rgba(168,85,247,0.12)]">
+                    <div className="font-mono2 text-xs red uppercase mb-1">// objective</div>
+                    <div className="text-zinc-300 text-sm">Eliminate manual mapping rules in virtual schemas and data virtualization layers.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.12} className="lg:col-span-2">
+            <div className="glass-red p-8 h-full flex flex-col justify-between relative overflow-hidden" style={{ background: 'rgba(10,15,30,0.3)', borderColor: 'rgba(0,242,254,0.15)' }}>
+              <div>
+                <div className="font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-500 mb-6">METHODOLOGY STACK</div>
+                <div className="space-y-4">
+                  {[
+                    { title: 'Dense Representation', desc: 'Encoding column metadata and sample values into high-dimensional vector spaces.' },
+                    { title: 'Cosine Similarity matching', desc: 'Evaluating similarity thresholds to automatically align federated schemas.' },
+                    { title: 'Synonym Resolution', desc: 'Handling vocabulary mismatches (e.g., "customer_id" vs "client_no") out-of-the-box.' }
+                  ].map((m, idx) => (
+                    <div key={idx} className="border-l-2 border-[#00f2fe] pl-4 py-1">
+                      <div className="text-sm text-white font-semibold">{m.title}</div>
+                      <div className="text-xs text-zinc-400 mt-1">{m.desc}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-8 pt-6 border-t border-[rgba(0,242,254,0.15)] flex items-center justify-between">
+                <span className="font-mono2 text-[10px] tracking-[0.25em] uppercase text-zinc-500">scope: academic &amp; systems</span>
+                <svg className="w-5 h-5 red" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" strokeLinejoin="round" />
+                </svg>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -117,28 +86,26 @@ export function Certifications() {
 }
 
 /* =========================================================
-   TERMINAL — classified government database breach
-========================================================= */
+   TERMINAL — embedded diagnostic panel for Now section
+ ========================================================= */
 const BOOT_LINES: Array<{ t: string; d: number; bright?: boolean }> = [
-  { t: 'SANKAR SECURE BIOS v6.6.6 — COLD BOOT', d: 260 },
-  { t: 'CPU ......... QUANTUM-CORE X99 @ 5.8GHz   [OK]', d: 200 },
-  { t: 'MEM ......... 64GB DDR5 ECC               [OK]', d: 180 },
-  { t: 'GPU ......... RTX — RED TEAM EDITION      [OK]', d: 180 },
-  { t: 'NET ......... DARKNET UPLINK              [OK]', d: 240 },
-  { t: 'ACCESSING SECURE SERVER...', d: 620 },
-  { t: 'AUTHENTICATION REQUIRED...', d: 700 },
-  { t: '>>> ACCESS GRANTED <<<', d: 480, bright: true },
+  { t: 'SANKAR SECURE BIOS v6.6.6 — COLD BOOT', d: 150 },
+  { t: 'CPU ......... QUANTUM-CORE X99 @ 5.8GHz   [OK]', d: 120 },
+  { t: 'MEM ......... 64GB DDR5 ECC               [OK]', d: 110 },
+  { t: 'NET ......... HYPER-LINK UPLINK           [OK]', d: 130 },
+  { t: 'ACCESSING SECURE DATA PLATFORM...', d: 350 },
+  { t: '>>> ACCESS GRANTED <<<', d: 250, bright: true },
 ];
 
 const PROFILE_JSON = `{
-  "name": "Sarvajith Sankar",
-  "college": ["VIT Vellore", "IIT Madras"],
-  "focus": ["AI", "Cybersecurity", "Cloud"],
-  "projects": 4,
-  "status": "building",
-  "grad_year": 2029
+  "operator": "Sarvajith Sankar",
+  "institutions": ["VIT Vellore", "IIT Madras"],
+  "focus": ["AI Agents", "ML Systems", "Security"],
+  "active_gpa": "~8.2 CGPA",
+  "status": "building_momentum",
+  "target_roles": ["AI Engineer", "ML Researcher"]
 }`;
-const CMD = 'cat profile.json';
+const CMD = 'cat now_profile.json';
 
 export function Terminal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -166,23 +133,23 @@ export function Terminal() {
       return () => window.clearTimeout(t);
     }
     if (!granted) {
-      const t = window.setTimeout(() => setGranted(true), 500);
+      const t = window.setTimeout(() => setGranted(true), 300);
       return () => window.clearTimeout(t);
     }
   }, [inView, bootIdx, granted, prm]);
 
   useEffect(() => {
     if (!granted || prm) return;
-    setErrFlash('ERR 0x2F :: HANDSHAKE DROPPED — REROUTING VIA NODE-7');
-    const t = window.setTimeout(() => setErrFlash(null), 950);
-    const t2 = window.setTimeout(() => setTermOn(true), 700);
+    setErrFlash('ERR 0x2F :: HANDSHAKE REROUTING VIA NODE-7');
+    const t = window.setTimeout(() => setErrFlash(null), 800);
+    const t2 = window.setTimeout(() => setTermOn(true), 600);
     return () => { window.clearTimeout(t); window.clearTimeout(t2); };
   }, [granted, prm]);
 
   useEffect(() => {
     if (!termOn || done || prm) return;
     if (cmd.length < CMD.length) {
-      const t = window.setTimeout(() => setCmd(CMD.slice(0, cmd.length + 1)), 70);
+      const t = window.setTimeout(() => setCmd(CMD.slice(0, cmd.length + 1)), 50);
       return () => window.clearTimeout(t);
     }
   }, [termOn, cmd, done, prm]);
@@ -192,89 +159,153 @@ export function Terminal() {
     if (out.length < PROFILE_JSON.length) {
       if (!err2.current && out.length > 140) {
         err2.current = true;
-        setErrFlash('WARN :: PACKET LOSS 0.003% — BUFFERING');
-        window.setTimeout(() => setErrFlash(null), 700);
+        setErrFlash('WARN :: PACKET BUFFERING');
+        window.setTimeout(() => setErrFlash(null), 500);
       }
-      const t = window.setTimeout(() => setOut(PROFILE_JSON.slice(0, out.length + 1)), 16);
+      const t = window.setTimeout(() => setOut(PROFILE_JSON.slice(0, out.length + 1)), 10);
       return () => window.clearTimeout(t);
     }
     setDone(true);
   }, [cmd, out, done, prm]);
 
   return (
-    <section className="relative py-28 md:py-32">
-      <div className="max-w-4xl mx-auto px-6" ref={ref}>
-        <Reveal>
-          {/* boot sequence */}
-          {!termOn && (
-            <div className="font-mono2 text-xs md:text-sm min-h-[220px] leading-loose">
-              {BOOT_LINES.slice(0, bootIdx).map((l, i) => (
-                <div key={i} className={l.bright ? 'red font-bold text-base md:text-lg tracking-[0.3em] crt-flicker' : 'text-[#c81e1e]'} style={l.bright ? { textShadow: '0 0 18px rgba(255,0,0,0.9)' } : undefined}>
-                  {l.t}
-                </div>
-              ))}
-              {!granted && <span className="term-cursor" />}
+    <div className="relative w-full" ref={ref}>
+      {/* boot sequence */}
+      {!termOn && (
+        <div className="font-mono2 text-xs min-h-[220px] leading-loose">
+          {BOOT_LINES.slice(0, bootIdx).map((l, i) => (
+            <div key={i} className={l.bright ? 'red font-bold text-sm tracking-[0.2em] crt-flicker' : 'text-[#00f2fe]'} style={l.bright ? { textShadow: '0 0 18px rgba(0,242,254,0.9)' } : undefined}>
+              {l.t}
             </div>
-          )}
+          ))}
+          {!granted && <span className="term-cursor" />}
+        </div>
+      )}
 
-          {/* terminal window */}
-          {termOn && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              style={{ transform: 'perspective(1100px) rotateX(1.5deg)' }}
-            >
-              <div className="crt crt-flicker overflow-hidden border border-[rgba(255,0,51,0.35)]" style={{ background: '#030102', boxShadow: '0 0 70px rgba(139,0,0,0.4), inset 0 0 60px rgba(0,0,0,0.9)' }}>
-                {/* header */}
-                <div className="flex items-center gap-3 px-5 py-3 border-b border-[rgba(255,0,51,0.25)] bg-black relative z-10">
-                  <span className="w-3 h-3 rounded-full bg-[#8b0000] border border-[#ff0033]/60" />
-                  <span className="w-3 h-3 rounded-full bg-[#8b0000] border border-[#ff0033]/60" />
-                  <span className="w-3 h-3 rounded-full bg-[#ff0033] shadow-[0_0_10px_rgba(255,0,51,0.8)]" />
-                  <span className="ml-2 font-mono2 text-[10px] md:text-[11px] tracking-[0.3em] uppercase red">
-                    CLASSIFIED — LEVEL 5 CLEARANCE // TTY-01
-                  </span>
-                  <span className="ml-auto rec-dot hidden sm:block" />
+      {/* terminal window */}
+      {termOn && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
+          style={{ transform: 'perspective(1100px) rotateX(1deg)' }}
+        >
+          <div className="crt crt-flicker overflow-hidden border border-[rgba(0,242,254,0.25)]" style={{ background: '#05070f', boxShadow: '0 15px 40px rgba(0,0,0,0.6), inset 0 0 30px rgba(0,0,0,0.95)' }}>
+            {/* header */}
+            <div className="flex items-center gap-3 px-4 py-2 bg-black/40 border-b border-[rgba(0,242,254,0.15)] relative z-10">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#1e1b4b] border border-[#a855f7]/40" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#1e1b4b] border border-[#a855f7]/40" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#00f2fe] shadow-[0_0_10px_rgba(0,242,254,0.8)]" />
+              <span className="ml-1 font-mono2 text-[9px] tracking-[0.3em] uppercase red">
+                TTY-01 // DIAGNOSTICS CONTROL
+              </span>
+              <span className="ml-auto rec-dot hidden sm:block" />
+            </div>
+
+            {/* body */}
+            <div className="p-4 md:p-6 font-mono2 text-[12px] md:text-[13px] leading-relaxed min-h-[220px] relative z-10" style={{ color: '#8df2f8' }}>
+              <div>
+                <span className="text-white">root@sarvajith</span>
+                <span className="text-zinc-600">:</span>
+                <span className="red">/now</span>
+                <span className="text-zinc-400">$ </span>
+                <span className="text-[#a855f7]">{cmd}</span>
+                {cmd.length < CMD.length && <span className="term-cursor" />}
+              </div>
+
+              {cmd === CMD && (
+                <pre className="mt-2 whitespace-pre-wrap text-[#00f2fe]" style={{ textShadow: '0 0 8px rgba(0,242,254,0.3)' }}>
+                  {out}
+                  {out.length < PROFILE_JSON.length && <span className="term-cursor" />}
+                </pre>
+              )}
+
+              {errFlash && (
+                <div className="mt-2 text-[#a855f7] font-bold crt-flicker">
+                  ⚠ {errFlash}
+                </div>
+              )}
+
+              {done && (
+                <div className="mt-3">
+                  <span className="text-white">root@sarvajith</span>
+                  <span className="text-zinc-600">:</span>
+                  <span className="red">/now</span>
+                  <span className="text-zinc-400">$ </span>
+                  <span className="term-cursor" />
+                </div>
+              )}
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
+/* =========================================================
+   NOW — what building/learning/targeting (signals momentum)
+ ========================================================= */
+export function Now() {
+  return (
+    <section id="now" className="relative py-28 md:py-36 scroll-mt-20 topo">
+      <div className="max-w-7xl mx-auto px-6">
+        <SectionHead
+          num="07"
+          eyebrow="momentum"
+          title={<>ACTIVE <SlashWord>VECTORS</SlashWord></>}
+          sub="What I'm building, learning, and targeting right now to stay ahead of the curve."
+        />
+
+        <div className="grid lg:grid-cols-2 gap-12 items-stretch">
+          {/* LEFT — current logs */}
+          <Reveal>
+            <div className="glass-red p-8 h-full flex flex-col justify-between" style={{ background: 'rgba(10,15,30,0.3)' }}>
+              <div className="space-y-6">
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#00f2fe] animate-pulse" />
+                    <h3 className="font-display text-lg uppercase tracking-wider text-white">1. BUILDING</h3>
+                  </div>
+                  <p className="text-sm text-zinc-300 leading-relaxed pl-5">
+                    Expanding <span className="text-white font-semibold">TENET-AI</span> to support token-level streaming interception for real-time generative agents, while profiling latency overhead under load.
+                  </p>
                 </div>
 
-                {/* body */}
-                <div className="p-6 md:p-8 font-mono2 text-[13px] md:text-sm leading-relaxed min-h-[300px] relative z-10" style={{ color: '#ff4d4d' }}>
-                  <div>
-                    <span className="text-white">root@sankar</span>
-                    <span className="text-zinc-600">:</span>
-                    <span className="red">/vault</span>
-                    <span className="text-zinc-400">$ </span>
-                    <span className="text-[#ff6b6b]">{cmd}</span>
-                    {cmd.length < CMD.length && <span className="term-cursor" />}
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#a855f7] animate-pulse" />
+                    <h3 className="font-display text-lg uppercase tracking-wider text-white">2. LEARNING</h3>
                   </div>
+                  <p className="text-sm text-zinc-300 leading-relaxed pl-5">
+                    Distributed inference serving topologies, Triton Inference Server integration, and low-level optimization using custom attention heads.
+                  </p>
+                </div>
 
-                  {cmd === CMD && (
-                    <pre className="mt-3 whitespace-pre-wrap text-[#e63939]" style={{ textShadow: '0 0 8px rgba(255,0,51,0.45)' }}>
-                      {out}
-                      {out.length < PROFILE_JSON.length && <span className="term-cursor" />}
-                    </pre>
-                  )}
-
-                  {errFlash && (
-                    <div className="mt-3 text-[#ff0033] font-bold crt-flicker">
-                      ⚠ {errFlash}
-                    </div>
-                  )}
-
-                  {done && (
-                    <div className="mt-4">
-                      <span className="text-white">root@sankar</span>
-                      <span className="text-zinc-600">:</span>
-                      <span className="red">/vault</span>
-                      <span className="text-zinc-400">$ </span>
-                      <span className="term-cursor" />
-                    </div>
-                  )}
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+                    <h3 className="font-display text-lg uppercase tracking-wider text-white">3. TARGETING</h3>
+                  </div>
+                  <p className="text-sm text-zinc-300 leading-relaxed pl-5">
+                    AI Engineering and Machine Learning Research positions at Tier 1 product companies (Google STEP, Microsoft Explore India, Goldman Sachs).
+                  </p>
                 </div>
               </div>
-            </motion.div>
-          )}
-        </Reveal>
+
+              <div className="mt-8 pt-5 border-t border-[rgba(0,242,254,0.15)] font-mono2 text-[10px] tracking-[0.25em] uppercase text-zinc-500">
+                STATUS: ACTIVE DEVELOPMENT // STACK REINFORCEMENT
+              </div>
+            </div>
+          </Reveal>
+
+          {/* RIGHT — Terminal diagnostic view */}
+          <Reveal delay={0.12}>
+            <div className="h-full flex items-center justify-center">
+              <Terminal />
+            </div>
+          </Reveal>
+        </div>
       </div>
     </section>
   );
@@ -282,43 +313,133 @@ export function Terminal() {
 
 /* =========================================================
    CONTACT — radar sweep + secure channel
-========================================================= */
+ ========================================================= */
 const CHANNELS = [
   {
-    label: 'Encrypted mail', value: 'sarvajith2knot8@gmail.com', href: 'mailto:sarvajith2knot8@gmail.com',
+    label: 'Direct Frequency', value: 'sarvajith2knot8@gmail.com', href: 'mailto:sarvajith2knot8@gmail.com',
     icon: <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z M22 6l-10 7L2 6" strokeLinecap="round" strokeLinejoin="round" />,
   },
   {
-    label: 'LinkedIn uplink', value: 'linkedin.com/in/sarvajithsankar', href: 'https://linkedin.com/in/sarvajithsankar',
+    label: 'LinkedIn Uplink', value: 'linkedin.com/in/sarvajithsankar', href: 'https://linkedin.com/in/sarvajithsankar',
     icon: <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z" />,
   },
   {
-    label: 'GitHub mainframe', value: 'github.com/sarvajithsankar', href: 'https://github.com/sarvajithsankar',
+    label: 'GitHub Mainframe', value: 'github.com/sarvajithsankar', href: 'https://github.com/sarvajithsankar',
     icon: <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.38 7.86 10.9.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.24 3.34.95.1-.74.4-1.24.72-1.53-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.18 1.18a11 11 0 015.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.58.23 2.75.12 3.04.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.4-5.26 5.69.41.36.78 1.05.78 2.13v3.16c0 .31.21.67.8.56A11.5 11.5 0 0023.5 12C23.5 5.65 18.35.5 12 .5z" />,
   },
 ];
 
 function Radar() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const prm = usePRM();
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let size = 0;
+    
+    const build = () => {
+      size = canvas.parentElement?.offsetWidth || 320;
+      canvas.width = size * dpr;
+      canvas.height = size * dpr;
+      canvas.style.width = `${size}px`;
+      canvas.style.height = `${size}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    build();
+
+    if (prm) {
+      ctx.strokeStyle = 'rgba(0, 242, 254, 0.2)';
+      ctx.lineWidth = 1;
+      const c = size / 2;
+      ctx.beginPath(); ctx.arc(c, c, c * 0.9, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(c, c, c * 0.65, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(c, c, c * 0.4, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(c, 0); ctx.lineTo(c, size); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, c); ctx.lineTo(size, c); ctx.stroke();
+      return;
+    }
+
+    let raf = 0;
+    const loop = (now: number) => {
+      ctx.clearRect(0, 0, size, size);
+      const c = size / 2;
+      
+      // Circles
+      ctx.strokeStyle = 'rgba(0, 242, 254, 0.15)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(c, c, c * 0.9, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(c, c, c * 0.65, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(c, c, c * 0.4, 0, Math.PI * 2); ctx.stroke();
+      
+      // Axes
+      ctx.beginPath(); ctx.moveTo(c, 10); ctx.lineTo(c, size - 10); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(10, c); ctx.lineTo(size - 10, c); ctx.stroke();
+      
+      // Radar sweep gradient
+      const sweepAngle = (now / 1200) % (Math.PI * 2);
+      ctx.save();
+      ctx.translate(c, c);
+      ctx.rotate(sweepAngle);
+      
+      const grad = ctx.createConicGradient(0, 0, 0);
+      grad.addColorStop(0, 'rgba(0, 242, 254, 0.25)');
+      grad.addColorStop(0.12, 'rgba(168, 85, 247, 0.05)');
+      grad.addColorStop(0.25, 'rgba(0, 0, 0, 0)');
+      grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(0, 0, c * 0.9, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // Pulsing blips
+      const blips = [
+        { x: c + c * 0.4, y: c - c * 0.3, tOffset: 0 },
+        { x: c - c * 0.5, y: c + c * 0.2, tOffset: 1200 },
+        { x: c + c * 0.2, y: c + c * 0.5, tOffset: 2400 }
+      ];
+
+      for (const blip of blips) {
+        const age = (now - blip.tOffset) % 3600;
+        const opacity = Math.max(0, 1 - age / 2500);
+        ctx.fillStyle = `rgba(0, 242, 254, ${opacity})`;
+        ctx.beginPath();
+        ctx.arc(blip.x, blip.y, 4, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.strokeStyle = `rgba(168, 85, 247, ${opacity * 0.5})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(blip.x, blip.y, 4 + (age % 300) * 0.06, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+
+    const onResize = () => build();
+    window.addEventListener('resize', onResize);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', onResize);
+    };
+  }, [prm]);
+
   return (
-    <div className="relative aspect-square max-w-md mx-auto" data-hover>
-      {/* rings */}
-      {[100, 72, 44, 18].map((s) => (
-        <div key={s} className="absolute rounded-full border border-[rgba(255,0,51,0.28)]" style={{ inset: `${(100 - s) / 2}%` }} />
-      ))}
-      {/* crosshairs */}
-      <div className="absolute left-1/2 top-0 bottom-0 w-px bg-[rgba(255,0,51,0.2)]" />
-      <div className="absolute top-1/2 left-0 right-0 h-px bg-[rgba(255,0,51,0.2)]" />
-      {/* sweep */}
-      <div className="radar-sweep" />
-      {/* blips */}
-      <span className="blip" style={{ top: '28%', left: '62%' }} />
-      <span className="blip" style={{ top: '58%', left: '30%', animationDelay: '0.6s' }} />
-      <span className="blip" style={{ top: '70%', left: '68%', animationDelay: '1.1s' }} />
-      {/* center */}
-      <div className="absolute inset-0 flex items-center justify-center">
+    <div className="relative aspect-square max-w-sm mx-auto" data-hover>
+      <canvas ref={canvasRef} className="absolute inset-0 z-10" />
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="text-center">
-          <div className="font-display text-2xl red tracking-widest" style={{ textShadow: '0 0 16px rgba(255,0,51,0.8)' }}>SS-29</div>
-          <div className="font-mono2 text-[9px] tracking-[0.3em] uppercase text-zinc-500 mt-1">signal lock</div>
+          <div className="font-display text-2xl red tracking-widest" style={{ textShadow: '0 0 16px rgba(0,242,254,0.6)' }}>SS-29</div>
+          <div className="font-mono2 text-[9px] tracking-[0.3em] uppercase text-zinc-500 mt-1">signal locked</div>
         </div>
       </div>
     </div>
@@ -332,15 +453,20 @@ export function Contact() {
   const [statusIdx, setStatusIdx] = useState(prm ? 4 : 0);
   const [launched, setLaunched] = useState(false);
 
-  const statusLines = ['> ESTABLISHING CONNECTION', '> HANDSHAKE ... AES-256 OK', '> ROUTING THROUGH 7 NODES ... OK', '> CHANNEL SECURE'];
+  const statusLines = [
+    '> ESTABLISHING CONNECTION...',
+    '> SHIELD PROTOCOLS ... SECURE',
+    '> UPLINK DIRECTED VIA SECURE NODE ... OK',
+    '> CHANNEL SECURED'
+  ];
 
   useEffect(() => {
     if (!inView || prm) return;
     if (statusIdx < statusLines.length) {
-      const t = window.setTimeout(() => setStatusIdx((i) => i + 1), 520);
+      const t = window.setTimeout(() => setStatusIdx((i) => i + 1), 450);
       return () => window.clearTimeout(t);
     }
-  }, [inView, statusIdx, prm]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [inView, statusIdx, prm]);
 
   const channelOpen = statusIdx >= statusLines.length;
 
@@ -348,10 +474,10 @@ export function Contact() {
     <section id="contact" className="relative py-28 md:py-36 scroll-mt-20 topo overflow-hidden">
       <div className="max-w-7xl mx-auto px-6" ref={ref}>
         <SectionHead
-          num="06"
-          eyebrow="secure channel"
-          title={<>OPEN A <SlashWord>CHANNEL</SlashWord></>}
-          sub="Three frequencies monitored around the clock. Choose yours."
+          num="08"
+          eyebrow="uplink channel"
+          title={<>SECURE <SlashWord>UPLINK</SlashWord></>}
+          sub="Direct contact frequencies monitored regularly. Select a connection mode."
         />
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -360,11 +486,10 @@ export function Contact() {
           </Reveal>
 
           <div>
-            {/* connection status readout */}
             <Reveal>
               <div className="font-mono2 text-xs md:text-sm space-y-1.5 mb-8 min-h-[110px]">
                 {statusLines.slice(0, statusIdx).map((l, i) => (
-                  <div key={i} className={i === statusLines.length - 1 ? 'red font-bold tracking-[0.2em]' : 'text-[#c81e1e]'}>
+                  <div key={i} className={i === statusLines.length - 1 ? 'red font-bold tracking-[0.2em]' : 'text-[#00f2fe]'}>
                     {l} {i < 3 && <span className="text-zinc-600">▮</span>}
                   </div>
                 ))}
@@ -384,11 +509,11 @@ export function Contact() {
                     href={ch.href}
                     target={ch.href.startsWith('http') ? '_blank' : undefined}
                     rel="noreferrer"
-                    className="glass-red group flex items-center gap-5 p-5 hover:border-[rgba(255,0,51,0.55)] transition-colors"
+                    className="glass-red group flex items-center gap-5 p-5 hover:border-[rgba(0,242,254,0.55)] transition-colors"
                   >
-                    <span className="relative w-12 h-12 shrink-0 rounded-full border border-[rgba(255,0,51,0.45)] bg-black/60 flex items-center justify-center red">
-                      <span className="ripple" />
-                      <span className="ripple" style={{ animationDelay: '0.8s' }} />
+                    <span className="relative w-12 h-12 shrink-0 rounded-full border border-[rgba(0,242,254,0.4)] bg-black/60 flex items-center justify-center red">
+                      <span className="ripple" style={{ borderColor: 'rgba(0,242,254,0.3)' }} />
+                      <span className="ripple" style={{ animationDelay: '0.8s', borderColor: 'rgba(168,85,247,0.3)' }} />
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-5 h-5 relative">
                         {ch.icon}
                       </svg>
@@ -440,18 +565,18 @@ export function Contact() {
 
 /* =========================================================
    FOOTER
-========================================================= */
+ ========================================================= */
 export function Footer() {
   return (
-    <footer className="relative py-10 border-t border-[rgba(255,0,0,0.18)]">
+    <footer className="relative py-10 border-t border-[rgba(0,242,254,0.15)] bg-[#030408]">
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <span className="rec-dot" />
           <span className="font-mono2 text-[11px] tracking-[0.25em] uppercase text-zinc-400">
-            Designed &amp; built with obsession <span className="red">·</span> VIT Vellore '29
+            Designed &amp; built with precision <span className="red">·</span> VIT Vellore '29
           </span>
         </div>
-        <div className="font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-600">
+        <div className="font-mono2 text-[10px] tracking-[0.3em] uppercase text-zinc-500">
           © 2026 SANKAR <span className="red">//</span> NO MERCY FOR BAD UI
         </div>
       </div>

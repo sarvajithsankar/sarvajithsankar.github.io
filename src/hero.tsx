@@ -5,59 +5,18 @@ import { HackCounter, usePRM } from './fx';
 /* =========================================================
    SKULL PARTICLE FIELD — forms, holds, dissolves, reforms
 ========================================================= */
-function sampleSkull(bw: number, bh: number) {
-  const off = document.createElement('canvas');
-  off.width = bw; off.height = bh;
-  const c = off.getContext('2d');
-  if (!c) return [];
-  const cx = bw / 2;
-  c.fillStyle = '#fff';
-  // cranium
-  c.beginPath();
-  c.ellipse(cx, bh * 0.38, bw * 0.27, bh * 0.30, 0, 0, Math.PI * 2);
-  c.fill();
-  // cheek bridge
-  c.fillRect(cx - bw * 0.20, bh * 0.48, bw * 0.40, bh * 0.12);
-  // jaw
-  c.fillRect(cx - bw * 0.145, bh * 0.56, bw * 0.29, bh * 0.20);
-  c.beginPath();
-  c.ellipse(cx, bh * 0.76, bw * 0.145, bh * 0.05, 0, 0, Math.PI);
-  c.fill();
-  // carve eyes / nose / teeth
-  c.globalCompositeOperation = 'destination-out';
-  c.beginPath(); c.ellipse(cx - bw * 0.105, bh * 0.40, bw * 0.06, bh * 0.052, 0, 0, Math.PI * 2); c.fill();
-  c.beginPath(); c.ellipse(cx + bw * 0.105, bh * 0.40, bw * 0.06, bh * 0.052, 0, 0, Math.PI * 2); c.fill();
-  c.beginPath();
-  c.moveTo(cx, bh * 0.47); c.lineTo(cx - bw * 0.025, bh * 0.545); c.lineTo(cx + bw * 0.025, bh * 0.545);
-  c.closePath(); c.fill();
-  c.fillRect(cx - bw * 0.13, bh * 0.615, bw * 0.26, 2.5);
-  for (let i = -2; i <= 2; i++) {
-    if (i === 0) continue;
-    c.fillRect(cx + i * bw * 0.048 - 1.2, bh * 0.62, 2.4, bh * 0.11);
-  }
-  const data = c.getImageData(0, 0, bw, bh).data;
-  const pts: Array<{ x: number; y: number }> = [];
-  const step = 5;
-  for (let y = 0; y < bh; y += step) {
-    for (let x = 0; x < bw; x += step) {
-      if (data[(y * bw + x) * 4 + 3] > 128) pts.push({ x, y });
-    }
-  }
-  // shuffle
-  for (let i = pts.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [pts[i], pts[j]] = [pts[j], pts[i]];
-  }
-  return pts;
+interface Particle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  radius: number;
+  color: string;
 }
 
-interface SkullParticle {
-  x: number; y: number; sx: number; sy: number; tx: number; ty: number;
-  vx: number; vy: number; delay: number; seed: number; bright: boolean;
-}
-
-function SkullCanvas({ active }: { active: boolean }) {
+function NeuralConstellationCanvas({ active }: { active: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mouseRef = useRef({ x: -1000, y: -1000 });
   const prm = usePRM();
 
   useEffect(() => {
@@ -68,9 +27,10 @@ function SkullCanvas({ active }: { active: boolean }) {
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     let w = 0, h = 0;
-    let particles: SkullParticle[] = [];
+    let particles: Particle[] = [];
+    const maxParticles = 65;
 
-    const build = () => {
+    const init = () => {
       const parent = canvas.parentElement;
       if (!parent) return;
       w = parent.offsetWidth; h = parent.offsetHeight;
@@ -78,90 +38,113 @@ function SkullCanvas({ active }: { active: boolean }) {
       canvas.style.width = `${w}px`; canvas.style.height = `${h}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const bw = Math.min(460, w * 0.5);
-      const bh = bw * 1.22;
-      const ox = w * 0.66 - bw / 2;
-      const oy = h * 0.5 - bh / 2 - 10;
-      const pts = sampleSkull(bw, bh).slice(0, 720);
-      particles = pts.map((p) => ({
-        x: Math.random() * w, y: Math.random() * h,
-        sx: 0, sy: 0,
-        tx: p.x + ox, ty: p.y + oy,
-        vx: 0, vy: 0,
-        delay: Math.random() * 0.35,
-        seed: Math.random() * Math.PI * 2,
-        bright: Math.random() > 0.86,
-      }));
+      particles = [];
+      for (let i = 0; i < maxParticles; i++) {
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35,
+          radius: 1.2 + Math.random() * 2,
+          color: Math.random() > 0.48 ? '#00f2fe' : '#a855f7'
+        });
+      }
     };
-    build();
+    init();
 
-    if (prm || !active) {
-      // static formed skull
-      const drawStatic = () => {
-        ctx.clearRect(0, 0, w, h);
-        for (const p of particles) {
-          ctx.fillStyle = p.bright ? 'rgba(255,120,120,0.95)' : 'rgba(255,0,51,0.6)';
-          ctx.fillRect(p.tx - 1, p.ty - 1, 2, 2);
-        }
-      };
-      drawStatic();
-      const onR = () => { build(); drawStatic(); };
-      window.addEventListener('resize', onR);
-      return () => window.removeEventListener('resize', onR);
-    }
-
-    // phase timings (ms)
-    const CONV = 1800, HOLD = 3600, DISS = 1400, CYCLE = 7000;
-    const start = performance.now();
     let raf = 0;
-
-    const ease = (t: number) => 1 - Math.pow(1 - t, 3);
-
-    const loop = (now: number) => {
-      const t = (now - start) % CYCLE;
+    const draw = () => {
       ctx.clearRect(0, 0, w, h);
-
-      for (const p of particles) {
-        if (t < CONV) {
-          if (p.delay === 0 && p.sx === 0) { p.sx = p.x; p.sy = p.y; }
-          if (p.vx === 0 && p.vy === 0 && t < 16) { p.sx = p.x; p.sy = p.y; }
-          const raw = (t / CONV - p.delay) / (1 - p.delay);
-          const k = ease(Math.max(0, Math.min(1, raw)));
-          p.x = p.sx + (p.tx - p.sx) * k;
-          p.y = p.sy + (p.ty - p.sy) * k;
-        } else if (t < HOLD) {
-          p.x = p.tx + Math.sin(now * 0.002 + p.seed) * 1.6;
-          p.y = p.ty + Math.cos(now * 0.0017 + p.seed) * 1.6;
-        } else if (t < DISS + HOLD) {
-          if (t - (now - 16.7 - start) % CYCLE > 0 && p.vx === 0) {
-            const ang = Math.atan2(p.ty - h / 2, p.tx - w * 0.66) + (Math.random() - 0.5) * 1.2;
-            const sp = 1.5 + Math.random() * 3.5;
-            p.vx = Math.cos(ang) * sp; p.vy = Math.sin(ang) * sp;
-          }
-          p.x += p.vx; p.y += p.vy;
-          p.vx *= 0.985; p.vy *= 0.985;
-        } else {
-          p.x += p.vx; p.y += p.vy;
-          p.vx *= 0.99; p.vy *= 0.99;
-          // wrap drift
-          if (p.x < -10) p.x = w + 10; if (p.x > w + 10) p.x = -10;
-          if (p.y < -10) p.y = h + 10; if (p.y > h + 10) p.y = -10;
-          if (t > CYCLE - 40) { p.sx = p.x; p.sy = p.y; p.vx = 0; p.vy = 0; }
+      if (prm) {
+        for (const p of particles) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color === '#00f2fe' ? 'rgba(0, 242, 254, 0.4)' : 'rgba(168, 85, 247, 0.4)';
+          ctx.fill();
         }
-
-        ctx.fillStyle = p.bright ? 'rgba(255,130,130,0.95)' : 'rgba(255,0,51,0.62)';
-        ctx.fillRect(p.x - 1, p.y - 1, p.bright ? 2.6 : 2, p.bright ? 2.6 : 2);
+        return;
       }
 
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
 
-    const onResize = () => build();
+        if (p.x < 0 || p.x > w) p.vx = -p.vx;
+        if (p.y < 0 || p.y > h) p.vy = -p.vy;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const dist = Math.hypot(dx, dy);
+
+          if (dist < 115) {
+            const alpha = (1 - dist / 115) * 0.14;
+            ctx.strokeStyle = p.color === '#00f2fe' ? `rgba(0, 242, 254, ${alpha})` : `rgba(168, 85, 247, ${alpha})`;
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+
+        const mx = mouseRef.current.x;
+        const my = mouseRef.current.y;
+        if (mx > -1000 && my > -1000) {
+          const dx = p.x - mx;
+          const dy = p.y - my;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 170) {
+            const alpha = (1 - dist / 170) * 0.22;
+            ctx.strokeStyle = `rgba(0, 242, 254, ${alpha})`;
+            ctx.lineWidth = 0.6;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(mx, my);
+            ctx.stroke();
+          }
+        }
+      }
+
+      raf = requestAnimationFrame(draw);
+    };
+
+    if (active) {
+      raf = requestAnimationFrame(draw);
+    }
+
+    const onMouseMove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      mouseRef.current = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      };
+    };
+
+    const onMouseLeave = () => {
+      mouseRef.current = { x: -1000, y: -1000 };
+    };
+
+    const onResize = () => {
+      init();
+    };
+
     window.addEventListener('resize', onResize);
+    canvas.addEventListener('mousemove', onMouseMove);
+    canvas.addEventListener('mouseleave', onMouseLeave);
+
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', onResize);
+      canvas.removeEventListener('mousemove', onMouseMove);
+      canvas.removeEventListener('mouseleave', onMouseLeave);
     };
   }, [prm, active]);
 
@@ -171,7 +154,7 @@ function SkullCanvas({ active }: { active: boolean }) {
 /* =========================================================
    VIOLENT TYPEWRITER
 ========================================================= */
-const ROLES = ['AI Engineer', 'Systems Architect', 'Cybersecurity Obsessive', 'Building What Matters'];
+const ROLES = ['AI Engineer', 'ML Researcher', 'Full Stack Dev'];
 
 function ViolentTypewriter({ enabled }: { enabled: boolean }) {
   const [i, setI] = useState(0);
@@ -215,31 +198,31 @@ function HexMonolith() {
   return (
     <div
       aria-hidden
-      className="absolute right-[-8%] top-1/2 -translate-y-1/2 w-[520px] h-[520px] md:w-[680px] md:h-[680px] pointer-events-none opacity-70"
+      className="absolute right-[-8%] top-1/2 -translate-y-1/2 w-[520px] h-[520px] md:w-[680px] md:h-[680px] pointer-events-none opacity-50"
       style={{ perspective: '1100px' }}
     >
-      <div className="absolute inset-0 rounded-full" style={{ background: 'radial-gradient(circle, rgba(139,0,0,0.35) 0%, transparent 62%)', filter: 'blur(40px)' }} />
+      <div className="absolute inset-0 rounded-full" style={{ background: 'radial-gradient(circle, rgba(168,85,247,0.15) 0%, transparent 62%)', filter: 'blur(40px)' }} />
       <div className="absolute inset-0" style={{ transform: 'rotateX(16deg) rotateY(-14deg)', transformStyle: 'preserve-3d' }}>
         <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full" style={{ animation: 'spin360 46s linear infinite' }}>
           <polygon
             points="50,3 91,26.5 91,73.5 50,97 9,73.5 9,26.5"
-            fill="rgba(139,0,0,0.10)"
-            stroke="rgba(255,0,51,0.5)"
+            fill="rgba(10,15,30,0.2)"
+            stroke="rgba(0,242,254,0.4)"
             strokeWidth="0.5"
-            style={{ filter: 'drop-shadow(0 0 8px rgba(255,0,51,0.55))' }}
+            style={{ filter: 'drop-shadow(0 0 8px rgba(0,242,254,0.4))' }}
           />
         </svg>
         <svg viewBox="0 0 100 100" className="absolute inset-[12%] w-[76%] h-[76%]" style={{ animation: 'spin360 30s linear infinite reverse' }}>
           <polygon
             points="50,3 91,26.5 91,73.5 50,97 9,73.5 9,26.5"
             fill="none"
-            stroke="rgba(255,0,51,0.32)"
+            stroke="rgba(168,85,247,0.25)"
             strokeWidth="0.4"
             strokeDasharray="6 3"
           />
         </svg>
         <svg viewBox="0 0 100 100" className="absolute inset-[27%] w-[46%] h-[46%]" style={{ animation: 'spin360 22s linear infinite' }}>
-          <polygon points="50,3 91,26.5 91,73.5 50,97 9,73.5 9,26.5" fill="rgba(139,0,0,0.16)" stroke="rgba(255,0,51,0.6)" strokeWidth="0.6" />
+          <polygon points="50,3 91,26.5 91,73.5 50,97 9,73.5 9,26.5" fill="rgba(10,15,30,0.3)" stroke="rgba(0,242,254,0.5)" strokeWidth="0.6" />
         </svg>
       </div>
     </div>
@@ -292,10 +275,10 @@ function EkgDivider() {
   return (
     <div className="absolute bottom-0 left-0 right-0">
       <svg viewBox="0 0 1200 100" preserveAspectRatio="none" className="w-full h-16 md:h-20 block">
-        <path d={d} fill="none" stroke="rgba(255,0,51,0.22)" strokeWidth="1.5" />
-        <path d={d} fill="none" stroke="#ff0033" strokeWidth="2.5" pathLength={1000} className="ekg-pulse" />
+        <path d={d} fill="none" stroke="rgba(0,242,254,0.15)" strokeWidth="1.5" />
+        <path d={d} fill="none" stroke="#00f2fe" strokeWidth="2.5" pathLength={1000} className="ekg-pulse" />
       </svg>
-      <div className="pulse-line h-[2px] w-full" style={{ background: 'linear-gradient(90deg, transparent, #8b0000 20%, #ff0033 50%, #8b0000 80%, transparent)' }} />
+      <div className="pulse-line h-[2px] w-full" style={{ background: 'linear-gradient(90deg, transparent, #a855f7 20%, #00f2fe 50%, #a855f7 80%, transparent)' }} />
     </div>
   );
 }
@@ -315,7 +298,7 @@ export function Hero({ ready }: { ready: boolean }) {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center overflow-hidden pt-28 pb-24 scroll-mt-24">
-      <SkullCanvas active={ready} />
+      <NeuralConstellationCanvas active={ready} />
       <HexMonolith />
       <ParallaxCubes />
       <div className="scanline-sweep" aria-hidden />
@@ -328,7 +311,7 @@ export function Hero({ ready }: { ready: boolean }) {
               <div className="inline-flex items-center gap-3 glass-red px-4 py-2 mb-8">
                 <span className="rec-dot" />
                 <span className="font-mono2 text-[10px] md:text-[11px] tracking-[0.3em] uppercase text-zinc-300">
-                  EX AI Intern @ Maveric Systems <span className="red">//</span> open for ops
+                  AI Engineering Intern @ Maveric Systems <span className="red">//</span> open for ops
                 </span>
               </div>
             </motion.div>
@@ -360,9 +343,9 @@ export function Hero({ ready }: { ready: boolean }) {
               transition={{ duration: 0.6, delay: 0.42 }}
               className="mt-5 dim max-w-xl leading-relaxed text-sm md:text-base"
             >
-              <span className="text-white">EX AI Intern @ Maveric Systems Limited.</span> CS Engineer at
-              VIT Vellore · B.S. Data Science at IIT Madras. Building at the intersection of{' '}
-              <span className="red">AI, Cybersecurity &amp; Cloud.</span>
+              <span className="text-white">AI Engineering Intern @ Maveric Systems.</span> CS Sophomore at
+              VIT Vellore + B.S. Data Science at IIT Madras. Architecting systems at the intersection of{' '}
+              <span className="red">AI Agents, Machine Learning &amp; Cybersecurity.</span>
             </motion.p>
 
             <motion.div variants={fadeUp} initial="hide" animate={st} transition={{ duration: 0.6, delay: 0.52 }} className="mt-7 flex flex-wrap items-center gap-2">
@@ -395,7 +378,7 @@ export function Hero({ ready }: { ready: boolean }) {
             className="relative"
           >
             <div className="glass-red p-6 md:p-7 relative">
-              <div className="absolute -top-px left-8 right-8 h-px bg-gradient-to-r from-transparent via-[#ff0033] to-transparent" />
+              <div className="absolute -top-px left-8 right-8 h-px bg-gradient-to-r from-transparent via-[#00f2fe] to-transparent" />
               <div className="flex items-center justify-between mb-6">
                 <span className="font-mono2 text-[10px] tracking-[0.35em] uppercase text-zinc-400">System diagnostics</span>
                 <span className="rec-dot" />
@@ -403,13 +386,13 @@ export function Hero({ ready }: { ready: boolean }) {
 
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { n: 4, s: '+', label: 'Projects deployed' },
-                  { n: 3, s: '', label: 'Certifications' },
+                  { n: 4, s: '+', label: 'Systems shipped' },
+                  { n: 6, s: '', label: 'Credentials verified' },
                   { n: 2, s: '', label: 'Active degrees' },
                   { n: 29, s: "'", label: 'Grad year' },
                 ].map((stat) => (
-                  <div key={stat.label} className="grow-border pl-4 py-3 bg-black/40 border border-[rgba(255,0,0,0.12)] hover:border-[rgba(255,0,51,0.45)] transition-colors">
-                    <div className="font-display text-4xl md:text-5xl red" style={{ textShadow: '0 0 18px rgba(255,0,51,0.55)' }}>
+                  <div key={stat.label} className="grow-border pl-4 py-3 bg-black/40 border border-[rgba(0,242,254,0.12)] hover:border-[rgba(0,242,254,0.45)] transition-colors">
+                    <div className="font-display text-4xl md:text-5xl red" style={{ textShadow: '0 0 18px rgba(0,242,254,0.55)' }}>
                       <HackCounter value={stat.n} suffix={stat.s} />
                     </div>
                     <div className="font-mono2 text-[9px] md:text-[10px] tracking-[0.22em] uppercase text-zinc-500 mt-1.5">{stat.label}</div>
@@ -417,9 +400,9 @@ export function Hero({ ready }: { ready: boolean }) {
                 ))}
               </div>
 
-              <div className="mt-5 pt-5 border-t border-[rgba(255,0,0,0.15)] flex items-center justify-between">
+              <div className="mt-5 pt-5 border-t border-[rgba(0,242,254,0.15)] flex items-center justify-between">
                 <div className="font-mono2 text-[10px] tracking-[0.25em] uppercase text-zinc-500">
-                  clearance <span className="red">LVL-5</span> // eyes only
+                  clearance <span className="red">LVL-5</span> // system online
                 </div>
                 <svg className="w-5 h-5 red" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M12 2L4 6v6c0 5 3.5 9.5 8 10 4.5-.5 8-5 8-10V6l-8-4z" strokeLinejoin="round" />
