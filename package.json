@@ -1,29 +1,41 @@
 {
-  "name": "react-vite-tailwind",
+  "name": "sarvajith-sankar-portfolio",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "description": "Personal portfolio of Sarvajith Sankar — AI & Software Engineering.",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "og": "node scripts/generate-og.mjs"
   },
   "dependencies": {
     "clsx": "2.1.1",
-    "framer-motion": "^13.1.0",
-    "react": "19.2.6",
-    "react-dom": "19.2.6",
-    "tailwind-merge": "3.4.0"
+    "framer-motion": "11.18.2",
+    "lucide-react": "0.454.0",
+    "next": "14.2.35",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "tailwind-merge": "2.5.4"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "4.1.17",
-    "@types/node": "22.19.17",
-    "@types/react": "19.2.7",
-    "@types/react-dom": "19.2.3",
-    "@vitejs/plugin-react": "5.1.1",
-    "tailwindcss": "4.1.17",
-    "typescript": "5.9.3",
-    "vite": "7.3.2",
-    "vite-plugin-singlefile": "2.3.0"
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/space-grotesk": "^5.3.0",
+    "@resvg/resvg-js": "2.6.2",
+    "@types/node": "20.19.25",
+    "@types/react": "18.3.26",
+    "@types/react-dom": "18.3.7",
+    "autoprefixer": "10.4.21",
+    "eslint": "8.57.1",
+    "eslint-config-next": "14.2.35",
+    "postcss": "8.5.6",
+    "satori": "0.12.2",
+    "tailwindcss": "3.4.19",
+    "typescript": "5.6.3"
+  },
+  "engines": {
+    "node": ">=18.17.0"
   }
 }

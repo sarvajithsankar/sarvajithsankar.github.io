@@ -23,3 +23,15 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+
+# next.js
+.next/
+out/
+next-env.d.ts.bak
+*.tsbuildinfo
+
+# vercel
+.vercel/
+
+# og-image build-time font downloads (the generated PNG is committed)
+scripts/fonts/
