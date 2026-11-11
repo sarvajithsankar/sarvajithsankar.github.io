@@ -4,7 +4,6 @@
  * - Desktop Cursor Follower with interactive ring expansion
  * - Marquee Dividers with velocity boost, direction flip, and dynamic skew
  * - Reveal Utilities (Headline masks, eyebrow dash scaling, word-by-word reveal statement)
- * - Detail Modal Overlay system with focus trap
  */
 
 (function () {
@@ -96,6 +95,23 @@
   }
 
   // 3. Marquee Dividers (Section 7.1)
+  let scrollVelocity = 0;
+  if (!prefersReducedMotion) {
+    let lastScrollY = window.scrollY;
+    let lastSampleTime = performance.now();
+
+    function sampleScrollVelocity(now) {
+      const y = window.scrollY;
+      const dt = Math.max(8, now - lastSampleTime);
+      const instant = ((y - lastScrollY) / dt) * 1000;
+      scrollVelocity += (instant - scrollVelocity) * 0.2;
+      lastScrollY = y;
+      lastSampleTime = now;
+      requestAnimationFrame(sampleScrollVelocity);
+    }
+    requestAnimationFrame(sampleScrollVelocity);
+  }
+
   const marquees = document.querySelectorAll('.marquee-divider');
   marquees.forEach((marquee) => {
     const track = marquee.querySelector('.marquee-track');
@@ -106,10 +122,7 @@
     let currentSkew = 0;
 
     function animateMarquee() {
-      let vel = 0;
-      if (typeof ScrollTrigger !== 'undefined') {
-        vel = ScrollTrigger.getVelocity() || 0;
-      }
+      const vel = scrollVelocity;
 
       // Base direction is -1 (left). Direction flip when scrolling up
       let dir = -1;
@@ -150,11 +163,11 @@
       span.className = 'w';
       span.textContent = word + ' ';
 
-      // Highlight key hero phrases
+      // Highlight key phrases in the story
       const cleanWord = word.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-      if (cleanWord === 'actually' || cleanWord === 'work' || cleanWord === 'production') {
+      if (cleanWord === 'practising' || cleanWord === 'together' || cleanWord === 'better') {
         span.classList.add('hero-phrase');
-      } else if (cleanWord === 'deterministic' || cleanWord === 'resilient') {
+      } else if (cleanWord === 'routine') {
         span.classList.add('blue-phrase');
       }
 
@@ -227,7 +240,7 @@
       });
     }, { threshold: 0.15 });
 
-    document.querySelectorAll('.panel, .feature-item, .info-trio-col').forEach((el) => {
+    document.querySelectorAll('.panel, .feature-item, .info-trio-col, .direction-panel, .field-row, .route-row, .work-step').forEach((el) => {
       el.style.opacity = '0';
       el.style.transform = 'translateY(24px)';
       el.style.transition = 'opacity 700ms cubic-bezier(.2, .8, .2, 1), transform 700ms cubic-bezier(.2, .8, .2, 1)';
@@ -235,65 +248,5 @@
     });
   }
 
-  // 6. Detail Modal Overlay (Section 11.6)
-  const detailModal = document.getElementById('detail-modal-overlay');
-  const modalCloseBtn = document.getElementById('modal-close-btn');
-
-  window.openDetailModal = function (title, lead, desc, tags) {
-    if (!detailModal) return;
-    document.getElementById('modal-title').textContent = title;
-    document.getElementById('modal-lead').textContent = lead;
-    document.getElementById('modal-desc').textContent = desc;
-
-    const tagsContainer = document.getElementById('modal-tags-row');
-    if (tagsContainer) {
-      tagsContainer.innerHTML = '';
-      (tags || ['PYTHON', 'SYSTEMS', 'AI']).forEach((t) => {
-        const tagSpan = document.createElement('span');
-        tagSpan.className = 'modal-tag';
-        tagSpan.textContent = t;
-        tagsContainer.appendChild(tagSpan);
-      });
-    }
-
-    detailModal.classList.add('is-open');
-    document.body.style.overflow = 'hidden';
-    modalCloseBtn.focus();
-  };
-
-  window.closeDetailModal = function () {
-    if (!detailModal) return;
-    detailModal.classList.remove('is-open');
-    document.body.style.overflow = '';
-  };
-
-  if (modalCloseBtn) {
-    modalCloseBtn.addEventListener('click', window.closeDetailModal);
-  }
-
-  if (detailModal) {
-    detailModal.addEventListener('click', (e) => {
-      if (e.target === detailModal) {
-        window.closeDetailModal();
-      }
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && detailModal.classList.contains('is-open')) {
-        window.closeDetailModal();
-      }
-    });
-  }
-
-  // Wire inspect buttons to modal
-  document.querySelectorAll('.trigger-modal-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const title = btn.dataset.title || 'SYSTEM TELEMETRY';
-      const lead = btn.dataset.lead || 'Deep execution telemetry and architectural topology.';
-      const desc = btn.dataset.desc || 'Detailed state inspection across distributed agents and defensive security middleware.';
-      const tags = (btn.dataset.tags || 'LANGGRAPH,FASTAPI,REDIS').split(',');
-      window.openDetailModal(title, lead, desc, tags);
-    });
-  });
 
 })();

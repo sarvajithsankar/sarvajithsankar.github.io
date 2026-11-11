@@ -1,8 +1,8 @@
 /**
- * Terminal & Direct Communication Console (Section 8 & Contact)
- * - Interactive shell prompt with input
- * - Quick-action command chips
- * - Real contact routing & link dispatch
+ * Small console + decorative GitHub activity motif
+ * - Shell prompt with real commands only
+ * - Quick-action chips
+ * - Abstract, non-numeric activity grid (no fabricated stats)
  */
 
 (function () {
@@ -14,57 +14,78 @@
 
   const commands = {
     whoami: () => [
-      'Sarvajith Sankar — AI Engineer & ML Systems Developer',
-      'Dual-degree B.Tech CS @ VIT Vellore (2025-2029) × B.S. Data Science @ IIT Madras',
-      'Currently: AI Engineering Intern @ Maveric Systems (Autonomous Research Agents)'
+      'Sarvajith Sankar — I study CS at VIT Vellore and data science at IIT Madras.',
+      'Currently an AI intern at Maveric Systems, working with agents.',
+      'Interested in how models, tools, memory and state fit together.'
     ],
-    links: () => [
-      'GitHub:   <a class="terminal-link" href="https://github.com/sarvajithsankar" target="_blank" rel="noopener">https://github.com/sarvajithsankar</a>',
-      'LinkedIn: <a class="terminal-link" href="https://linkedin.com/in/sarvajithsankar" target="_blank" rel="noopener">https://linkedin.com/in/sarvajithsankar</a>',
-      'Email:    <a class="terminal-link" href="mailto:sarvajith2knot8@gmail.com">sarvajith2knot8@gmail.com</a>'
+    learning: () => [
+      'Machine learning and deep learning, from the maths up.',
+      'Transformers: reading the papers and re-implementing the pieces.',
+      'LLMs and agents with LangChain, LangGraph, the Deep Agents SDK and MCP.',
+      'Cloud and DevOps, because shipping is part of the work.'
     ],
     stack: () => [
-      'Languages:  Python, C++17, Java, SQL, Shell',
-      'AI & ML:    LangGraph, LangChain, MCP, ChromaDB, PyTorch, Transformers, scikit-learn',
-      'Backend:    FastAPI, Flask, Redis, PostgreSQL, Docker, Kubernetes'
+      'Languages:  Python, C++, Java, SQL, Shell',
+      'AI & agents: LangChain, LangGraph, Deep Agents SDK, MCP, PyTorch',
+      'Backend:    FastAPI, Flask, Redis, PostgreSQL, Docker'
     ],
-    focus: () => [
-      'Maveric Systems: LangGraph research agent with MCP tool calls (Tavily, Wikipedia, arXiv)',
-      'TENET-AI: SSoC Season 5 defensive security middleware protecting LLM endpoints',
-      'Sentinel-Vault: SIEM monitor in C++17 with AVL tree blacklist and RAID-1 vault storage'
+    links: () => [
+      'GitHub:   <a class="terminal-link" href="https://github.com/sarvajithsankar" target="_blank" rel="noopener noreferrer">github.com/sarvajithsankar</a>',
+      'LinkedIn: <a class="terminal-link" href="https://www.linkedin.com/in/sarvajithsankar/" target="_blank" rel="noopener noreferrer">linkedin.com/in/sarvajithsankar</a>',
+      'Email:    <a class="terminal-link" href="mailto:sarvajith2knot8@gmail.com">sarvajith2knot8@gmail.com</a>'
     ],
     clear: () => {
       if (terminalOutput) terminalOutput.innerHTML = '';
       return [];
     },
     help: () => [
-      'Available commands: whoami, links, stack, focus, clear, help'
+      'Available commands: whoami, learning, stack, links, clear, help'
     ]
   };
 
-  function printLine(html, isPrompt = false) {
+  function printPrompt(cmdStr) {
     if (!terminalOutput) return;
     const line = document.createElement('div');
     line.className = 'terminal-line';
-    if (isPrompt) {
-      line.innerHTML = `<span class="terminal-prompt">$</span> <span class="terminal-cmd">${html}</span>`;
-    } else {
-      line.innerHTML = `<span class="terminal-out">${html}</span>`;
-    }
+    const prompt = document.createElement('span');
+    prompt.className = 'terminal-prompt';
+    prompt.textContent = '$';
+    const cmd = document.createElement('span');
+    cmd.className = 'terminal-cmd';
+    cmd.textContent = cmdStr;
+    line.append(prompt, document.createTextNode(' '), cmd);
+    terminalOutput.appendChild(line);
+  }
+
+  function printLine(html) {
+    if (!terminalOutput) return;
+    const line = document.createElement('div');
+    line.className = 'terminal-line';
+    const out = document.createElement('span');
+    out.className = 'terminal-out';
+    out.innerHTML = html;
+    line.appendChild(out);
     terminalOutput.appendChild(line);
     terminalOutput.scrollTop = terminalOutput.scrollHeight;
   }
 
   window.runTerminalCommand = function (cmdStr) {
     const cleanCmd = cmdStr.trim().toLowerCase();
-    printLine(cleanCmd, true);
+    printPrompt(cleanCmd);
 
     if (commands[cleanCmd]) {
-      const outputLines = commands[cleanCmd]();
-      outputLines.forEach(l => printLine(l));
+      commands[cleanCmd]().forEach((l) => printLine(l));
     } else {
-      printLine(`command not found: ${cleanCmd}. Type <span class="terminal-prompt">help</span> for options.`);
+      const msg = document.createElement('div');
+      msg.className = 'terminal-line';
+      const out = document.createElement('span');
+      out.className = 'terminal-out';
+      out.textContent = `command not found: ${cleanCmd}. Type help for options.`;
+      msg.appendChild(out);
+      if (terminalOutput) terminalOutput.appendChild(msg);
     }
+
+    if (terminalOutput) terminalOutput.scrollTop = terminalOutput.scrollHeight;
   };
 
   if (terminalForm && terminalInput) {
@@ -88,4 +109,32 @@
     });
   });
 
+  // Decorative GitHub activity motif: abstract levels only, no counts or labels.
+  const activity = document.getElementById('gh-activity');
+  if (activity) {
+    const COLS = 26;
+    const ROWS = 7;
+    let seed = 20251;
+    const next = () => {
+      seed = (seed * 1664525 + 1013904223) % 4294967296;
+      return seed / 4294967296;
+    };
+
+    const frag = document.createDocumentFragment();
+    for (let c = 0; c < COLS; c++) {
+      const column = document.createElement('div');
+      column.className = 'gh-col';
+      for (let r = 0; r < ROWS; r++) {
+        const cell = document.createElement('span');
+        cell.className = 'gh-cell';
+        const v = next();
+        // Mostly quiet days, with occasional clusters.
+        const level = v > 0.86 ? 3 : v > 0.62 ? 2 : v > 0.34 ? 1 : 0;
+        cell.dataset.level = String(level);
+        column.appendChild(cell);
+      }
+      frag.appendChild(column);
+    }
+    activity.appendChild(frag);
+  }
 })();

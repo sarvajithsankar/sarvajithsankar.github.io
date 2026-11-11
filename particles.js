@@ -14,6 +14,12 @@
 
   if (!canvas) return;
 
+  if (typeof THREE === 'undefined') {
+    if (fallback) fallback.style.display = 'block';
+    canvas.style.display = 'none';
+    return;
+  }
+
   if (prefersReducedMotion || !window.WebGLRenderingContext) {
     if (fallback) fallback.style.display = 'block';
     if (canvas) canvas.style.display = 'none';
@@ -546,11 +552,12 @@
   const sectionShapeMap = [
     { selector: '#hero', shape: 'galaxy', opacity: 1.0 },
     { selector: '#deck-section', shape: 'ring', opacity: 0.9 },
-    { selector: '#statement-section', shape: 'tower', opacity: 0.28 },
-    { selector: '#architecture-section', shape: 'network', opacity: 0.22 },
-    { selector: '#pinned-scene-section', shape: 'helix', opacity: 0.30 },
-    { selector: '#projects-section', shape: 'network', opacity: 0.20 },
-    { selector: '#timeline-section', shape: 'wave', opacity: 0.25 },
+    { selector: '#before-code', shape: 'tower', opacity: 0.26 },
+    { selector: '#into-cs', shape: 'wave', opacity: 0.24 },
+    { selector: '#curiosity', shape: 'network', opacity: 0.22 },
+    { selector: '#work-scene', shape: 'helix', opacity: 0.30 },
+    { selector: '#next-steps', shape: 'tower', opacity: 0.22 },
+    { selector: '#conversations', shape: 'wave', opacity: 0.24 },
     { selector: '#contact-section', shape: 'galaxy', opacity: 0.85 }
   ];
 

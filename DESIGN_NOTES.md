@@ -2,7 +2,7 @@
 
 ## 1. Stack Detection & Architecture
 - **Framework & Runtime**: Modern Vanilla JavaScript (ES6+), HTML5, CSS3 Custom Properties.
-- **Visual & Motion Libraries**: Three.js (r128), Lenis smooth scroll (v1.0.29), GSAP 3 + ScrollTrigger (v3.12.2), Devicons.
+- **Visual & Motion Libraries**: Three.js (r128), Lenis smooth scroll (v1.0.29), GSAP 3 + ScrollTrigger (v3.12.2).
 - **Build & Deployment**: Vite v7 with SingleFile plugin and GitHub Pages deployment workflow (`deploy.yml`).
 - **Workspace Synchronization**: Mirrored all redesigned production assets and modules across active workspace and `sarvajithsankar.github.io`.
 
@@ -52,11 +52,29 @@
 
 ## 7. Interactive Instrument Panels & Pinned Scenes
 - Cursor-following ambient glow using CSS variables `--mx` and `--my`.
-- SVG architecture diagram featuring interactive node states (`idle`, `active`, `ready`, `success`, `failed`), traveling message chip, and spark burst callbacks.
-- Pinned scroll-scrubbed scene for TENET-AI prompt security pipeline featuring floating step card, segmented progress bar, and `FRAME 0000 / 0960` telemetry readout.
-- Pinned horizontal timeline with 2D canvas wavy particle river (1,400 dots) and self-drawing vertical connectors.
+- Learning-map SVG diagram with five nodes (machine learning, deep learning, transformers, LLMs and agents, cloud and DevOps), traveling notes chip, and spark burst callbacks.
+- One pinned scroll-scrubbed scene documenting the four parts of the Maveric Systems agent work: tools, state and memory, pretrained models, and iteration. Includes a floating step card, segmented progress, a four-stage SVG indicator, and the `FRAME 0000 / 0960` readout.
 
 ## 8. Progressive Enhancement & Accessibility
-- Complete fallback under `@media (prefers-reduced-motion: reduce)`: WebGL disabled in favor of static layered CSS background, card deck renders as a clean accessible grid, loader is bypassed, animations disabled.
-- Focus trap implemented in CONTENTS overlay and detail modal, with Esc key support and full keyboard tab navigation.
-- All real user content, copy, links (GitHub, LinkedIn, Email), and repositories (TENET-AI, Sentinel-Vault, VIT Smart Assistant, Customer Churn, Maveric Systems) preserved with zero placeholder text.
+- Complete fallback under `@media (prefers-reduced-motion: reduce)`: WebGL disabled for a static layered CSS background, card deck renders as a static grid with visible back faces and its section heading kept in normal flow, loader bypassed, pinned scenes and scroll animations disabled.
+- The card deck exposes an `sr-only` level-2 heading because its visual heading is an animated, `aria-hidden` layer; the visual heading becomes static content under reduced motion.
+- Focus trap in the CONTENTS overlay with Esc support and full keyboard tab navigation; opening moves focus to the close button, closing restores focus to the CONTENTS toggle.
+- Chapter cards are keyboard reachable and open their section on Enter/Space; no nested interactive elements remain inside a card. Tick-rail markers are visual only (`tabindex="-1"`) so they do not add nine stops to the tab order.
+- GitHub and LinkedIn cards use real profile URLs with `rel="noopener noreferrer"`, visible focus states, and a decorative activity motif with no invented counts.
+- The story is readable with JavaScript, WebGL, or smooth scrolling unavailable; all four work steps also render as a normal list below 1024px and under reduced motion.
+
+## 9. Personal-Story Content Pass
+- Replaced the project/module narrative with eight first-person chapters: hello, before the code, two degrees, still curious, learning through work, where this could go, beyond the screen, say hello.
+- Removed the project detail modal, the project grid, the pinned timeline, the security-pipeline demo, scenario chips, and the stat-counter tween, because they carried invented demo content or project enumeration the brief explicitly excludes.
+- Project links now live only as a single "Explore what I've built" link to GitHub; no individual repositories are named or described.
+- Kepler-style card deck repurposed as chapter navigation (8 cards), with targets remapped to the new sections.
+- Hero copy, field notes, academic route panel, learning map, work scene, direction panels, conversation section, console commands, profile cards, footer, contents overlay, tick rail, and particle shape map all rewritten/remapped for the new structure.
+- Deviations from the original visual spec:
+  - Hero lede widened from 26ch to 32ch so the longer personal introduction fits a 900px-tall viewport; hero uses a fluid 12.1vw cap.
+  - Reveal statement reduced from `--fs-statement` to `clamp(1.5rem, 2.3vw, 2.1rem)` because it now sits in a two-column layout.
+  - Work-scene headline capped at `clamp(2.2rem, 4.4vw, 4.2rem)` to keep the pinned scene inside the viewport.
+  - Card ring radius and fan spacing scale with viewport width; below 768px the deck becomes a labelled horizontal carousel.
+  - Pinned work scene only runs at 1024px and wider; tablet and mobile use the stacked four-step list.
+  - Under reduced motion the deck becomes a static 4-column grid (2 columns below 768px) with the stage-2 headline and lede placed above it in normal flow; the animated center text is omitted.
+- Legacy `timeline.js`, `data.js`, `hero.js`, and `app.js` remain in the repository but are no longer referenced by `index.html`; they were left in place rather than deleted.
+

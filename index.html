@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Sarvajith Sankar — AI Systems & Autonomous Agents</title>
-  <meta name="description" content="Cinematic dark editorial portfolio of Sarvajith Sankar — AI Engineer, ML Systems Developer, and Agent Architect.">
+  <title>Sarvajith Sankar — Machine Learning, Agents & How Systems Work</title>
+  <meta name="description" content="I'm Sarvajith. I study computer science at VIT Vellore and data science at IIT Madras, and I'm learning to build with AI by taking systems apart.">
 
   <!-- Google Fonts: Anton (Display), Instrument Serif (Accent Italic), Newsreader (Body Serif), IBM Plex Mono (Mono / UI) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,8 +12,7 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@1&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@1&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
 
-  <!-- Devicons CDN for Tech Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2308090d'/%3E%3Ctext x='16' y='25' font-family='Arial Black,sans-serif' font-size='22' fill='%23f28a2e' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
 
   <!-- Core Libraries: Lenis, GSAP 3 + ScrollTrigger, Three.js -->
   <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
@@ -25,6 +24,8 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+  <a class="skip-link" href="#main-content">SKIP TO CONTENT</a>
 
   <!-- ========================================================================
        GLOBAL ATMOSPHERE LAYERS (Stacking Order per Section 4)
@@ -58,10 +59,8 @@
        PERSISTENT CHROME (Always on Screen, Section 6)
        ======================================================================== -->
 
-  <!-- 6.1 Scroll Progress Hairline -->
   <div id="progress-hairline" class="chrome-progress-hairline" aria-hidden="true"></div>
 
-  <!-- 6.2 CONTENTS Button -->
   <button id="contents-btn" class="contents-btn" type="button" aria-expanded="false" aria-controls="contents-overlay">
     <span class="menu-icon" aria-hidden="true">
       <span class="menu-line line-top"></span>
@@ -71,11 +70,10 @@
     <span>CONTENTS</span>
   </button>
 
-  <!-- 6.3 Contents Overlay with Focus Trap -->
   <div id="contents-overlay" class="contents-overlay" role="dialog" aria-modal="true" aria-label="Table of Contents">
     <div class="contents-overlay-content">
       <div class="contents-left">
-        <div class="mono-orange" style="margin-bottom: 24px;">— DIRECTORY // NAVIGATION</div>
+        <div class="mono-orange" style="margin-bottom: 24px;">— CONTENTS // EIGHT SMALL CHAPTERS</div>
         <div id="contents-list" class="contents-list" role="navigation">
           <!-- Populated dynamically by chrome.js -->
         </div>
@@ -83,61 +81,57 @@
       <div class="contents-right">
         <button id="contents-close-btn" class="contents-close-btn" type="button">ESC // CLOSE</button>
         <div class="contents-preview-box">
-          <span class="mono">HOVER INDEX</span>
+          <span class="mono">HOVER A CHAPTER</span>
           <div id="contents-preview-big-idx" class="contents-preview-big-idx">00</div>
-          <p class="mono" style="color: var(--ink-2); max-width: 22ch;">PRESS ESC OR SELECT A MODULE TO SCROLL DIRECTLY.</p>
+          <p class="mono" style="color: var(--ink-2); max-width: 22ch;">PRESS ESC OR PICK A CHAPTER TO JUMP STRAIGHT THERE.</p>
+          <div class="contents-socials">
+            <a class="mono-link" href="https://github.com/sarvajithsankar" target="_blank" rel="noopener noreferrer">GITHUB <span aria-hidden="true">↗</span></a>
+            <a class="mono-link" href="https://www.linkedin.com/in/sarvajithsankar/" target="_blank" rel="noopener noreferrer">LINKEDIN <span aria-hidden="true">↗</span></a>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 6.4 Right-Edge Tick Rail -->
   <nav id="tick-rail" class="tick-rail" aria-label="Page Sections">
     <!-- Populated dynamically by chrome.js -->
   </nav>
 
-  <!-- 6.5 Scroll Percentage Readout -->
   <div id="scroll-percentage" class="scroll-percentage" aria-hidden="true">000%</div>
 
-  <!-- 6.6 Scene Frame Counter (Active during pinned scenes) -->
   <div id="scene-frame-counter" class="scene-frame-counter" aria-hidden="true">
     <span class="label">FRAME </span><span id="scene-frame-num" class="numerator">0000</span><span class="label"> / 0960</span>
   </div>
 
-  <!-- 6.7 Initial Loader -->
   <div id="fullscreen-loader" class="fullscreen-loader" aria-live="polite">
     <div id="loader-inner" class="loader-inner">
       <div id="loader-counter" class="loader-counter">000%</div>
       <div class="loader-bar-wrap">
         <div id="loader-fill" class="loader-bar-fill"></div>
       </div>
-      <div class="loader-sub">INITIALIZING TELEMETRY & WEBGL FIELD</div>
+      <div class="loader-sub">LOADING THE FIELD</div>
     </div>
   </div>
 
   <!-- ========================================================================
        CONTENT CONTAINER (Layer 3 at --z-content: 2)
        ======================================================================== -->
-  <main class="content-container">
+  <main id="main-content" class="content-container" tabindex="-1">
 
-    <!-- --------------------------------------------------------------------
-         SECTION 00: HERO (Section 3.1 Recipe)
-         -------------------------------------------------------------------- -->
-    <section id="hero" class="page-section" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center;">
-      <div class="two-col-grid" style="align-items: center;">
-        
-        <!-- Left Column: Title Recipe -->
-        <div>
-          <div class="section-eyebrow">00 / AUTONOMOUS SYSTEMS & SECURITY</div>
+    <!-- 00: HERO -->
+    <section id="hero" class="page-section hero-section">
+      <div class="section-eyebrow">00 / HELLO — A SHORT INTRODUCTION</div>
 
-          <h1 class="hero-title hero-headline">
-            <span class="headline-mask"><span class="headline-inner line-1">SARVAJITH SANKAR</span></span>
-            <span class="headline-mask"><span class="headline-inner line-2"><span class="outline">& MACHINE</span> <span>LEARNING</span></span></span>
-          </h1>
+      <h1 class="hero-title hero-headline">
+        <span class="headline-mask"><span class="headline-inner line-1">SARVAJITH SANKAR</span></span>
+        <span class="headline-mask"><span class="headline-inner line-2"><span class="outline">MACHINE</span> <span>LEARNING</span></span></span>
+      </h1>
 
+      <div class="hero-bottom">
+        <div class="hero-intro">
           <p class="hero-lede">
-            Building stateful agent architectures, MCP tooling, and LLM security middleware.
-            <span class="italic-orange">Engineered for absolute resilience.</span>
+            I study computer science at VIT Vellore and data science at IIT Madras. I'm interested in machine learning and agents, and in figuring out how the systems underneath actually work.
+            <span class="italic-orange">This page is the short version.</span>
           </p>
 
           <div class="scroll-to-begin">
@@ -146,503 +140,375 @@
           </div>
         </div>
 
-        <!-- Right Column: Credits & Meta Block over Galaxy Field -->
         <div class="hero-meta-block">
           <div class="meta-col">
             <div class="meta-row">
-              <span class="meta-label">ROLE</span>
-              <span class="meta-value">AI ENGINEER & RESEARCHER</span>
+              <span class="meta-label">STUDYING</span>
+              <span class="meta-value">VIT VELLORE — CSE</span>
             </div>
             <div class="meta-row">
-              <span class="meta-label">CURRENT FOCUS</span>
-              <span class="meta-value">MAVERIC SYSTEMS — AI INTERN</span>
+              <span class="meta-label">ALSO STUDYING</span>
+              <span class="meta-value">IIT MADRAS — DATA SCIENCE</span>
             </div>
             <div class="meta-row">
-              <span class="meta-label">ORCHESTRATION</span>
-              <span class="meta-value">LANGGRAPH / MCP / RAG</span>
+              <span class="meta-label">CURRENTLY</span>
+              <span class="meta-value">AI INTERN @ MAVERIC SYSTEMS</span>
             </div>
           </div>
           <div class="meta-col">
             <div class="meta-row">
-              <span class="meta-label">EDUCATION</span>
-              <span class="meta-value">VIT VELLORE × IIT MADRAS</span>
+              <span class="meta-label">INTERESTED IN</span>
+              <span class="meta-value">ML, LLMS, AGENT SYSTEMS</span>
             </div>
             <div class="meta-row">
-              <span class="meta-label">OPEN SOURCE</span>
-              <span class="meta-value">SSoC S5 // TENET-AI</span>
+              <span class="meta-label">WORKING WITH</span>
+              <span class="meta-value">LANGGRAPH, MCP, PYTORCH</span>
             </div>
             <div class="meta-row">
               <span class="meta-label">STATUS</span>
-              <span class="meta-value" style="color: var(--green);">● ACTIVE IN PRODUCTION</span>
+              <span class="meta-value" style="color: var(--green);">● OPEN TO CONVERSATIONS</span>
             </div>
           </div>
         </div>
-
       </div>
     </section>
 
-    <!-- --------------------------------------------------------------------
-         SECTION 01: SPIRAL / RING CARD DECK NAVIGATION (Section 10)
-         -------------------------------------------------------------------- -->
+    <!-- 01: CARD DECK (CHAPTER NAVIGATION) -->
     <section id="deck-section" class="card-deck-pinned-section">
+      <h2 class="sr-only">The short version</h2>
       <div class="card-deck-stage-wrapper">
         <div id="card-deck-center-text" class="card-deck-center-text" aria-hidden="true">
-          <div class="center-mono">MODULE REGISTRY</div>
-          <div class="center-lede">12 Autonomous Cores in Continuous Orbit</div>
+          <div class="center-mono">EIGHT SMALL CHAPTERS</div>
+          <div class="center-lede">A short story about cricket, two degrees, and agents.</div>
           <div class="center-mono" style="color: var(--ink-3);">KEEP SCROLLING TO UNROLL</div>
         </div>
         <div id="card-deck-stage2-headline" class="card-deck-stage2-headline" aria-hidden="true">
-          <div class="section-eyebrow">01 // CONTINUOUS ORBIT</div>
+          <div class="section-eyebrow">01 // THE SHORT VERSION</div>
           <h2 class="section-headline" style="margin-bottom: 8px;">
-            <span class="line-1">AUTONOMOUS CORES.</span>
-            <span class="line-2">In verified orbit.</span>
+            <span class="line-1">THE SHORT VERSION.</span>
+            <span class="line-2">Start anywhere.</span>
           </h2>
-          <p class="section-lede" style="max-width: 48ch; text-align: center; margin-inline: auto;">
-            Twelve modular execution cores powering deterministic agent reasoning, memory, and tools.
+          <p class="section-lede">
+            A few things about how I got here, what I'm learning, and what I might do next.
           </p>
         </div>
         <div id="card-deck-viewport" class="card-viewport-container">
-          <!-- 12 Marbled Cards Generated by card-deck.js -->
+          <!-- Chapter cards generated by card-deck.js -->
         </div>
       </div>
     </section>
 
-    <!-- MARQUEE DIVIDER 1 (Section 7.1) -->
+    <!-- MARQUEE DIVIDER 1 -->
     <div class="marquee-divider" aria-hidden="true">
       <div class="marquee-track">
         <div class="marquee-unit">
-          <span class="marquee-word-outline">AUTONOMOUS</span>
+          <span class="marquee-word-outline">CURIOUS</span>
           <span class="marquee-star">✦</span>
-          <span class="marquee-part">PART 01 // ARCHITECTURE</span>
-          <span class="marquee-word-solid">INTELLIGENCE</span>
-          <span class="marquee-star">✦</span>
-        </div>
-        <div class="marquee-unit">
-          <span class="marquee-word-outline">DETERMINISTIC</span>
-          <span class="marquee-star">✦</span>
-          <span class="marquee-part">PART 01 // ARCHITECTURE</span>
-          <span class="marquee-word-solid">SYSTEMS</span>
+          <span class="marquee-part">PART 01 // BEFORE THE CODE</span>
+          <span class="marquee-word-solid">ABOUT SYSTEMS</span>
           <span class="marquee-star">✦</span>
         </div>
         <div class="marquee-unit">
-          <span class="marquee-word-outline">STATEFUL</span>
+          <span class="marquee-word-outline">STILL</span>
           <span class="marquee-star">✦</span>
-          <span class="marquee-part">PART 01 // ARCHITECTURE</span>
-          <span class="marquee-word-solid">REASONING</span>
-          <span class="marquee-star">✦</span>
-        </div>
-        <div class="marquee-unit">
-          <span class="marquee-word-outline">AUTONOMOUS</span>
-          <span class="marquee-star">✦</span>
-          <span class="marquee-part">PART 01 // ARCHITECTURE</span>
-          <span class="marquee-word-solid">INTELLIGENCE</span>
+          <span class="marquee-part">PART 01 // BEFORE THE CODE</span>
+          <span class="marquee-word-solid">LEARNING</span>
           <span class="marquee-star">✦</span>
         </div>
         <div class="marquee-unit">
-          <span class="marquee-word-outline">DETERMINISTIC</span>
+          <span class="marquee-word-outline">CURIOUS</span>
           <span class="marquee-star">✦</span>
-          <span class="marquee-part">PART 01 // ARCHITECTURE</span>
-          <span class="marquee-word-solid">SYSTEMS</span>
+          <span class="marquee-part">PART 01 // BEFORE THE CODE</span>
+          <span class="marquee-word-solid">ABOUT SYSTEMS</span>
           <span class="marquee-star">✦</span>
         </div>
         <div class="marquee-unit">
-          <span class="marquee-word-outline">STATEFUL</span>
+          <span class="marquee-word-outline">STILL</span>
           <span class="marquee-star">✦</span>
-          <span class="marquee-part">PART 01 // ARCHITECTURE</span>
-          <span class="marquee-word-solid">REASONING</span>
+          <span class="marquee-part">PART 01 // BEFORE THE CODE</span>
+          <span class="marquee-word-solid">LEARNING</span>
+          <span class="marquee-star">✦</span>
+        </div>
+        <div class="marquee-unit">
+          <span class="marquee-word-outline">CURIOUS</span>
+          <span class="marquee-star">✦</span>
+          <span class="marquee-part">PART 01 // BEFORE THE CODE</span>
+          <span class="marquee-word-solid">ABOUT SYSTEMS</span>
+          <span class="marquee-star">✦</span>
+        </div>
+        <div class="marquee-unit">
+          <span class="marquee-word-outline">STILL</span>
+          <span class="marquee-star">✦</span>
+          <span class="marquee-part">PART 01 // BEFORE THE CODE</span>
+          <span class="marquee-word-solid">LEARNING</span>
           <span class="marquee-star">✦</span>
         </div>
       </div>
     </div>
 
-    <!-- --------------------------------------------------------------------
-         SECTION 02: REVEAL STATEMENT & PHILOSOPHY (Section 3.2, 3.3, 11.4, 11.7)
-         -------------------------------------------------------------------- -->
-    <section id="statement-section" class="page-section">
+    <!-- 02: BEFORE THE CODE -->
+    <section id="before-code" class="page-section">
       <div class="section-hairline"></div>
 
+      <div class="section-eyebrow">02 / BEFORE THE CODE</div>
+
+      <h2 class="section-headline">
+        <span class="headline-mask"><span class="headline-inner line-1">BEFORE THE CODE.</span></span>
+        <span class="headline-mask"><span class="headline-inner italic-inview line-2">Games first, systems later.</span></span>
+      </h2>
+
       <div class="two-col-grid">
-        
-        <!-- Left Column: Section Headline & Reveal Statement -->
         <div>
-          <div class="section-eyebrow">02 / CORE PHILOSOPHY</div>
-
-          <h2 class="section-headline">
-            <span class="headline-mask"><span class="headline-inner line-1">PRODUCTION PROTOCOLS.</span></span>
-            <span class="headline-mask"><span class="headline-inner italic-inview line-2">Not just demos that look good.</span></span>
-          </h2>
-
           <div id="statement-text" class="reveal-statement">
-            I care about systems that actually work in production. Not ephemeral demos, not brittle prompt chains, but deterministic, stateful agent loops and defensive security middleware that withstand adversarial real-world execution.
+            I was really into cricket in sixth grade and played for about three years. In eleventh and twelfth I captained my volleyball team. Nothing dramatic happened. I liked the routine of turning up, practising, and slowly getting a little better at something with other people.
           </div>
 
           <div class="pull-quote">
-            "The distinction between an impressive research demo and an engineering system is measured in how gracefully it handles failure under load."
-            <div class="mono" style="margin-top: 10px; color: var(--ink-3);">— ENGINEERING STANDARD // SARVAJITH SANKAR</div>
+            "I wasn't the best player. I just liked the part where you keep showing up and the thing starts to make sense."
+            <div class="mono" style="margin-top: 10px; color: var(--ink-3);">— ON CRICKET, VOLLEYBALL, AND PRACTICE</div>
           </div>
         </div>
 
-        <!-- Right Column: Numbered Feature Lists (Section 11.4) -->
-        <div>
-          <div class="numbered-features-grid" style="margin-top: 0;">
-            
-            <!-- Col A: Agent Foundations -->
-            <div>
-              <div class="feature-col-header">
-                <span class="badge-square">A</span>
-                <span class="feature-col-title">AGENT RUNTIME</span>
-              </div>
-              <div class="feature-list">
-                <div class="feature-item">
-                  <span class="feature-idx">01</span>
-                  <div class="feature-content">
-                    <h4>STATEFUL MEMORY</h4>
-                    <p>Hierarchical short-term sliding buffers paired with <strong>ChromaDB episodic memory</strong> to preserve context across 50+ reasoning cycles.</p>
-                  </div>
-                </div>
-                <div class="feature-item">
-                  <span class="feature-idx">02</span>
-                  <div class="feature-content">
-                    <h4>MCP TOOL CALLING</h4>
-                    <p>Standardized <strong>Model Context Protocol</strong> runners across Tavily, Wikipedia, arXiv, and sandboxed computation kernels.</p>
-                  </div>
-                </div>
-                <div class="feature-item">
-                  <span class="feature-idx">03</span>
-                  <div class="feature-content">
-                    <h4>GRAPH ROUTING</h4>
-                    <p>Deterministic branching in <strong>LangGraph</strong> enforcing schema constraints before tool dispatch and final synthesis.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Col B: Security Foundations -->
-            <div>
-              <div class="feature-col-header">
-                <span class="badge-square">B</span>
-                <span class="feature-col-title">DEFENSIVE SYSTEMS</span>
-              </div>
-              <div class="feature-list">
-                <div class="feature-item">
-                  <span class="feature-idx">01</span>
-                  <div class="feature-content">
-                    <h4>PAYLOAD INTERCEPTION</h4>
-                    <p>FastAPI middleware inspecting every prompt for injection, jailbreak, and extraction patterns <strong>sub-15ms</strong> before model inference.</p>
-                  </div>
-                </div>
-                <div class="feature-item">
-                  <span class="feature-idx">02</span>
-                  <div class="feature-content">
-                    <h4>REDIS CLASSIFIER</h4>
-                    <p>In-memory signature caching classifying repeated attack vectors once with zero repeat neural compute.</p>
-                  </div>
-                </div>
-                <div class="feature-item">
-                  <span class="feature-idx">03</span>
-                  <div class="feature-content">
-                    <h4>AUDIT LEDGER</h4>
-                    <p>Append-only <strong>PostgreSQL audit trail</strong> logging all malicious payloads, session states, and mitigation telemetry.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+        <div class="panel field-notes">
+          <div class="panel-header-bar">
+            <span class="panel-title">FIELD NOTES // BEFORE THE CODE</span>
+            <div class="state-pill"><span class="dot"></span>OFF-SCREEN</div>
           </div>
 
-          <div class="feature-info-box">
-            <div class="feature-info-label">BENCHMARK SUMMARY // MAveric & SSoc S5</div>
-            <p class="feature-info-text">
-              Benchmarked across 7,000+ adversarial samples. Verified sub-20ms P95 latency overhead with near-zero false positive rate on production APIs.
-            </p>
+          <div class="field-row">
+            <span class="field-label">CRICKET</span>
+            <p class="field-text">Played for about three years, starting in sixth grade. Fond of it from the start.</p>
           </div>
-        </div>
-
-      </div>
-
-      <!-- Info Trio (Section 11.7) -->
-      <div class="info-trio-grid">
-        <div class="info-trio-col">
-          <div class="info-trio-title">RAG VS FINE-TUNING</div>
-          <p class="info-trio-text">
-            Empirical evaluations demonstrating near-zero hallucination on mutating datasets via dense vector upserts at a fraction of fine-tuning compute.
-          </p>
-        </div>
-        <div class="info-trio-col">
-          <div class="info-trio-title">PROMPT FIREWALL</div>
-          <p class="info-trio-text">
-            Dual-stage heuristic scanning combined with cosine embedding distance to neutralize recursive payload injection and jailbreaks.
-          </p>
-        </div>
-        <div class="info-trio-col">
-          <div class="info-trio-title">DUAL-DEGREE RIGOR</div>
-          <p class="info-trio-text">
-            B.Tech CSE at VIT Vellore paired with B.S. in Data Science at IIT Madras (2025–2029) grounding algorithms in deep mathematical foundations.
-          </p>
+          <div class="field-row">
+            <span class="field-label">VOLLEYBALL</span>
+            <p class="field-text">Captained my volleyball team in grades 11 and 12. Six people, one ball, and a lot of talking.</p>
+          </div>
+          <div class="field-row">
+            <span class="field-label">WHAT STUCK</span>
+            <p class="field-text">Showing up, practising, and being useful to a team. That habit came with me into code.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- --------------------------------------------------------------------
-         SECTION 03: AGENT ARCHITECTURE & SVG INSTRUMENT PANEL (Section 8)
-         -------------------------------------------------------------------- -->
-    <section id="architecture-section" class="page-section">
+    <!-- 03: FINDING MY WAY INTO CS -->
+    <section id="into-cs" class="page-section">
       <div class="section-hairline"></div>
 
-      <div class="section-eyebrow">03 / INTERACTIVE ARCHITECTURE</div>
-      
+      <div class="section-eyebrow">03 / FINDING MY WAY IN</div>
+
       <h2 class="section-headline">
-        <span class="headline-mask"><span class="headline-inner line-1">AGENT EXECUTION TOPOLOGY.</span></span>
-        <span class="headline-mask"><span class="headline-inner italic-inview line-2">Five stages of verified orchestration.</span></span>
+        <span class="headline-mask"><span class="headline-inner line-1">TWO DEGREES.</span></span>
+        <span class="headline-mask"><span class="headline-inner italic-inview line-2">One direction.</span></span>
       </h2>
 
-      <p class="section-lede">
-        Inspect the live execution dynamics of autonomous multi-agent pipelines. Click any node to track message routing, memory state loops, and MCP tool execution.
+      <div class="two-col-grid">
+        <div>
+          <p class="section-lede" style="margin-bottom: 20px;">
+            I got interested in computer science before I really knew what to do with it. I liked that you could build something, run it, and immediately see whether it worked.
+          </p>
+          <p class="section-lede">
+            That took me to CSE at VIT Vellore, and to the data science programme at IIT Madras. One is teaching me how to build systems; the other is teaching me the maths underneath them. I'm still somewhere in the middle of both.
+          </p>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header-bar">
+            <span class="panel-title">ACADEMIC ROUTE // TWO PROGRAMMES</span>
+            <div class="state-pill"><span class="dot"></span>IN PROGRESS</div>
+          </div>
+
+          <div class="route-row">
+            <span class="route-year">VIT</span>
+            <div class="route-body">
+              <div class="route-title">VELLORE INSTITUTE OF TECHNOLOGY</div>
+              <div class="route-sub">B.TECH — COMPUTER SCIENCE &amp; ENGINEERING</div>
+              <p class="route-text">Data structures, systems, and the fundamentals I use every time I sit down to build something.</p>
+            </div>
+          </div>
+          <div class="route-row">
+            <span class="route-year">IITM</span>
+            <div class="route-body">
+              <div class="route-title">INDIAN INSTITUTE OF TECHNOLOGY, MADRAS</div>
+              <div class="route-sub">B.S. — DATA SCIENCE · 2025–2029</div>
+              <p class="route-text">Probability, linear algebra, and the maths behind models that learn from data.</p>
+            </div>
+          </div>
+
+          <div class="panel-footnote mono">TWO PROGRAMMES. ONE QUESTION: HOW DOES THIS ACTUALLY WORK?</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04: WHAT KEEPS ME CURIOUS -->
+    <section id="curiosity" class="page-section">
+      <div class="section-hairline"></div>
+
+      <div class="section-eyebrow">04 / WHAT KEEPS ME CURIOUS</div>
+
+      <h2 class="section-headline">
+        <span class="headline-mask"><span class="headline-inner line-1">STILL CURIOUS.</span></span>
+        <span class="headline-mask"><span class="headline-inner italic-inview line-2">Mostly about how the pieces fit.</span></span>
+      </h2>
+
+      <p class="section-lede" style="margin-bottom: 32px;">
+        I learn best by pulling something apart. Right now that means working from the maths up through neural networks, transformers, and the agent frameworks built on top of them.
       </p>
 
-      <!-- Instrument Panel Component (Section 8) -->
-      <div class="panel" style="margin-top: 36px;">
-        
-        <!-- Header Bar -->
+      <div class="panel">
         <div class="panel-header-bar">
-          <span class="panel-title">SYSTEMS RUNTIME // RE-ACT EXECUTION LOOP</span>
+          <span class="panel-title">LEARNING MAP // FROM MODELS TO AGENTS</span>
           <div class="state-pill">
             <span class="dot"></span>
-            <span id="arch-inspector-state">ACTIVE</span>
+            <span id="arch-inspector-state">LEARNING</span>
           </div>
         </div>
 
-        <!-- Filter Chips -->
         <div class="chips-row">
-          <button class="chip chip--accent is-active" type="button" onclick="selectArchitectureNode(0)">01 // CLIENT INGEST</button>
-          <button class="chip" type="button" onclick="selectArchitectureNode(1)">02 // REASONING CORE</button>
-          <button class="chip" type="button" onclick="selectArchitectureNode(2)">03 // STATE MACHINE</button>
-          <button class="chip" type="button" onclick="selectArchitectureNode(3)">04 // MCP TOOLS</button>
-          <button class="chip" type="button" onclick="selectArchitectureNode(4)">05 // VERIFIED OUTPUT</button>
+          <button class="chip chip--accent is-active" type="button" onclick="selectArchitectureNode(0)">01 // MACHINE LEARNING</button>
+          <button class="chip" type="button" onclick="selectArchitectureNode(1)">02 // DEEP LEARNING</button>
+          <button class="chip" type="button" onclick="selectArchitectureNode(2)">03 // TRANSFORMERS</button>
+          <button class="chip" type="button" onclick="selectArchitectureNode(3)">04 // LLMS &amp; AGENTS</button>
+          <button class="chip" type="button" onclick="selectArchitectureNode(4)">05 // CLOUD &amp; DEVOPS</button>
         </div>
 
-        <!-- SVG Diagram Container with Traveling Message Chip -->
         <div style="position: relative; width: 100%; min-height: 220px; margin-block: 20px;">
-          
-          <!-- Traveling Message Chip -->
           <div id="traveling-message-chip" class="traveling-chip" style="opacity: 0;">
             <span class="dot"></span>
-            <span>DATA PACKET</span>
+            <span>NOTES</span>
           </div>
 
-          <svg class="diagram-svg" viewBox="0 0 960 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Connector Paths -->
+          <svg class="diagram-svg" viewBox="0 0 960 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Learning path from machine learning to cloud and DevOps">
             <path id="connector-path-0" class="diagram-connector is-active" d="M 120 110 L 280 110" />
             <path id="connector-path-1" class="diagram-connector" d="M 320 110 L 480 110" />
             <path id="connector-path-2" class="diagram-connector" d="M 520 110 L 680 110" />
             <path id="connector-path-3" class="diagram-connector" d="M 720 110 L 860 110" />
 
-            <!-- Node 1: Client Ingest -->
             <g class="diagram-node" data-state="active">
               <rect class="diagram-node-rect" x="20" y="65" width="120" height="90" />
-              <text class="diagram-node-title" x="80" y="105">CLIENT</text>
-              <text class="diagram-node-sub" x="80" y="122">INGESTION</text>
-              <text class="diagram-node-badge" x="80" y="142">01 // ACTIVE</text>
+              <text class="diagram-node-title" x="80" y="105">MACHINE</text>
+              <text class="diagram-node-sub" x="80" y="122">LEARNING</text>
+              <text class="diagram-node-badge" x="80" y="142">01 // MODELS</text>
             </g>
 
-            <!-- Node 2: Reasoning Core -->
             <g class="diagram-node" data-state="idle">
               <rect class="diagram-node-rect" x="220" y="65" width="120" height="90" />
-              <text class="diagram-node-title" x="280" y="105">REASONING</text>
-              <text class="diagram-node-sub" x="280" y="122">CORE LLM</text>
-              <text class="diagram-node-badge" x="280" y="142">02 // IDLE</text>
+              <text class="diagram-node-title" x="280" y="105">DEEP</text>
+              <text class="diagram-node-sub" x="280" y="122">LEARNING</text>
+              <text class="diagram-node-badge" x="280" y="142">02 // NETS</text>
             </g>
 
-            <!-- Node 3: LangGraph State (Hub Circle) -->
             <g class="diagram-node" data-state="idle">
               <circle class="diagram-hub-circle" cx="500" cy="110" r="48" />
-              <text class="diagram-node-title" x="500" y="105">LANGGRAPH</text>
-              <text class="diagram-node-sub" x="500" y="122">STATE HUB</text>
-              <text class="diagram-node-badge" x="500" y="140">03 // ROUTER</text>
+              <text class="diagram-node-title" x="500" y="105">TRANSFORMERS</text>
+              <text class="diagram-node-sub" x="500" y="122">ATTENTION</text>
+              <text class="diagram-node-badge" x="500" y="140">03 // PAPERS</text>
             </g>
 
-            <!-- Node 4: MCP Tools -->
             <g class="diagram-node" data-state="idle">
               <rect class="diagram-node-rect" x="620" y="65" width="120" height="90" />
-              <text class="diagram-node-title" x="680" y="105">MCP SUITE</text>
-              <text class="diagram-node-sub" x="680" y="122">SANDBOX TOOLS</text>
-              <text class="diagram-node-badge" x="680" y="142">04 // IDLE</text>
+              <text class="diagram-node-title" x="680" y="105">LLMS &amp;</text>
+              <text class="diagram-node-sub" x="680" y="122">AGENTS</text>
+              <text class="diagram-node-badge" x="680" y="142">04 // TOOLS</text>
             </g>
 
-            <!-- Node 5: Output Synthesis -->
             <g class="diagram-node" data-state="idle">
               <rect class="diagram-node-rect" x="820" y="65" width="120" height="90" />
-              <text class="diagram-node-title" x="880" y="105">SYNTHESIS</text>
-              <text class="diagram-node-sub" x="880" y="122">GROUNDED DOC</text>
-              <text class="diagram-node-badge" x="880" y="142">05 // DONE</text>
+              <text class="diagram-node-title" x="880" y="105">CLOUD &amp;</text>
+              <text class="diagram-node-sub" x="880" y="122">DEVOPS</text>
+              <text class="diagram-node-badge" x="880" y="142">05 // SHIPPING</text>
             </g>
           </svg>
         </div>
 
-        <!-- Inspector Details Row -->
         <div style="background: var(--inset); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px;">
-          <div id="arch-inspector-title" class="mono-orange" style="margin-bottom: 8px;">CLIENT INGEST // 01</div>
+          <div id="arch-inspector-title" class="mono-orange" style="margin-bottom: 8px;">MACHINE LEARNING // 01</div>
           <p id="arch-inspector-desc" class="serif-body" style="font-size: 15px;">
-            Inbound prompt payload received from client interface with session token and task constraints. Real-time validation sanitizes raw inputs before forwarding to reasoning loop.
+            Where I started: how models learn from data, how to check whether they are any good, and why a simple baseline is usually worth trying first.
           </p>
         </div>
 
-        <!-- Stat Readout Row (Section 8) -->
-        <div class="stat-readout-row">
-          <div class="stat-item">
-            <div class="stat-caption">ROUTING OVERHEAD</div>
-            <div class="stat-val is-orange" data-target="15" data-suffix="ms">15ms</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-caption">CITATION ACCURACY</div>
-            <div class="stat-val is-success" data-target="99.4" data-suffix="%">99.4%</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-caption">MAX MEMORY CYCLES</div>
-            <div class="stat-val" data-target="50" data-suffix="+">50+</div>
-          </div>
-        </div>
-
-        <!-- Sub-tile Grids (Section 8) -->
         <div class="subtile-grid">
           <div class="subtile">
-            <div class="subtile-head">MEMORY LAYER</div>
-            <div class="subtile-stat">ChromaDB + Redis Checkpointing</div>
+            <div class="subtile-head">READING</div>
+            <div class="subtile-stat">Transformer papers, slowly</div>
           </div>
           <div class="subtile">
-            <div class="subtile-head">TOOL INTERFACE</div>
-            <div class="subtile-stat">Model Context Protocol (MCP)</div>
+            <div class="subtile-head">BUILDING</div>
+            <div class="subtile-stat">Small agent tools with MCP</div>
           </div>
           <div class="subtile">
-            <div class="subtile-head">INFERENCE PROTOCOL</div>
-            <div class="subtile-stat">LangGraph ReAct Multi-Node</div>
+            <div class="subtile-head">NEXT</div>
+            <div class="subtile-stat">More cloud &amp; deployment practice</div>
           </div>
         </div>
 
+        <p class="mono" style="margin-top: 18px;">
+          <a class="mono-link" href="https://github.com/sarvajithsankar" target="_blank" rel="noopener noreferrer">EXPLORE WHAT I'VE BUILT <span aria-hidden="true">↗</span></a>
+        </p>
       </div>
     </section>
 
-    <!-- MARQUEE DIVIDER 2 (Section 7.1) -->
-    <div class="marquee-divider" aria-hidden="true">
-      <div class="marquee-track">
-        <div class="marquee-unit">
-          <span class="marquee-word-outline">DEFENSIVE</span>
-          <span class="marquee-star">✦</span>
-          <span class="marquee-part">PART 02 // SECURITY</span>
-          <span class="marquee-word-solid">MIDDLEWARE</span>
-          <span class="marquee-star">✦</span>
-        </div>
-        <div class="marquee-unit">
-          <span class="marquee-word-outline">RESILIENCE</span>
-          <span class="marquee-star">✦</span>
-          <span class="marquee-part">PART 02 // SECURITY</span>
-          <span class="marquee-word-solid">PIPELINE</span>
-          <span class="marquee-star">✦</span>
-        </div>
-        <div class="marquee-unit">
-          <span class="marquee-word-outline">DETERMINISTIC</span>
-          <span class="marquee-star">✦</span>
-          <span class="marquee-part">PART 02 // SECURITY</span>
-          <span class="marquee-word-solid">HEURISTICS</span>
-          <span class="marquee-star">✦</span>
-        </div>
-        <div class="marquee-unit">
-          <span class="marquee-word-outline">DEFENSIVE</span>
-          <span class="marquee-star">✦</span>
-          <span class="marquee-part">PART 02 // SECURITY</span>
-          <span class="marquee-word-solid">MIDDLEWARE</span>
-          <span class="marquee-star">✦</span>
-        </div>
-        <div class="marquee-unit">
-          <span class="marquee-word-outline">RESILIENCE</span>
-          <span class="marquee-star">✦</span>
-          <span class="marquee-part">PART 02 // SECURITY</span>
-          <span class="marquee-word-solid">PIPELINE</span>
-          <span class="marquee-star">✦</span>
-        </div>
-        <div class="marquee-unit">
-          <span class="marquee-word-outline">DETERMINISTIC</span>
-          <span class="marquee-star">✦</span>
-          <span class="marquee-part">PART 02 // SECURITY</span>
-          <span class="marquee-word-solid">HEURISTICS</span>
-          <span class="marquee-star">✦</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- --------------------------------------------------------------------
-         SECTION 04: PINNED SCENE — TENET-AI SECURITY PIPELINE (Section 9)
-         -------------------------------------------------------------------- -->
-    <section id="pinned-scene-section" class="pinned-scene-container">
+    <!-- 05: LEARNING THROUGH WORK (PINNED SCENE) -->
+    <section id="work-scene" class="pinned-scene-container">
       <div class="pinned-scene-inner">
         <div class="section-hairline"></div>
 
         <div class="pinned-scene-grid">
-          
-          <!-- Left: Diagram & Scenario Controls -->
           <div>
-            <div class="section-eyebrow">04 / DEFENSIVE PIPELINE // SSoC S5</div>
+            <div class="section-eyebrow">05 / WORK // MAVERIC SYSTEMS</div>
 
             <h2 class="section-headline">
-              <span class="headline-mask"><span class="headline-inner line-1">INJECTION FIREWALL.</span></span>
-              <span class="headline-mask"><span class="headline-inner italic-inview line-2">Zero-compromise prompt security.</span></span>
+              <span class="headline-mask"><span class="headline-inner line-1">LEARNING THROUGH WORK.</span></span>
+              <span class="headline-mask"><span class="headline-inner italic-inview line-2">What I actually do with agents.</span></span>
             </h2>
 
             <p class="section-lede">
-              Fronting generative LLM endpoints with deterministic heuristic filtering, Redis signature caching, and immutable PostgreSQL audit ledgers.
+              I'm an AI intern at Maveric Systems. Most of my work sits inside agent loops: tools, state, memory, and integrating pretrained models without pretending they're something they aren't.
             </p>
 
-            <div class="chips-row">
-              <button class="chip scenario-chip chip--accent is-active" type="button" data-scenario="direct">PAYLOAD: DIRECT INJECTION</button>
-              <button class="chip scenario-chip" type="button" data-scenario="indirect">PAYLOAD: RECURSIVE JAILBREAK</button>
-              <button class="chip scenario-chip" type="button" data-scenario="leak">PAYLOAD: DATA EXFILTRATION</button>
-            </div>
-
-            <!-- SVG Visual Stage Indicator -->
             <div class="panel" style="margin-top: 24px; padding: 24px;">
-              <svg viewBox="0 0 600 120" style="width: 100%; height: auto;" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg viewBox="0 0 600 120" style="width: 100%; height: auto;" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four stages of the agent loop">
                 <line x1="50" y1="60" x2="550" y2="60" stroke="rgba(255,255,255,0.15)" stroke-dasharray="4 4" />
-                
+
                 <g class="sec-diagram-stage is-active" transform="translate(60, 60)">
-                  <circle r="22" stroke="var(--blue)" stroke-width="2" fill="var(--panel-solid)" />
-                  <text y="4" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--ink)">01</text>
-                  <text y="36" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--ink-3)">INGEST</text>
+                  <circle class="sec-stage-ring" r="22" />
+                  <text class="sec-stage-num" y="4" text-anchor="middle">01</text>
+                  <text class="sec-stage-label" y="36" text-anchor="middle">TOOLS</text>
                 </g>
 
                 <g class="sec-diagram-stage" transform="translate(210, 60)">
-                  <circle r="22" stroke="var(--line-strong)" stroke-width="1.5" fill="var(--panel-solid)" />
-                  <text y="4" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--ink)">02</text>
-                  <text y="36" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--ink-3)">FILTER</text>
+                  <circle class="sec-stage-ring" r="22" />
+                  <text class="sec-stage-num" y="4" text-anchor="middle">02</text>
+                  <text class="sec-stage-label" y="36" text-anchor="middle">STATE</text>
                 </g>
 
                 <g class="sec-diagram-stage" transform="translate(360, 60)">
-                  <circle r="22" stroke="var(--line-strong)" stroke-width="1.5" fill="var(--panel-solid)" />
-                  <text y="4" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--ink)">03</text>
-                  <text y="36" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--ink-3)">CACHE</text>
+                  <circle class="sec-stage-ring" r="22" />
+                  <text class="sec-stage-num" y="4" text-anchor="middle">03</text>
+                  <text class="sec-stage-label" y="36" text-anchor="middle">MODELS</text>
                 </g>
 
                 <g class="sec-diagram-stage" transform="translate(510, 60)">
-                  <circle r="22" stroke="var(--line-strong)" stroke-width="1.5" fill="var(--panel-solid)" />
-                  <text y="4" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--ink)">04</text>
-                  <text y="36" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--ink-3)">COMMIT</text>
+                  <circle class="sec-stage-ring" r="22" />
+                  <text class="sec-stage-num" y="4" text-anchor="middle">04</text>
+                  <text class="sec-stage-label" y="36" text-anchor="middle">ITERATE</text>
                 </g>
               </svg>
             </div>
           </div>
 
-          <!-- Right: Floating Step Card (Section 9) -->
           <div>
             <div id="security-step-card" class="step-card">
               <div class="step-card-header">
                 <span id="sec-step-counter" class="step-counter">01 / 04</span>
                 <span id="sec-step-icon" class="step-icon-badge">⚡</span>
               </div>
-              <h3 id="sec-step-title" class="step-card-title">INBOUND INGESTION</h3>
+              <h3 id="sec-step-title" class="step-card-title">TOOLS FIRST</h3>
               <p id="sec-step-desc" class="step-card-desc">
-                Inbound prompt payload enters defensive middleware proxy before model exposure. Token stream buffered in memory.
+                Most of the work starts with tools: wrapping APIs and data sources so a model can call them cleanly through MCP.
               </p>
-              
-              <!-- Segmented Progress Bar & Action Label -->
+
               <div class="step-progress-row">
                 <div class="step-segments">
                   <div class="step-segment"><div class="step-segment-fill sec-step-segment-fill"></div></div>
@@ -650,383 +516,295 @@
                   <div class="step-segment"><div class="step-segment-fill sec-step-segment-fill"></div></div>
                   <div class="step-segment"><div class="step-segment-fill sec-step-segment-fill"></div></div>
                 </div>
-                <span id="sec-step-action" class="step-action-label">INGEST</span>
+                <span id="sec-step-action" class="step-action-label">EXPLORE</span>
               </div>
             </div>
           </div>
-
         </div>
+
+        <!-- Mobile fallback: all four steps in normal flow -->
+        <ol class="work-steps-mobile">
+          <li class="work-step">
+            <span class="work-step-idx mono">01</span>
+            <h3 class="work-step-title">TOOLS FIRST</h3>
+            <p class="work-step-text">Most of the work starts with tools: wrapping APIs and data sources so a model can call them cleanly through MCP.</p>
+          </li>
+          <li class="work-step">
+            <span class="work-step-idx mono">02</span>
+            <h3 class="work-step-title">STATE AND MEMORY</h3>
+            <p class="work-step-text">A lot of time goes into state: what the agent has done, what it should remember, and when to start fresh.</p>
+          </li>
+          <li class="work-step">
+            <span class="work-step-idx mono">03</span>
+            <h3 class="work-step-title">PRETRAINED MODELS</h3>
+            <p class="work-step-text">Integrating pretrained LLMs into the loop, with enough structure around them that failures are visible instead of silent.</p>
+          </li>
+          <li class="work-step">
+            <span class="work-step-idx mono">04</span>
+            <h3 class="work-step-title">READ, BREAK, REPEAT</h3>
+            <p class="work-step-text">Reading traces, breaking things on purpose, and rebuilding parts of the graph until it behaves.</p>
+          </li>
+        </ol>
       </div>
     </section>
 
-    <!-- --------------------------------------------------------------------
-         SECTION 05: PRODUCTION SYSTEMS & CODE ARTIFACTS (Section 8)
-         -------------------------------------------------------------------- -->
-    <section id="projects-section" class="page-section">
+    <!-- MARQUEE DIVIDER 2 -->
+    <div class="marquee-divider" aria-hidden="true">
+      <div class="marquee-track">
+        <div class="marquee-unit">
+          <span class="marquee-word-outline">STILL</span>
+          <span class="marquee-star">✦</span>
+          <span class="marquee-part">PART 02 // WHAT'S NEXT</span>
+          <span class="marquee-word-solid">LEARNING</span>
+          <span class="marquee-star">✦</span>
+        </div>
+        <div class="marquee-unit">
+          <span class="marquee-word-outline">CLOSER</span>
+          <span class="marquee-star">✦</span>
+          <span class="marquee-part">PART 02 // WHAT'S NEXT</span>
+          <span class="marquee-word-solid">TO THE PROBLEM</span>
+          <span class="marquee-star">✦</span>
+        </div>
+        <div class="marquee-unit">
+          <span class="marquee-word-outline">STILL</span>
+          <span class="marquee-star">✦</span>
+          <span class="marquee-part">PART 02 // WHAT'S NEXT</span>
+          <span class="marquee-word-solid">LEARNING</span>
+          <span class="marquee-star">✦</span>
+        </div>
+        <div class="marquee-unit">
+          <span class="marquee-word-outline">CLOSER</span>
+          <span class="marquee-star">✦</span>
+          <span class="marquee-part">PART 02 // WHAT'S NEXT</span>
+          <span class="marquee-word-solid">TO THE PROBLEM</span>
+          <span class="marquee-star">✦</span>
+        </div>
+        <div class="marquee-unit">
+          <span class="marquee-word-outline">STILL</span>
+          <span class="marquee-star">✦</span>
+          <span class="marquee-part">PART 02 // WHAT'S NEXT</span>
+          <span class="marquee-word-solid">LEARNING</span>
+          <span class="marquee-star">✦</span>
+        </div>
+        <div class="marquee-unit">
+          <span class="marquee-word-outline">CLOSER</span>
+          <span class="marquee-star">✦</span>
+          <span class="marquee-part">PART 02 // WHAT'S NEXT</span>
+          <span class="marquee-word-solid">TO THE PROBLEM</span>
+          <span class="marquee-star">✦</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 06: WHERE THIS COULD GO -->
+    <section id="next-steps" class="page-section">
       <div class="section-hairline"></div>
 
-      <div class="section-eyebrow">05 / VERIFIED ARTIFACTS</div>
+      <div class="section-eyebrow">06 / WHERE THIS COULD GO</div>
 
       <h2 class="section-headline">
-        <span class="headline-mask"><span class="headline-inner line-1">PRODUCTION BUILDS.</span></span>
-        <span class="headline-mask"><span class="headline-inner italic-inview line-2">Systems engineered for real deployments.</span></span>
+        <span class="headline-mask"><span class="headline-inner line-1">WHERE THIS COULD GO.</span></span>
+        <span class="headline-mask"><span class="headline-inner italic-inview line-2">Two directions I'm exploring.</span></span>
       </h2>
 
-      <p class="section-lede">
-        Open source contributions, SIEM monitoring engines, vector RAG assistants, and machine learning simulators.
+      <p class="section-lede" style="margin-bottom: 40px;">
+        I'm still early, and I'm not in a hurry to pick one path. Both of these appeal to me for the same reason: getting close to a real problem and making technology useful outside a demo.
       </p>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 28px; margin-top: 40px;">
-        
-        <!-- Project 1: TENET-AI -->
-        <div class="panel">
-          <div class="panel-header-bar">
-            <span class="panel-title">AI SECURITY // SSOC S5</span>
-            <div class="state-pill"><span class="dot"></span>ACTIVE</div>
-          </div>
-          <h3 class="font-display" style="font-size: 26px; margin-bottom: 8px;">TENET-AI</h3>
-          <p class="serif-body" style="font-size: 14.5px; margin-bottom: 16px;">
-            FastAPI defensive middleware that fronts LLM endpoints, intercepting prompt injection, jailbreaks, and data extraction payloads before model inference. Redis caching + PostgreSQL audit trail on Kubernetes.
+      <div class="direction-grid">
+        <article class="direction-panel">
+          <div class="direction-index">A</div>
+          <h3 class="direction-title">FORWARD DEPLOYED ENGINEER</h3>
+          <p class="direction-text">
+            Working directly with the people using the system. Translating a messy requirement into something that runs, then staying close enough to fix it when real usage shows up.
           </p>
-          <div class="code" style="margin-bottom: 16px;">
-            <span class="k">async def</span> <span class="f">sanitize_inbound</span>(payload: Prompt):<br>
-            &nbsp;&nbsp;sig = hash_tokens(payload.text)<br>
-            &nbsp;&nbsp;<span class="k">if await</span> redis.get(sig): <span class="k">return</span> REJECT<br>
-            &nbsp;&nbsp;<span class="k">await</span> audit_ledger.record(payload)
-          </div>
-          <div class="chips-row" style="margin-block: 10px;">
-            <span class="chip">FASTAPI</span>
-            <span class="chip">REDIS</span>
-            <span class="chip">POSTGRESQL</span>
-            <span class="chip">KUBERNETES</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 14px; margin-top: 14px;">
-            <a href="https://github.com/sarvajithsankar/TENET-AI" target="_blank" rel="noopener" class="mono-orange">VIEW GITHUB →</a>
-            <button class="chip trigger-modal-btn" type="button" data-title="TENET-AI" data-lead="Defensive LLM Security Middleware (SSoC Season 5)" data-desc="FastAPI service that fronts LLM endpoints and inspects every inbound prompt for injection, jailbreak, and data-extraction patterns before the model sees it. Repeated payloads are classified once via Redis; every attempt lands in an append-only PostgreSQL audit trail on Kubernetes." data-tags="PYTHON,FASTAPI,REDIS,POSTGRESQL,KUBERNETES">INSPECT DETAILS</button>
-          </div>
-        </div>
+          <div class="direction-note mono">CLOSE TO THE PROBLEM</div>
+        </article>
 
-        <!-- Project 2: Sentinel-Vault -->
-        <div class="panel">
-          <div class="panel-header-bar">
-            <span class="panel-title">SYSTEMS & SIEM // C++17</span>
-            <div class="state-pill"><span class="dot"></span>COMPILED</div>
-          </div>
-          <h3 class="font-display" style="font-size: 26px; margin-bottom: 8px;">SENTINEL-VAULT</h3>
-          <p class="serif-body" style="font-size: 14.5px; margin-bottom: 16px;">
-            High-performance Security Information and Event Management (SIEM) monitor in C++17. Features an AVL-tree engine for scored blacklist detection, RAID-1 mirrored storage, IsolationForest anomaly detection, and FastAPI layer.
+        <article class="direction-panel">
+          <div class="direction-index">B</div>
+          <h3 class="direction-title">GLOBAL SOLUTIONS ARCHITECT</h3>
+          <p class="direction-text">
+            Looking across teams and systems, deciding how the pieces fit together, and explaining the trade-offs in language people can actually use to make a decision.
           </p>
-          <div class="code" style="margin-bottom: 16px;">
-            <span class="k">auto</span> node = avl_tree.search(ip_hash);<br>
-            <span class="k">if</span> (node &amp;&amp; node-&gt;score &gt; <span class="s">THRESHOLD</span>) {<br>
-            &nbsp;&nbsp;raid_vault.mirror_write(audit_entry);<br>
-            &nbsp;&nbsp;<span class="f">dispatch_alert</span>(node-&gt;telemetry);<br>
-            }
-          </div>
-          <div class="chips-row" style="margin-block: 10px;">
-            <span class="chip">C++17</span>
-            <span class="chip">AVL TREE</span>
-            <span class="chip">RAID-1</span>
-            <span class="chip">FASTAPI</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 14px; margin-top: 14px;">
-            <a href="https://github.com/sarvajithsankar/Sentinel-Vault" target="_blank" rel="noopener" class="mono-orange">VIEW GITHUB →</a>
-            <button class="chip trigger-modal-btn" type="button" data-title="SENTINEL-VAULT" data-lead="High-Performance SIEM in C++17 with RAID-1 Storage" data-desc="Security event monitor with an AVL-tree engine for scored blacklist detection, RAID-1 mirrored vault storage, a FastAPI layer, IsolationForest anomaly analysis, and a React dashboard. The full local stack comes up as one service bundle." data-tags="C++17,DATA STRUCTURES,RAID-1,FASTAPI,PYTHON">INSPECT DETAILS</button>
-          </div>
-        </div>
+          <div class="direction-note mono">CLOSE TO THE WHOLE PICTURE</div>
+        </article>
+      </div>
 
-        <!-- Project 3: VIT Smart Assistant -->
-        <div class="panel">
-          <div class="panel-header-bar">
-            <span class="panel-title">DOCUMENT INTELLIGENCE // RAG</span>
-            <div class="state-pill"><span class="dot"></span>ACTIVE</div>
-          </div>
-          <h3 class="font-display" style="font-size: 26px; margin-bottom: 8px;">VIT SMART ASSISTANT</h3>
-          <p class="serif-body" style="font-size: 14.5px; margin-bottom: 16px;">
-            Semantically-grounded document intelligence assistant for university knowledge bases. Employs ChromaDB vector search and the Gemini API with strict inline source verification and conversational context memory.
-          </p>
-          <div class="code" style="margin-bottom: 16px;">
-            docs = chroma_store.<span class="f">similarity_search</span>(q, k=<span class="s">4</span>)<br>
-            citations = [d.metadata[<span class="s">"source"</span>] <span class="k">for</span> d <span class="k">in</span> docs]<br>
-            <span class="k">return</span> gemini.generate(prompt=build_prompt(q, docs))
-          </div>
-          <div class="chips-row" style="margin-block: 10px;">
-            <span class="chip">GEMINI API</span>
-            <span class="chip">CHROMADB</span>
-            <span class="chip">STREAMLIT</span>
-            <span class="chip">RAG</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 14px; margin-top: 14px;">
-            <a href="https://github.com/sarvajithsankar/RAG-Assistant" target="_blank" rel="noopener" class="mono-orange">VIEW GITHUB →</a>
-            <button class="chip trigger-modal-btn" type="button" data-title="VIT SMART ASSISTANT" data-lead="Institutional Document RAG with Verified Inline Citations" data-desc="Integrated the Gemini API with ChromaDB vector store and an interactive Streamlit UI, enabling accurate document chunk retrieval, verified inline citations, and context-aware query resolution across multi-turn dialogues." data-tags="GEMINI API,CHROMADB,PYTHON,STREAMLIT,RAG">INSPECT DETAILS</button>
-          </div>
-        </div>
+      <p class="mono" style="margin-top: 24px;">NOT A DECISION YET — AN INTEREST.</p>
+    </section>
 
-        <!-- Project 4: Customer Churn Prediction -->
-        <div class="panel">
-          <div class="panel-header-bar">
-            <span class="panel-title">MACHINE LEARNING // RISK SIMULATOR</span>
-            <div class="state-pill"><span class="dot"></span>OPTIMIZED</div>
-          </div>
-          <h3 class="font-display" style="font-size: 26px; margin-bottom: 8px;">CUSTOMER CHURN</h3>
-          <p class="serif-body" style="font-size: 14.5px; margin-bottom: 16px;">
-            Gradient boosting pipeline over 7,000+ telecom customer records. Tuned specifically for recall (77%) via threshold moving — recognizing that missing a churner incurs far higher costs than false alarms. Includes risk parameter simulator.
-          </p>
-          <div class="code" style="margin-bottom: 16px;">
-            probs = model.<span class="f">predict_proba</span>(X_val)[:, 1]<br>
-            preds = (probs &gt;= <span class="s">OPTIMAL_THRESHOLD</span>).astype(int)<br>
-            recall = recall_score(y_val, preds) <span class="c"># 77% achieved</span>
-          </div>
-          <div class="chips-row" style="margin-block: 10px;">
-            <span class="chip">SCIKIT-LEARN</span>
-            <span class="chip">GRADIENT BOOST</span>
-            <span class="chip">THRESHOLD MOVING</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 14px; margin-top: 14px;">
-            <a href="https://github.com/sarvajithsankar/customer_churn" target="_blank" rel="noopener" class="mono-orange">VIEW GITHUB →</a>
-            <button class="chip trigger-modal-btn" type="button" data-title="CUSTOMER CHURN" data-lead="Risk-Tuned Gradient Boosting over 7,000+ Records" data-desc="Gradient boosting over 7,000+ telecom records, tuned for recall (77%) via threshold moving — missing a churner costs more than a false alarm. Comprehensive exploratory data analysis plus interactive risk parameter simulation." data-tags="PYTHON,SCIKIT-LEARN,PANDAS,STREAMLIT">INSPECT DETAILS</button>
-          </div>
-        </div>
+    <!-- 07: CONVERSATIONS BEYOND THE SCREEN -->
+    <section id="conversations" class="page-section">
+      <div class="section-hairline"></div>
 
+      <div class="section-eyebrow">07 / BEYOND THE SCREEN</div>
+
+      <h2 class="section-headline">
+        <span class="headline-mask"><span class="headline-inner line-1">BEYOND THE SCREEN.</span></span>
+        <span class="headline-mask"><span class="headline-inner italic-inview line-2">I like talking to people who build.</span></span>
+      </h2>
+
+      <p class="story-statement">
+        I enjoy meeting engineers, founders, and developers and asking what they're working on. Not the polished version — the parts that were annoying, the tools that surprised them, how their team actually ships. I learn a lot from those conversations, and I usually leave with something to try.
+      </p>
+
+      <div class="pull-quote" style="max-width: 640px;">
+        "Most of what I know about industry came from someone taking ten minutes to explain what their team actually does."
+      </div>
+
+      <div class="info-trio-grid">
+        <div class="info-trio-col">
+          <div class="info-trio-title">WHAT I ASK ABOUT</div>
+          <p class="info-trio-text">What they're building, what broke recently, and how the team decided to do it that way.</p>
+        </div>
+        <div class="info-trio-col">
+          <div class="info-trio-title">WHAT I ENJOY</div>
+          <p class="info-trio-text">Hand-drawn diagrams, honest trade-offs, and demos that are still a little rough around the edges.</p>
+        </div>
+        <div class="info-trio-col">
+          <div class="info-trio-title">WHAT I DO AFTER</div>
+          <p class="info-trio-text">Write a small version of the idea, break it, and see whether it holds up outside the conversation.</p>
+        </div>
       </div>
     </section>
 
-    <!-- --------------------------------------------------------------------
-         SECTION 06: PINNED HORIZONTAL TIMELINE (Section 11.5)
-         -------------------------------------------------------------------- -->
-    <section id="timeline-section" class="timeline-pinned-section">
-      <div class="timeline-sticky-wrap">
-        
-        <div class="timeline-header-wrap">
-          <div>
-            <div class="section-eyebrow">06 / CHRONOLOGY & FOUNDATIONS</div>
-            <h2 class="section-headline" style="margin-bottom: 0;">
-              <span class="headline-mask"><span class="headline-inner line-1">ENGINEERING ODYSSEY.</span></span>
-              <span class="headline-mask"><span class="headline-inner italic-inview line-2">Milestones in systems and AI.</span></span>
-            </h2>
-          </div>
-          <div class="timeline-scrub-hint">
-            KEEP SCROLLING. THE TRACK MOVES SIDEWAYS WHILE EACH MILESTONE DRAWS ITSELF IN.
-          </div>
-        </div>
-
-        <div class="timeline-viewport">
-          <div id="timeline-track" class="timeline-track">
-            
-            <!-- Axis Line & Wavy Particle River Canvas -->
-            <div class="timeline-axis-line"></div>
-            <canvas id="timeline-river-canvas" class="timeline-river-canvas"></canvas>
-
-            <div class="timeline-milestones-row">
-              
-              <!-- Milestone 1: 2023 -->
-              <div class="milestone-node milestone-node--above">
-                <div class="milestone-circle-anchor"><div class="dot"></div></div>
-                <div class="milestone-connector"></div>
-                <div class="milestone-body">
-                  <div class="milestone-source">ACADEMIC // VIT VELLORE</div>
-                  <div class="milestone-year">2023</div>
-                  <div class="milestone-lead">Joined VIT Vellore Computer Science</div>
-                  <p class="milestone-desc">B.Tech CSE foundations in Data Structures, Object-Oriented Design, Operating Systems, and memory hierarchies.</p>
-                </div>
-              </div>
-
-              <!-- Milestone 2: 2024 -->
-              <div class="milestone-node milestone-node--below">
-                <div class="milestone-circle-anchor"><div class="dot"></div></div>
-                <div class="milestone-connector"></div>
-                <div class="milestone-body">
-                  <div class="milestone-source">BACKEND // ASYNC SYSTEMS</div>
-                  <div class="milestone-year">2024</div>
-                  <div class="milestone-lead">First Production FastAPI Backends</div>
-                  <p class="milestone-desc">Engineered asynchronous REST APIs with PostgreSQL, Redis cache layers, Docker containerization, and rate-limiting middleware.</p>
-                </div>
-              </div>
-
-              <!-- Milestone 3: MID 2024 -->
-              <div class="milestone-node milestone-node--above">
-                <div class="milestone-circle-anchor"><div class="dot"></div></div>
-                <div class="milestone-connector"></div>
-                <div class="milestone-body">
-                  <div class="milestone-source">AI TRACK // AGENT SYSTEMS</div>
-                  <div class="milestone-year">MID 24</div>
-                  <div class="milestone-lead">Entered Agentic Orchestration</div>
-                  <p class="milestone-desc">Transitioned from simple prompts to LangChain, LangGraph state machines, ChromaDB vector indexing, and multi-node execution graphs.</p>
-                </div>
-              </div>
-
-              <!-- Milestone 4: 2025 -->
-              <div class="milestone-node milestone-node--below">
-                <div class="milestone-circle-anchor"><div class="dot"></div></div>
-                <div class="milestone-connector"></div>
-                <div class="milestone-body">
-                  <div class="milestone-source">DUAL DEGREE // IIT MADRAS</div>
-                  <div class="milestone-year">2025</div>
-                  <div class="milestone-lead">B.S. in Data Science at IIT Madras</div>
-                  <p class="milestone-desc">Admitted to IIT Madras Data Science program (2025–2029), deepening mathematical statistics, linear algebra, and neural learning theories.</p>
-                </div>
-              </div>
-
-              <!-- Milestone 5: 2026 -->
-              <div class="milestone-node milestone-node--above">
-                <div class="milestone-circle-anchor"><div class="dot"></div></div>
-                <div class="milestone-connector"></div>
-                <div class="milestone-body">
-                  <div class="milestone-source">INDUSTRY // MAVERIC & SSOC</div>
-                  <div class="milestone-year">2026</div>
-                  <div class="milestone-lead">Maveric Systems &amp; TENET-AI</div>
-                  <p class="milestone-desc">Architecting autonomous research agents on MCP at Maveric Systems. Built defensive prompt injection firewall for SSoC Season 5.</p>
-                </div>
-              </div>
-
-              <!-- Milestone 6: FUTURE -->
-              <div class="milestone-node milestone-node--below">
-                <div class="milestone-circle-anchor"><div class="dot"></div></div>
-                <div class="milestone-connector"></div>
-                <div class="milestone-body">
-                  <div class="milestone-source">NEXT HORIZON // DISTRIBUTED</div>
-                  <div class="milestone-year">2027+</div>
-                  <div class="milestone-lead">Distributed Agent Clusters &amp; Inference</div>
-                  <p class="milestone-desc">Optimizing low-latency Triton Inference serving, persistent agent cluster consensus, and multi-modal autonomous robotics.</p>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- --------------------------------------------------------------------
-         SECTION 07: CONTACT & INTERACTIVE TERMINAL (Section 8)
-         -------------------------------------------------------------------- -->
+    <!-- 08: SAY HELLO -->
     <section id="contact-section" class="page-section">
       <div class="section-hairline"></div>
 
-      <div class="two-col-grid">
-        
-        <!-- Left: Direct Info & Socials -->
-        <div>
-          <div class="section-eyebrow">07 / TRANSMISSION DIRECTORY</div>
+      <div class="section-eyebrow">08 / SAY HELLO</div>
 
-          <h2 class="section-headline">
-            <span class="headline-mask"><span class="headline-inner line-1">INITIATE CONTACT.</span></span>
-            <span class="headline-mask"><span class="headline-inner italic-inview line-2">Chennai, Bengaluru or global remote.</span></span>
-          </h2>
+      <h2 class="section-headline">
+        <span class="headline-mask"><span class="headline-inner line-1">SAY HELLO.</span></span>
+        <span class="headline-mask"><span class="headline-inner italic-inview line-2">Or just talk tech.</span></span>
+      </h2>
 
-          <p class="serif-body" style="font-size: 16px; margin-bottom: 24px;">
-            Open to AI Engineering, Machine Learning Systems, and Backend SWE roles. Let's discuss deterministic agent frameworks, production RAG, or systems security.
-          </p>
-
-          <div style="display: flex; flex-direction: column; gap: 14px;">
-            <div style="display: flex; align-items: baseline; gap: 12px;">
-              <span class="mono-orange">EMAIL:</span>
-              <a href="mailto:sarvajith2knot8@gmail.com" class="serif-body" style="color: var(--ink); text-decoration: underline; text-underline-offset: 4px;">sarvajith2knot8@gmail.com</a>
-            </div>
-            <div style="display: flex; align-items: baseline; gap: 12px;">
-              <span class="mono-orange">GITHUB:</span>
-              <a href="https://github.com/sarvajithsankar" target="_blank" rel="noopener" class="serif-body" style="color: var(--ink); text-decoration: underline; text-underline-offset: 4px;">github.com/sarvajithsankar</a>
-            </div>
-            <div style="display: flex; align-items: baseline; gap: 12px;">
-              <span class="mono-orange">LINKEDIN:</span>
-              <a href="https://linkedin.com/in/sarvajithsankar" target="_blank" rel="noopener" class="serif-body" style="color: var(--ink); text-decoration: underline; text-underline-offset: 4px;">linkedin.com/in/sarvajithsankar</a>
-            </div>
-          </div>
-
-          <div class="mono" style="margin-top: 48px; color: var(--ink-3);">
-            DESIGNED &amp; ENGINEERED IN DARK EDITORIAL MOTIF<br>
-            ACCORDING TO EXACT CREATIVE DEVELOPER SPECIFICATIONS.
-          </div>
-        </div>
-
-        <!-- Right: Interactive Terminal Console (Section 8) -->
-        <div>
-          <div class="terminal-panel">
-            <div class="terminal-header">
-              <div class="terminal-dots">
-                <span class="terminal-dot dot-red"></span>
-                <span class="terminal-dot dot-yellow"></span>
-                <span class="terminal-dot dot-green"></span>
-              </div>
-              <span class="mono" style="font-size: 10px;">SARVAJITH@SYSTEMS:~</span>
-            </div>
-
-            <!-- Terminal Output Area -->
-            <div id="terminal-output" class="terminal-body" style="min-height: 220px; max-height: 260px; overflow-y: auto;">
-              <div class="terminal-line">
-                <span class="terminal-prompt">$</span> <span class="terminal-cmd">whoami</span>
-              </div>
-              <div class="terminal-line">
-                <span class="terminal-out">Sarvajith Sankar — AI Engineer &amp; ML Systems Developer</span>
-              </div>
-              <div class="terminal-line">
-                <span class="terminal-out">VIT Vellore (CSE) × IIT Madras (Data Science) | Maveric Systems Intern</span>
-              </div>
-              <div class="terminal-line">
-                <span class="terminal-prompt">$</span> <span class="terminal-cmd">help</span>
-              </div>
-              <div class="terminal-line">
-                <span class="terminal-out">Available commands: whoami, links, stack, focus, clear, help</span>
-              </div>
-            </div>
-
-            <!-- Terminal Input Form -->
-            <form id="terminal-form" style="border-top: 1px solid var(--line); display: flex; align-items: center; padding: 12px 16px; background: rgba(0,0,0,0.3);">
-              <span class="terminal-prompt" style="margin-right: 8px;">$</span>
-              <input id="terminal-cmd-input" type="text" placeholder="type a command (e.g. links, stack, focus)..." style="flex-grow: 1; background: transparent; border: none; outline: none; font-family: var(--font-mono); font-size: 12px; color: var(--ink);" autocomplete="off" spellcheck="false">
-              <span class="terminal-cursor">_</span>
-            </form>
-          </div>
-
-          <!-- Quick Action Command Chips -->
-          <div class="chips-row" style="margin-top: 14px;">
-            <button class="chip terminal-chip" type="button" data-cmd="whoami">whoami</button>
-            <button class="chip terminal-chip" type="button" data-cmd="links">links</button>
-            <button class="chip terminal-chip" type="button" data-cmd="stack">stack</button>
-            <button class="chip terminal-chip" type="button" data-cmd="focus">focus</button>
-            <button class="chip terminal-chip" type="button" data-cmd="clear">clear</button>
-          </div>
-        </div>
-
+      <div class="contact-intro">
+        <p class="section-lede">
+          If you're working on agent systems, machine learning, or the unglamorous parts of shipping software, I'd like to hear about it. GitHub and LinkedIn are the quickest places to find me.
+        </p>
+        <a class="mono-link" href="mailto:sarvajith2knot8@gmail.com">SARVAJITH2KNOT8@GMAIL.COM</a>
       </div>
+
+      <div class="profile-grid">
+        <!-- GitHub destination -->
+        <div class="panel profile-card">
+          <div class="panel-header-bar">
+            <span class="panel-title">GITHUB // CODE</span>
+            <div class="state-pill"><span class="dot"></span>PROFILE</div>
+          </div>
+
+          <div class="profile-body">
+            <img class="profile-avatar" src="avatar.jpg" alt="Sarvajith Sankar" width="72" height="72">
+            <div>
+              <div class="profile-name">SARVAJITH SANKAR</div>
+              <div class="profile-handle">@sarvajithsankar</div>
+            </div>
+          </div>
+
+          <div id="gh-activity" class="gh-activity" aria-hidden="true"></div>
+
+          <p class="profile-note">Repositories, half-finished experiments, and whatever I'm currently breaking.</p>
+
+          <a class="profile-action" href="https://github.com/sarvajithsankar" target="_blank" rel="noopener noreferrer">
+            OPEN GITHUB <span aria-hidden="true">↗</span>
+            <span class="sr-only">(opens in a new tab)</span>
+          </a>
+        </div>
+
+        <!-- LinkedIn destination -->
+        <div class="panel profile-card">
+          <div class="panel-header-bar">
+            <span class="panel-title">LINKEDIN // NETWORK</span>
+            <div class="state-pill"><span class="dot"></span>PROFILE</div>
+          </div>
+
+          <div class="profile-body">
+            <img class="profile-avatar" src="avatar.jpg" alt="Sarvajith Sankar" width="72" height="72">
+            <div>
+              <div class="profile-name">SARVAJITH SANKAR</div>
+              <div class="profile-handle">AI intern · student</div>
+            </div>
+          </div>
+
+          <div class="profile-lines">
+            <div class="profile-line"><span class="mono">NOW</span><span>AI intern at Maveric Systems</span></div>
+            <div class="profile-line"><span class="mono">STUDYING</span><span>CSE at VIT Vellore · Data Science at IIT Madras</span></div>
+            <div class="profile-line"><span class="mono">OPEN TO</span><span>Conversations about AI, agents, and systems</span></div>
+          </div>
+
+          <a class="profile-action" href="https://www.linkedin.com/in/sarvajithsankar/" target="_blank" rel="noopener noreferrer">
+            VIEW LINKEDIN PROFILE <span aria-hidden="true">↗</span>
+            <span class="sr-only">(opens in a new tab)</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Small console: real inputs, real links -->
+      <div class="terminal-panel" style="margin-top: 28px;">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <span class="terminal-dot dot-red"></span>
+            <span class="terminal-dot dot-yellow"></span>
+            <span class="terminal-dot dot-green"></span>
+          </div>
+          <span class="mono" style="font-size: 10px;">SARVAJITH@SYSTEMS:~</span>
+        </div>
+
+        <div id="terminal-output" class="terminal-body" style="min-height: 210px; max-height: 260px; overflow-y: auto;">
+          <div class="terminal-line">
+            <span class="terminal-prompt">$</span> <span class="terminal-cmd">whoami</span>
+          </div>
+          <div class="terminal-line">
+            <span class="terminal-out">Sarvajith Sankar — I study CS at VIT Vellore and data science at IIT Madras.</span>
+          </div>
+          <div class="terminal-line">
+            <span class="terminal-out">Currently an AI intern at Maveric Systems, working with agents.</span>
+          </div>
+          <div class="terminal-line">
+            <span class="terminal-prompt">$</span> <span class="terminal-cmd">help</span>
+          </div>
+          <div class="terminal-line">
+            <span class="terminal-out">Available commands: whoami, learning, stack, links, clear, help</span>
+          </div>
+        </div>
+
+        <form id="terminal-form" style="border-top: 1px solid var(--line); display: flex; align-items: center; padding: 12px 16px; background: rgba(0,0,0,0.3);">
+          <span class="terminal-prompt" style="margin-right: 8px;">$</span>
+          <input id="terminal-cmd-input" type="text" placeholder="try: whoami, learning, links, help" aria-label="Terminal command" style="flex-grow: 1; background: transparent; border: none; outline: none; font-family: var(--font-mono); font-size: 12px; color: var(--ink);" autocomplete="off" spellcheck="false">
+          <span class="terminal-cursor" aria-hidden="true">_</span>
+        </form>
+      </div>
+
+      <div class="chips-row" style="margin-top: 14px;">
+        <button class="chip terminal-chip" type="button" data-cmd="whoami">whoami</button>
+        <button class="chip terminal-chip" type="button" data-cmd="learning">learning</button>
+        <button class="chip terminal-chip" type="button" data-cmd="stack">stack</button>
+        <button class="chip terminal-chip" type="button" data-cmd="links">links</button>
+        <button class="chip terminal-chip" type="button" data-cmd="clear">clear</button>
+      </div>
+
+      <footer class="site-footer">
+        <span class="mono">© 2026 SARVAJITH SANKAR</span>
+        <span class="mono">BUILT AS ONE PAGE. NO FAKE NUMBERS.</span>
+        <div class="site-footer-links">
+          <a class="mono-link" href="https://github.com/sarvajithsankar" target="_blank" rel="noopener noreferrer">GITHUB</a>
+          <a class="mono-link" href="https://www.linkedin.com/in/sarvajithsankar/" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
+          <a class="mono-link" href="mailto:sarvajith2knot8@gmail.com">EMAIL</a>
+        </div>
+      </footer>
     </section>
 
   </main>
 
   <!-- ========================================================================
-       DETAIL MODAL OVERLAY (Section 11.6)
-       ======================================================================== -->
-  <div id="detail-modal-overlay" class="detail-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-    <div class="detail-modal-panel">
-      <button id="modal-close-btn" class="modal-close-btn" type="button" aria-label="Close Modal">ESC // CLOSE</button>
-      
-      <div class="modal-eyebrow">SYSTEM TELEMETRY</div>
-      <h3 id="modal-title" class="modal-title">TELEMETRY INSPECTION</h3>
-      <div id="modal-lead" class="modal-lead">In-depth architectural analysis and implementation notes.</div>
-      <p id="modal-desc" class="modal-desc">
-        Detailed system execution parameters, memory indexing policies, and security validation routines.
-      </p>
-
-      <div id="modal-tags-row" class="modal-tags-row">
-        <!-- Tag chips populated dynamically -->
-      </div>
-
-      <div class="modal-footnote">
-        Grounding telemetry gathered from real production execution runs at Maveric Systems and SSoC Season 5.
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================================================================
        SCRIPTS (Modular, Tree-shakeable, Progressive Enhancement)
        ======================================================================== -->
-  <script src="data.js"></script>
   <script src="particles.js"></script>
   <script src="chrome.js"></script>
   <script src="card-deck.js"></script>
   <script src="projects.js"></script>
-  <script src="timeline.js"></script>
   <script src="contact.js"></script>
   <script src="main.js"></script>
 

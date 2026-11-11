@@ -8,14 +8,15 @@
   'use strict';
 
   const sectionsData = [
-    { id: 'hero', index: '00', title: 'HERO // IDENTITY' },
-    { id: 'deck-section', index: '01', title: 'MODULE REGISTRY' },
-    { id: 'statement-section', index: '02', title: 'CORE PHILOSOPHY' },
-    { id: 'architecture-section', index: '03', title: 'AGENT ARCHITECTURE' },
-    { id: 'pinned-scene-section', index: '04', title: 'SECURITY PIPELINE' },
-    { id: 'projects-section', index: '05', title: 'PRODUCTION SYSTEMS' },
-    { id: 'timeline-section', index: '06', title: 'ENGINEERING ODYSSEY' },
-    { id: 'contact-section', index: '07', title: 'COMMAND TERMINAL' }
+    { id: 'hero', index: '00', title: 'HELLO // IDENTITY' },
+    { id: 'deck-section', index: '01', title: 'THE SHORT VERSION' },
+    { id: 'before-code', index: '02', title: 'BEFORE THE CODE' },
+    { id: 'into-cs', index: '03', title: 'TWO DEGREES' },
+    { id: 'curiosity', index: '04', title: 'STILL CURIOUS' },
+    { id: 'work-scene', index: '05', title: 'LEARNING THROUGH WORK' },
+    { id: 'next-steps', index: '06', title: 'WHERE THIS COULD GO' },
+    { id: 'conversations', index: '07', title: 'BEYOND THE SCREEN' },
+    { id: 'contact-section', index: '08', title: 'SAY HELLO' }
   ];
 
   // 1. Initial Loader Sequence
@@ -120,8 +121,9 @@
     contentsOverlay.classList.add('is-open');
     contentsBtn.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
-    contentsCloseBtn.focus();
+    if (window.lenisInstance) window.lenisInstance.stop();
     document.addEventListener('keydown', handleOverlayKeydown);
+    setTimeout(() => contentsCloseBtn.focus(), 80);
   }
 
   function closeContents() {
@@ -129,6 +131,7 @@
     contentsOverlay.classList.remove('is-open');
     contentsBtn.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
+    if (window.lenisInstance) window.lenisInstance.start();
     contentsBtn.focus();
     document.removeEventListener('keydown', handleOverlayKeydown);
   }
@@ -140,9 +143,13 @@
     }
     if (e.key === 'Tab') {
       const focusables = contentsOverlay.querySelectorAll('button, [href], [tabindex="0"]');
+      if (!focusables.length) return;
       const first = focusables[0];
       const last = focusables[focusables.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
+      if (!contentsOverlay.contains(document.activeElement)) {
+        first.focus();
+        e.preventDefault();
+      } else if (e.shiftKey && document.activeElement === first) {
         last.focus();
         e.preventDefault();
       } else if (!e.shiftKey && document.activeElement === last) {
@@ -206,6 +213,7 @@
       const item = document.createElement('button');
       item.className = 'tick-item';
       item.setAttribute('aria-label', sec.title);
+      item.setAttribute('tabindex', '-1');
       item.dataset.targetId = sec.id;
       item.dataset.index = idx;
       item.innerHTML = `

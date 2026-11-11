@@ -8,18 +8,14 @@
   'use strict';
 
   const deckData = [
-    { id: 'hero', family: 'purple-orange', title: '00 // IDENTITY', desc: 'Autonomous AI agent engineering & systems architecture.', target: 'hero' },
-    { id: 'tenet', family: 'teal-crimson', title: '01 // TENET-AI', desc: 'SSoC S5 defensive security middleware protecting LLM endpoints.', target: 'pinned-scene-section' },
-    { id: 'agent-core', family: 'olive-gold', title: '02 // REASONING', desc: 'LangGraph multi-node state graphs with stateful memory loops.', target: 'architecture-section' },
-    { id: 'sentinel', family: 'brushed-chrome', title: '03 // SENTINEL', desc: 'C++17 SIEM monitor with AVL-tree engine and RAID-1 vault.', target: 'projects-section' },
-    { id: 'vit-rag', family: 'blue-red', title: '04 // DOCUMENT RAG', desc: 'ChromaDB vector search & verified institutional document citations.', target: 'projects-section' },
-    { id: 'schema-match', family: 'purple-orange', title: '05 // SCHEMA MATCH', desc: 'Dense neural embeddings automating federated column alignment.', target: 'projects-section' },
-    { id: 'churn-ml', family: 'olive-gold', title: '06 // CHURN PREDICT', desc: 'Threshold-tuned gradient boosting over 7,000+ customer records.', target: 'projects-section' },
-    { id: 'mcp-tools', family: 'teal-crimson', title: '07 // MCP SUITE', desc: 'Standardized Model Context Protocol execution tools.', target: 'architecture-section' },
-    { id: 'ai-lab', family: 'blue-red', title: '08 // AI LAB', desc: 'Empirical benchmarks: RAG vs Fine-Tuning & Memory scaling.', target: 'statement-section' },
-    { id: 'timeline', family: 'brushed-chrome', title: '09 // ODYSSEY', desc: 'VIT Vellore x IIT Madras foundations to production backends.', target: 'timeline-section' },
-    { id: 'terminal', family: 'purple-orange', title: '10 // TERMINAL', desc: 'Interactive developer console, key links, and contact routes.', target: 'contact-section' },
-    { id: 'architecture', family: 'olive-gold', title: '11 // ARCHITECTURE', desc: 'Deep dive into 5-stage agent execution topology.', target: 'architecture-section' }
+    { id: 'hello', family: 'purple-orange', title: '00 // HELLO', desc: 'Who I am, in one short page.', target: 'hero' },
+    { id: 'before-code', family: 'teal-crimson', title: '01 // BEFORE THE CODE', desc: 'Cricket, volleyball, and a lot of practice.', target: 'before-code' },
+    { id: 'into-cs', family: 'olive-gold', title: '02 // TWO DEGREES', desc: 'CSE at VIT Vellore, Data Science at IIT Madras.', target: 'into-cs' },
+    { id: 'curiosity', family: 'blue-red', title: '03 // STILL CURIOUS', desc: 'How models, transformers, and agents fit together.', target: 'curiosity' },
+    { id: 'work', family: 'brushed-chrome', title: '04 // LEARNING THROUGH WORK', desc: 'An AI internship, told honestly.', target: 'work-scene' },
+    { id: 'next', family: 'purple-orange', title: '05 // WHERE THIS COULD GO', desc: 'Two directions I am still exploring.', target: 'next-steps' },
+    { id: 'people', family: 'teal-crimson', title: '06 // BEYOND THE SCREEN', desc: 'Talking to people who actually build.', target: 'conversations' },
+    { id: 'hello-again', family: 'olive-gold', title: '07 // SAY HELLO', desc: 'GitHub, LinkedIn, and a small terminal.', target: 'contact-section' }
   ];
 
   const N = deckData.length;
@@ -108,6 +104,7 @@
   // -------------------------------------------------------------
   // BUILD CARD DOM
   // -------------------------------------------------------------
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const cardContainer = document.getElementById('card-deck-viewport');
   const cards = [];
 
@@ -115,12 +112,14 @@
 
   cardContainer.innerHTML = '';
 
+  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
   deckData.forEach((item, i) => {
     const card = document.createElement('div');
     card.className = 'deck-card';
     card.setAttribute('tabindex', '0');
     card.setAttribute('role', 'button');
-    card.setAttribute('aria-label', `${item.title}: ${item.desc}`);
+    card.setAttribute('aria-label', `${item.title}. ${item.desc} Open this chapter.`);
 
     const bgUrl = generateMarbleCanvas(item.family, i);
 
@@ -133,7 +132,7 @@
         <div class="deck-card-back">
           <div class="card-back-title">${item.title}</div>
           <div class="card-back-desc">${item.desc}</div>
-          <button class="card-go-btn" type="button">GO →</button>
+          <span class="card-go-btn" aria-hidden="true">GO →</span>
         </div>
       </div>
     `;
@@ -150,29 +149,20 @@
       card.style.transform = '';
     });
 
-    // GO Button navigation
-    const goBtn = card.querySelector('.card-go-btn');
-    if (goBtn) {
-      goBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        window.scrollToSection(item.target);
-      });
-    }
-
-    // Keyboard accessibility: Enter/Space flips, second Enter activates GO
+    // Keyboard: Enter/Space opens the chapter directly
     card.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        if (card.classList.contains('is-flipped')) {
-          window.scrollToSection(item.target);
-        } else {
-          card.classList.add('is-flipped');
-        }
+        window.scrollToSection(item.target);
       }
     });
 
     card.addEventListener('click', () => {
-      card.classList.toggle('is-flipped');
+      if (canHover || card.classList.contains('is-flipped')) {
+        window.scrollToSection(item.target);
+      } else {
+        card.classList.add('is-flipped');
+      }
     });
 
     cardContainer.appendChild(card);
@@ -186,8 +176,8 @@
   const centerText = document.getElementById('card-deck-center-text');
   const stage2Headline = document.getElementById('card-deck-stage2-headline');
 
-  if (window.innerWidth < 768) {
-    // Mobile mode handled by CSS scroll-snap carousel
+  if (window.innerWidth < 768 || prefersReducedMotion) {
+    // Mobile carousel / static grid handled by CSS
     return;
   }
 
@@ -195,6 +185,7 @@
     const vw = window.innerWidth;
     const vh = window.innerHeight;
     const normI = i - N / 2;
+    const fanGap = Math.min(190, vw * 0.132);
 
     if (stage === 0) {
       // Stage 0: Peek arc below fold
@@ -210,7 +201,7 @@
       // Stage 1: Full ring around centered text with swirl
       const spiralOffset = (1 - p) * Math.PI * 2;
       const theta = (i / N) * Math.PI * 2 - Math.PI / 2 + spiralOffset;
-      const R = Math.min(vw, vh) * 0.30;
+      const R = Math.min(vw, vh) * (vw < 1024 ? 0.28 : 0.33);
       return {
         x: Math.cos(theta) * R,
         y: Math.sin(theta) * R * 0.92,
@@ -222,7 +213,7 @@
     } else if (stage === 2) {
       // Stage 2: Horizontal fan row (smile curve) under section headline
       return {
-        x: normI * 190,
+        x: normI * fanGap,
         y: 40 + Math.sin((i / N) * Math.PI) * -60 + Math.abs(normI) * 4,
         rot: normI * 3.2,
         scale: 1.0,
@@ -232,7 +223,7 @@
     } else {
       // Stage 3: Exit translating left across viewport
       return {
-        x: normI * 190 - vw * 1.5 * (p - 0.75) * 4.0,
+        x: normI * fanGap - vw * 1.5 * (p - 0.75) * 4.0,
         y: 40 + Math.sin((i / N) * Math.PI) * -60,
         rot: normI * 3.2 - 15,
         scale: 0.95,

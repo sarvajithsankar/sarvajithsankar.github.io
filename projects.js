@@ -1,14 +1,15 @@
 /**
- * Instrument Panel & Interactive Systems Architecture Engine
+ * Instrument Panel & Interactive Systems Engine
  * Features:
  * - Cursor-following panel glow
- * - SVG Architecture Diagram with Traveling Message Chips & Burst Trigger
- * - Pinned Scroll-Scrubbed Security Scene with Floating Step Card & Frame Counter
- * - Code Syntax Explorer & Stat Tweening
+ * - Learning map diagram with traveling notes chip & spark burst
+ * - Pinned scroll-scrubbed work scene with floating step card & frame counter
  */
 
 (function () {
   'use strict';
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // 1. Cursor Follow Glow on all .panel elements
   document.querySelectorAll('.panel').forEach((panel) => {
@@ -21,20 +22,18 @@
     });
   });
 
-  // 2. Interactive SVG Architecture Flow
+  // 2. Interactive Learning Map
   const nodes = [
-    { id: 'user', title: 'CLIENT INGEST', sub: 'REST / WEBSOCKET', state: 'active', desc: 'Inbound prompt payload received from client interface with session token and task constraints.' },
-    { id: 'agent', title: 'REASONING CORE', sub: 'LLM RE-ACT LOOP', state: 'idle', desc: 'Decomposes complex technical query into sub-goals and determines tool invocation policy.' },
-    { id: 'orchestrator', title: 'LANGGRAPH STATE', sub: 'EPISODIC MEMORY', state: 'idle', desc: 'State machine checkpointing short/long-term memory with ChromaDB vector recall.' },
-    { id: 'tools', title: 'MCP PROTOCOL', sub: 'VERIFIED TOOLS', state: 'idle', desc: 'Sandboxed tool callers: arXiv, Tavily search, code sandbox, and PostgreSQL database queries.' },
-    { id: 'result', title: 'SYNTHESIS ENGINE', sub: 'CITATION CHECK', state: 'idle', desc: 'Synthesizes grounded output document, verifies inline source citations, and passes safety audit.' }
+    { title: 'MACHINE LEARNING', desc: 'Where I started: how models learn from data, how to check whether they are any good, and why a simple baseline is usually worth trying first.' },
+    { title: 'DEEP LEARNING', desc: 'Neural networks, backpropagation, and the training loops that make them work. Mostly small experiments, read carefully and rerun until the numbers make sense.' },
+    { title: 'TRANSFORMERS', desc: 'Attention, tokenisation, and the architecture behind most of what I use today. I am reading the papers slowly and re-implementing pieces to see how they actually fit.' },
+    { title: 'LLMS & AGENTS', desc: 'LangChain, LangGraph, the Deep Agents SDK, and MCP tool calls. This is where I spend most of my time: state, memory, and keeping an agent honest.' },
+    { title: 'CLOUD & DEVOPS', desc: 'Deployment, containers, and the practical plumbing around a model. Less glamorous than training, but it is what turns a notebook into something people can use.' }
   ];
 
-  let activeNodeIndex = 0;
-
   window.selectArchitectureNode = function (index) {
-    activeNodeIndex = index;
     const nodeData = nodes[index];
+    if (!nodeData) return;
 
     // Update diagram node DOM states
     document.querySelectorAll('.diagram-node').forEach((nodeEl, idx) => {
@@ -47,14 +46,20 @@
       }
     });
 
-    // Update Detail Text in Right Inspector
+    // Update Detail Text in Inspector
     const titleEl = document.getElementById('arch-inspector-title');
     const descEl = document.getElementById('arch-inspector-desc');
     const statePill = document.getElementById('arch-inspector-state');
 
     if (titleEl) titleEl.textContent = `${nodeData.title} // 0${index + 1}`;
     if (descEl) descEl.textContent = nodeData.desc;
-    if (statePill) statePill.textContent = index === 4 ? 'VERIFIED' : 'ACTIVE';
+    if (statePill) statePill.textContent = 'LEARNING';
+
+    // Sync chip active state
+    document.querySelectorAll('.chips-row .chip').forEach((chip, idx) => {
+      chip.classList.toggle('is-active', idx === index);
+      chip.classList.toggle('chip--accent', idx === index);
+    });
 
     // Trigger Traveling Message Chip Animation along Connector
     animateTravelingPacket(index);
@@ -112,41 +117,41 @@
     window.selectArchitectureNode(0);
   }, 500);
 
-  // 3. Pinned Scroll-Scrubbed Scene: TENET-AI Security Pipeline (Section 9)
-  const pinnedScene = document.getElementById('pinned-scene-section');
+  // 3. Pinned Scroll-Scrubbed Scene: Learning Through Work
+  const pinnedScene = document.getElementById('work-scene');
 
-  const securitySteps = [
+  const workSteps = [
     {
       stepNum: '01 / 04',
-      title: 'INBOUND INGESTION',
-      action: 'INGEST',
+      title: 'TOOLS FIRST',
+      action: 'EXPLORE',
       stateColor: '#8fb4ff',
       badgeIcon: '⚡',
-      desc: 'Inbound prompt payload enters the defensive middleware proxy before model exposure. Token stream buffered in memory.'
+      desc: 'Most of the work starts with tools: wrapping APIs and data sources so a model can call them cleanly through MCP.'
     },
     {
       stepNum: '02 / 04',
-      title: 'HEURISTIC SCANNER',
-      action: 'FILTER',
+      title: 'STATE AND MEMORY',
+      action: 'REMEMBER',
       stateColor: '#f28a2e',
-      badgeIcon: '🛡️',
-      desc: 'Dual-stage pattern matching executes regex token filtering and jailbreak heuristic evaluation with sub-15ms latency overhead.'
+      badgeIcon: '◈',
+      desc: 'A lot of time goes into state: what the agent has done, what it should remember, and when to start fresh.'
     },
     {
       stepNum: '03 / 04',
-      title: 'SEMANTIC DISTANCE',
-      action: 'VERIFY',
+      title: 'PRETRAINED MODELS',
+      action: 'WIRE',
       stateColor: '#ffd27a',
-      badgeIcon: '🧠',
-      desc: 'Embedding distance thresholding cross-references hostile payload vectors against cached attack manifolds in Redis.'
+      badgeIcon: '◇',
+      desc: 'Integrating pretrained LLMs into the loop, with enough structure around them that failures are visible instead of silent.'
     },
     {
       stepNum: '04 / 04',
-      title: 'APPEND-ONLY AUDIT',
-      action: 'COMMIT',
+      title: 'READ, BREAK, REPEAT',
+      action: 'ITERATE',
       stateColor: '#7ee08f',
-      badgeIcon: '✓',
-      desc: 'Sanitized prompt dispatched to LLM. Execution hash, risk score, and telemetry committed to append-only PostgreSQL ledger.'
+      badgeIcon: '↻',
+      desc: 'Reading traces, breaking things on purpose, and rebuilding parts of the graph until it behaves.'
     }
   ];
 
@@ -155,7 +160,7 @@
   function updateSecurityStep(stepIdx, fractionInsideStep) {
     if (stepIdx !== currentStepIndex) {
       currentStepIndex = stepIdx;
-      const data = securitySteps[stepIdx];
+      const data = workSteps[stepIdx];
 
       // Update Card Header & Texts with fade/translate
       const card = document.getElementById('security-step-card');
@@ -200,18 +205,18 @@
     segments.forEach((segFill, idx) => {
       if (idx < stepIdx) {
         segFill.style.width = '100%';
-        segFill.style.backgroundColor = securitySteps[stepIdx].stateColor;
+        segFill.style.backgroundColor = workSteps[stepIdx].stateColor;
       } else if (idx === stepIdx) {
         segFill.style.width = `${Math.round(fractionInsideStep * 100)}%`;
-        segFill.style.backgroundColor = securitySteps[stepIdx].stateColor;
+        segFill.style.backgroundColor = workSteps[stepIdx].stateColor;
       } else {
         segFill.style.width = '0%';
       }
     });
   }
 
-  if (typeof ScrollTrigger !== 'undefined' && pinnedScene) {
-    if (window.innerWidth >= 768) {
+  if (typeof ScrollTrigger !== 'undefined' && pinnedScene && !prefersReducedMotion) {
+    if (window.innerWidth >= 1024) {
       ScrollTrigger.create({
         trigger: pinnedScene,
         start: 'top top',
@@ -224,7 +229,7 @@
           const frame = Math.round(p * 960);
           window.setSceneFrame(frame, self.isActive);
 
-          const stepCount = securitySteps.length;
+          const stepCount = workSteps.length;
           const rawStep = p * stepCount;
           const stepIndex = Math.min(stepCount - 1, Math.floor(rawStep));
           const frac = rawStep - stepIndex;
@@ -233,58 +238,6 @@
         }
       });
     }
-  }
-
-  // 4. Interactive Scenario Chips (Re-run sequence with different threat scenarios)
-  const scenarioChips = document.querySelectorAll('.scenario-chip');
-  scenarioChips.forEach((chip) => {
-    chip.addEventListener('click', () => {
-      scenarioChips.forEach(c => c.classList.remove('is-active'));
-      chip.classList.add('is-active');
-      const scenario = chip.dataset.scenario;
-
-      // Pulse spark burst to represent scenario switch
-      const rect = chip.getBoundingClientRect();
-      window.dispatchEvent(new CustomEvent('particles:burst', {
-        detail: {
-          from: { x: rect.left, y: rect.top },
-          to: { x: rect.left + 140, y: rect.top + 60 },
-          count: 90,
-          color: '#f28a2e'
-        }
-      }));
-    });
-  });
-
-  // 5. Stat Counter Tweening (Counts up smoothly when scrolled into view)
-  const statElements = document.querySelectorAll('.stat-val[data-target]');
-  if ('IntersectionObserver' in window) {
-    const statObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const el = entry.target;
-          const targetNum = parseFloat(el.getAttribute('data-target'));
-          const suffix = el.getAttribute('data-suffix') || '';
-          const prefix = el.getAttribute('data-prefix') || '';
-          if (isNaN(targetNum)) return;
-
-          let start = 0;
-          const duration = 600;
-          const startTime = performance.now();
-
-          function stepTween(now) {
-            const progress = Math.min(1, (now - startTime) / duration);
-            const val = THREE.MathUtils.lerp(start, targetNum, progress);
-            el.textContent = `${prefix}${val.toFixed(targetNum % 1 === 0 ? 0 : 1)}${suffix}`;
-            if (progress < 1) requestAnimationFrame(stepTween);
-          }
-          requestAnimationFrame(stepTween);
-          statObserver.unobserve(el);
-        }
-      });
-    }, { threshold: 0.5 });
-
-    statElements.forEach(el => statObserver.observe(el));
   }
 
 })();
