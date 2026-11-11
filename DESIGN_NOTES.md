@@ -87,3 +87,9 @@
 - The profile grid is three columns at 1024px and wider and a single column below. The contents overlay gained a mobile layout: one column, ESC button first, chapter list above the profile links.
 - Certifications were not added. LinkedIn answers automated requests with HTTP 999/authwall, so the profile could not be read. The certifications in the unused `data.js` were not imported because they could not be verified; the user will supply the current list.
 
+## 11. Certifications (November 2026)
+- Added seven certifications above the contact profile cards, using the LinkedIn export the user supplied: Google Cloud Computing Foundations: Cloud Computing Fundamentals; Introduction to Cybersecurity (Cisco Networking Academy); Cloud Platform Job Simulation; Cybersecurity Job Simulation; Mastercard Virtual Experience; Verizon Virtual Experience; Pandas (Kaggle Learn).
+- Titles and issuers are reproduced exactly as shown. No dates were provided, so none were invented. The two job simulations are labelled by type, and the virtual experiences by company, rather than guessing an issuing platform.
+- The credential list uses a two-column grid at 768px and wider and a single column below it.
+- The technical-skills half of the same screenshot was not imported; the existing story, hero meta, and terminal `stack` command were left unchanged.
+

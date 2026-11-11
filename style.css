@@ -2688,6 +2688,48 @@ img, svg, canvas {
   margin-bottom: 0;
 }
 
+/* Certifications (contact) */
+.credentials-block {
+  margin-block: 40px 24px;
+}
+
+.credential-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(24px, 4vw, 56px);
+}
+
+.credential-row {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 14px;
+  align-items: baseline;
+  padding-block: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.credential-idx {
+  font: 500 9.5px / 1.5 var(--font-mono);
+  letter-spacing: 0.1em;
+  color: var(--orange);
+  opacity: 0.8;
+}
+
+.credential-title {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.credential-issuer {
+  font: 500 9.5px / 1.5 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-top: 3px;
+}
+
 .profile-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -3006,6 +3048,10 @@ img, svg, canvas {
   .campus-row {
     grid-template-columns: 1fr;
     gap: 4px;
+  }
+
+  .credential-grid {
+    grid-template-columns: 1fr;
   }
 
   .route-row {
