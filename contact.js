@@ -15,7 +15,7 @@
   const commands = {
     whoami: () => [
       'Sarvajith Sankar — I study CS at VIT Vellore and data science at IIT Madras.',
-      'Currently an AI intern at Maveric Systems, working with agents.',
+      'Formerly an AI intern at Maveric Systems, working with agents.',
       'Interested in how models, tools, memory and state fit together.',
       'Open to internships in AI and software engineering.'
     ],

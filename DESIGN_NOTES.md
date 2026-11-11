@@ -83,13 +83,14 @@
 - "Open to internships" is stated in the hero status field, the contact lede, the LinkedIn card's `OPEN TO` row, and the terminal `whoami` output.
 - Added a LeetCode destination card with a link to `leetcode.com/u/sarvajithsankar`. It deliberately shows no solved counts; the public API numbers change and are not maintained on this static page. The card art is a decorative equalizer motif, not live data.
 - Added `LEETCODE` links to the footer, contents overlay, and terminal `links` command. All external links keep `target="_blank"` + `rel="noopener noreferrer"`.
-- Added campus roles under "Beyond the screen", listed separately at the user's request: IIC VIT Vellore (participant), IEEE CS VIT Vellore (ex-coordinator), and Gravitas (ex-coordinator).
+- Added campus roles under "Beyond the screen", listed separately at the user's request: IIC VIT Vellore (events member), IEEE CS VIT Vellore (junior core), and Gravitas (ex-coordinator).
 - The profile grid is three columns at 1024px and wider and a single column below. The contents overlay gained a mobile layout: one column, ESC button first, chapter list above the profile links.
 - Certifications were not added. LinkedIn answers automated requests with HTTP 999/authwall, so the profile could not be read. The certifications in the unused `data.js` were not imported because they could not be verified; the user will supply the current list.
 
 ## 11. Certifications (November 2026)
-- Added seven certifications above the contact profile cards, using the LinkedIn export the user supplied: Google Cloud Computing Foundations: Cloud Computing Fundamentals; Introduction to Cybersecurity (Cisco Networking Academy); Cloud Platform Job Simulation; Cybersecurity Job Simulation; Mastercard Virtual Experience; Verizon Virtual Experience; Pandas (Kaggle Learn).
+- Added eight certifications above the contact profile cards, using the LinkedIn export the user supplied: Google Cloud Computing Foundations: Cloud Computing Fundamentals; Introduction to Cybersecurity (Cisco Networking Academy); Cloud Platform Job Simulation; Cybersecurity Job Simulation; Mastercard Virtual Experience; Verizon Virtual Experience; Pandas (Kaggle Learn); API Foundations (Postman).
 - Titles and issuers are reproduced exactly as shown. No dates were provided, so none were invented. The two job simulations are labelled by type, and the virtual experiences by company, rather than guessing an issuing platform.
 - The credential list uses a two-column grid at 768px and wider and a single column below it.
 - The technical-skills half of the same screenshot was not imported; the existing story, hero meta, and terminal `stack` command were left unchanged.
+- The Maveric Systems role is described in the past tense throughout (hero meta, work scene, LinkedIn card, terminal) because it is now a former internship.
 
