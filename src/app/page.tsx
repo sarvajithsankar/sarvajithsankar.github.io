@@ -1,24 +1,20 @@
-import { Contact } from '@/components/sections/Contact'
-import { CurrentlyBuilding } from '@/components/sections/CurrentlyBuilding'
-import { Experience } from '@/components/sections/Experience'
-import { Hero } from '@/components/sections/Hero'
-import { Skills } from '@/components/sections/Skills'
-import { Work } from '@/components/sections/Work'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+
+import { PortfolioScripts } from './portfolio-scripts'
+
+const markup = readFileSync(join(process.cwd(), 'src/portfolio/page.html'), 'utf8')
 
 /**
- * Single-page portfolio. Section order follows the three questions the site has
- * to answer: who is this (Hero), why care (Work), how deep (Experience, Skills,
- * Currently Building), and how to reach them (Contact).
+ * The page is authored as one static document and server-rendered verbatim so
+ * the cinematic layout keeps its hand-tuned SVG and inline diagram geometry.
+ * Enhancement scripts attach only after hydration.
  */
 export default function Page() {
   return (
     <>
-      <Hero />
-      <Work />
-      <Experience />
-      <Skills />
-      <CurrentlyBuilding />
-      <Contact />
+      <div dangerouslySetInnerHTML={{ __html: markup }} />
+      <PortfolioScripts />
     </>
   )
 }
