@@ -1,0 +1,902 @@
+  <a class="skip-link" href="#main-content">SKIP TO CONTENT</a>
+
+  <noscript>
+    <style>
+      .fullscreen-loader,
+      #deck-section,
+      #contents-btn,
+      #tick-rail,
+      #scroll-percentage,
+      #scene-frame-counter,
+      #cursor-dot { display: none !important; }
+      .headline-inner { transform: none !important; filter: none !important; }
+      .reveal-statement .w { opacity: 1 !important; color: var(--ink) !important; }
+      .panel, .feature-item, .info-trio-col, .direction-panel, .field-row, .route-row, .work-step {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    </style>
+  </noscript>
+
+  <!-- ========================================================================
+       GLOBAL ATMOSPHERE LAYERS (Stacking Order per Section 4)
+       ======================================================================== -->
+
+  <!-- Layer 1: WebGL Particle Canvas (Section 5) at --z-canvas: 0 -->
+  <canvas id="bg-particle-canvas" aria-hidden="true"></canvas>
+
+  <!-- Layer 1 Fallback: Layered CSS Background for reduced-motion/no-webgl -->
+  <div class="bg-atmosphere-fallback" aria-hidden="true"></div>
+
+  <!-- Layer 2: Bokeh Orbs at --z-bokeh: 1 -->
+  <div class="bokeh-container" aria-hidden="true">
+    <div class="bokeh-orb bokeh-orb--orange bokeh-orb-1" data-amp="35" data-period="18" data-parallax="0.12"></div>
+    <div class="bokeh-orb bokeh-orb--blue bokeh-orb--ring bokeh-orb-2" data-amp="45" data-period="24" data-parallax="0.18"></div>
+    <div class="bokeh-orb bokeh-orb--orange bokeh-orb-3" data-amp="25" data-period="15" data-parallax="0.08"></div>
+    <div class="bokeh-orb bokeh-orb--blue bokeh-orb-4" data-amp="55" data-period="28" data-parallax="0.22"></div>
+    <div class="bokeh-orb bokeh-orb--orange bokeh-orb--ring bokeh-orb-5" data-amp="40" data-period="20" data-parallax="0.15"></div>
+    <div class="bokeh-orb bokeh-orb--blue bokeh-orb-6" data-amp="60" data-period="30" data-parallax="0.06"></div>
+    <div class="bokeh-orb bokeh-orb--orange bokeh-orb-7" data-amp="30" data-period="16" data-parallax="0.25"></div>
+    <div class="bokeh-orb bokeh-orb--blue bokeh-orb-8" data-amp="50" data-period="26" data-parallax="0.10"></div>
+  </div>
+
+  <!-- Layer 4: Film Grain Overlay at --z-chrome -->
+  <div class="film-grain" aria-hidden="true"></div>
+
+  <!-- Layer 5: Desktop Custom Cursor Follower -->
+  <div id="cursor-dot" class="cursor-dot" aria-hidden="true"></div>
+
+  <!-- ========================================================================
+       PERSISTENT CHROME (Always on Screen, Section 6)
+       ======================================================================== -->
+
+  <div id="progress-hairline" class="chrome-progress-hairline" aria-hidden="true"></div>
+
+  <button id="contents-btn" class="contents-btn" type="button" aria-expanded="false" aria-controls="contents-overlay">
+    <span class="menu-icon" aria-hidden="true">
+      <span class="menu-line line-top"></span>
+      <span class="menu-line line-mid"></span>
+      <span class="menu-line line-bot"></span>
+    </span>
+    <span>CONTENTS</span>
+  </button>
+
+  <div id="contents-overlay" class="contents-overlay" role="dialog" aria-modal="true" aria-label="Table of Contents">
+    <div class="contents-overlay-content">
+      <div class="contents-left">
+        <div class="mono-orange" style="margin-bottom: 24px;">— CONTENTS // EIGHT SMALL CHAPTERS</div>
+        <div id="contents-list" class="contents-list" role="navigation">
+          <!-- Populated dynamically by chrome.js -->
+        </div>
+      </div>
+      <div class="contents-right">
+        <button id="contents-close-btn" class="contents-close-btn" type="button">ESC // CLOSE</button>
+        <div class="contents-preview-box">
+          <span class="mono">HOVER A CHAPTER</span>
+          <div id="contents-preview-big-idx" class="contents-preview-big-idx">00</div>
+          <p class="mono" style="color: var(--ink-2); max-width: 22ch;">PRESS ESC OR PICK A CHAPTER TO JUMP STRAIGHT THERE.</p>
+          <div class="contents-socials">
+            <a class="mono-link" href="https://github.com/sarvajithsankar" target="_blank" rel="noopener noreferrer">GITHUB <span aria-hidden="true">↗</span></a>
+            <a class="mono-link" href="https://www.linkedin.com/in/sarvajithsankar/" target="_blank" rel="noopener noreferrer">LINKEDIN <span aria-hidden="true">↗</span></a>
+            <a class="mono-link" href="https://leetcode.com/u/sarvajithsankar/" target="_blank" rel="noopener noreferrer">LEETCODE <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav id="tick-rail" class="tick-rail" aria-label="Page Sections">
+    <!-- Populated dynamically by chrome.js -->
+  </nav>
+
+  <div id="scroll-percentage" class="scroll-percentage" aria-hidden="true">000%</div>
+
+  <div id="scene-frame-counter" class="scene-frame-counter" aria-hidden="true">
+    <span class="label">FRAME </span><span id="scene-frame-num" class="numerator">0000</span><span class="label"> / 0960</span>
+  </div>
+
+  <div id="fullscreen-loader" class="fullscreen-loader" aria-live="polite">
+    <div id="loader-inner" class="loader-inner">
+      <div id="loader-counter" class="loader-counter">000%</div>
+      <div class="loader-bar-wrap">
+        <div id="loader-fill" class="loader-bar-fill"></div>
+      </div>
+      <div class="loader-sub">LOADING THE FIELD</div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       CONTENT CONTAINER (Layer 3 at --z-content: 2)
+       ======================================================================== -->
+  <main id="main-content" class="content-container" tabindex="-1">
+
+    <!-- 00: HERO -->
+    <section id="hero" class="page-section hero-section">
+      <div class="section-eyebrow">00 / HELLO — A SHORT INTRODUCTION</div>
+
+      <h1 class="hero-title hero-headline">
+        <span class="headline-mask"><span class="headline-inner line-1">SARVAJITH SANKAR</span></span>
+      </h1>
+
+      <div class="hero-bottom">
+        <div class="hero-intro">
+          <p class="hero-lede">
+            I study computer science at VIT Vellore and data science at IIT Madras. I'm interested in machine learning and agents, and in figuring out how the systems underneath actually work.
+            <span class="italic-orange">This page is the short version.</span>
+          </p>
+
+          <div class="scroll-to-begin">
+            <span>SCROLL TO BEGIN</span>
+            <span class="hairline" aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <div class="hero-meta-block">
+          <div class="meta-col">
+            <div class="meta-row">
+              <span class="meta-label">STUDYING</span>
+              <span class="meta-value">VIT VELLORE — CSE</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">ALSO STUDYING</span>
+              <span class="meta-value">IIT MADRAS — DATA SCIENCE</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">PREVIOUSLY</span>
+              <span class="meta-value">AI INTERN @ MAVERIC SYSTEMS</span>
+            </div>
+          </div>
+          <div class="meta-col">
+            <div class="meta-row">
+              <span class="meta-label">INTERESTED IN</span>
+              <span class="meta-value">ML, LLMS, AGENT SYSTEMS</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">WORKING WITH</span>
+              <span class="meta-value">LANGGRAPH, MCP, PYTORCH</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">STATUS</span>
+              <span class="meta-value" style="color: var(--green);">● OPEN TO INTERNSHIPS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01: CARD DECK (CHAPTER NAVIGATION) -->
+    <section id="deck-section" class="card-deck-pinned-section">
+      <h2 class="sr-only">The short version</h2>
+      <div class="card-deck-stage-wrapper">
+        <div id="card-deck-center-text" class="card-deck-center-text" aria-hidden="true">
+          <div class="center-mono">EIGHT SMALL CHAPTERS</div>
+          <div class="center-lede">A short story about cricket, two degrees, and agents.</div>
+          <div class="center-mono" style="color: var(--ink-3);">KEEP SCROLLING TO UNROLL</div>
+        </div>
+        <div id="card-deck-stage2-headline" class="card-deck-stage2-headline" aria-hidden="true">
+          <div class="section-eyebrow">01 // THE SHORT VERSION</div>
+          <h2 class="section-headline" style="margin-bottom: 8px;">
+            <span class="line-1">THE SHORT VERSION.</span>
+            <span class="line-2">Start anywhere.</span>
+          </h2>
+          <p class="section-lede">
+            A few things about how I got here, what I'm learning, and what I might do next.
+          </p>
+        </div>
+        <div id="card-deck-viewport" class="card-viewport-container">
+          <!-- Chapter cards generated by card-deck.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- MARQUEE DIVIDER 1 -->
+    <div class="marquee-divider" aria-hidden="true">
+      <div class="marquee-track">
+        <div class="marquee-unit">
+          <span class="marquee-word-outline">CURIOUS</span>
+          <span class="marquee-star">✦</span>
+          <span class="marquee-part">PART 01 // BEFORE THE CODE</span>
+          <span class="marquee-word-solid">ABOUT SYSTEMS</span>
+          <span class="marquee-star">✦</span>
+        </div>
+        <div class="marquee-unit">
+          <span class="marquee-word-outline">STILL</span>
+          <span class="marquee-star">✦</span>
+          <span class="marquee-part">PART 01 // BEFORE THE CODE</span>
+          <span class="marquee-word-solid">LEARNING</span>
+          <span class="marquee-star">✦</span>
+        </div>
+        <div class="marquee-unit">
+          <span class="marquee-word-outline">CURIOUS</span>
+          <span class="marquee-star">✦</span>
+          <span class="marquee-part">PART 01 // BEFORE THE CODE</span>
+          <span class="marquee-word-solid">ABOUT SYSTEMS</span>
+          <span class="marquee-star">✦</span>
+        </div>
+        <div class="marquee-unit">
+          <span class="marquee-word-outline">STILL</span>
+          <span class="marquee-star">✦</span>
+          <span class="marquee-part">PART 01 // BEFORE THE CODE</span>
+          <span class="marquee-word-solid">LEARNING</span>
+          <span class="marquee-star">✦</span>
+        </div>
+        <div class="marquee-unit">
+          <span class="marquee-word-outline">CURIOUS</span>
+          <span class="marquee-star">✦</span>
+          <span class="marquee-part">PART 01 // BEFORE THE CODE</span>
+          <span class="marquee-word-solid">ABOUT SYSTEMS</span>
+          <span class="marquee-star">✦</span>
+        </div>
+        <div class="marquee-unit">
+          <span class="marquee-word-outline">STILL</span>
+          <span class="marquee-star">✦</span>
+          <span class="marquee-part">PART 01 // BEFORE THE CODE</span>
+          <span class="marquee-word-solid">LEARNING</span>
+          <span class="marquee-star">✦</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02: BEFORE THE CODE -->
+    <section id="before-code" class="page-section">
+      <div class="section-hairline"></div>
+
+      <div class="section-eyebrow">02 / BEFORE THE CODE</div>
+
+      <h2 class="section-headline">
+        <span class="headline-mask"><span class="headline-inner line-1">BEFORE THE CODE.</span></span>
+        <span class="headline-mask"><span class="headline-inner italic-inview line-2">Games first, systems later.</span></span>
+      </h2>
+
+      <div class="two-col-grid">
+        <div>
+          <div id="statement-text" class="reveal-statement">
+            I was really into cricket in sixth grade and played for about three years. In eleventh and twelfth I captained my volleyball team. Nothing dramatic happened. I liked the routine of turning up, practising, and slowly getting a little better at something with other people.
+          </div>
+
+          <div class="pull-quote">
+            "I wasn't the best player. I just liked the part where you keep showing up and the thing starts to make sense."
+            <div class="mono" style="margin-top: 10px; color: var(--ink-3);">— ON CRICKET, VOLLEYBALL, AND PRACTICE</div>
+          </div>
+        </div>
+
+        <div class="panel field-notes">
+          <div class="panel-header-bar">
+            <span class="panel-title">FIELD NOTES // BEFORE THE CODE</span>
+            <div class="state-pill"><span class="dot"></span>OFF-SCREEN</div>
+          </div>
+
+          <div class="field-row">
+            <span class="field-label">CRICKET</span>
+            <p class="field-text">Played for about three years, starting in sixth grade. Fond of it from the start.</p>
+          </div>
+          <div class="field-row">
+            <span class="field-label">VOLLEYBALL</span>
+            <p class="field-text">Captained my volleyball team in grades 11 and 12. Six people, one ball, and a lot of talking.</p>
+          </div>
+          <div class="field-row">
+            <span class="field-label">WHAT STUCK</span>
+            <p class="field-text">Showing up, practising, and being useful to a team. That habit came with me into code.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03: FINDING MY WAY INTO CS -->
+    <section id="into-cs" class="page-section">
+      <div class="section-hairline"></div>
+
+      <div class="section-eyebrow">03 / FINDING MY WAY IN</div>
+
+      <h2 class="section-headline">
+        <span class="headline-mask"><span class="headline-inner line-1">TWO DEGREES.</span></span>
+        <span class="headline-mask"><span class="headline-inner italic-inview line-2">One direction.</span></span>
+      </h2>
+
+      <div class="two-col-grid">
+        <div>
+          <p class="section-lede" style="margin-bottom: 20px;">
+            I got interested in computer science before I really knew what to do with it. I liked that you could build something, run it, and immediately see whether it worked.
+          </p>
+          <p class="section-lede">
+            That took me to CSE at VIT Vellore, and to the data science programme at IIT Madras. One is teaching me how to build systems; the other is teaching me the maths underneath them. I'm still somewhere in the middle of both.
+          </p>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header-bar">
+            <span class="panel-title">ACADEMIC ROUTE // TWO PROGRAMMES</span>
+            <div class="state-pill"><span class="dot"></span>IN PROGRESS</div>
+          </div>
+
+          <div class="route-row">
+            <span class="route-year">VIT</span>
+            <div class="route-body">
+              <div class="route-title">VELLORE INSTITUTE OF TECHNOLOGY</div>
+              <div class="route-sub">B.TECH — COMPUTER SCIENCE &amp; ENGINEERING</div>
+              <p class="route-text">Data structures, systems, and the fundamentals I use every time I sit down to build something.</p>
+            </div>
+          </div>
+          <div class="route-row">
+            <span class="route-year">IITM</span>
+            <div class="route-body">
+              <div class="route-title">INDIAN INSTITUTE OF TECHNOLOGY, MADRAS</div>
+              <div class="route-sub">B.S. — DATA SCIENCE · 2025–2029</div>
+              <p class="route-text">Probability, linear algebra, and the maths behind models that learn from data.</p>
+            </div>
+          </div>
+
+          <div class="panel-footnote mono">TWO PROGRAMMES. ONE QUESTION: HOW DOES THIS ACTUALLY WORK?</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04: WHAT KEEPS ME CURIOUS -->
+    <section id="curiosity" class="page-section">
+      <div class="section-hairline"></div>
+
+      <div class="section-eyebrow">04 / WHAT KEEPS ME CURIOUS</div>
+
+      <h2 class="section-headline">
+        <span class="headline-mask"><span class="headline-inner line-1">STILL CURIOUS.</span></span>
+        <span class="headline-mask"><span class="headline-inner italic-inview line-2">Mostly about how the pieces fit.</span></span>
+      </h2>
+
+      <p class="section-lede" style="margin-bottom: 32px;">
+        I learn best by pulling something apart. Right now that means working from the maths up through neural networks, transformers, and the agent frameworks built on top of them.
+      </p>
+
+      <div class="panel">
+        <div class="panel-header-bar">
+          <span class="panel-title">LEARNING MAP // FROM MODELS TO AGENTS</span>
+          <div class="state-pill">
+            <span class="dot"></span>
+            <span id="arch-inspector-state">LEARNING</span>
+          </div>
+        </div>
+
+        <div class="chips-row">
+          <button class="chip chip--accent is-active" type="button" onclick="selectArchitectureNode(0)">01 // MACHINE LEARNING</button>
+          <button class="chip" type="button" onclick="selectArchitectureNode(1)">02 // DEEP LEARNING</button>
+          <button class="chip" type="button" onclick="selectArchitectureNode(2)">03 // TRANSFORMERS</button>
+          <button class="chip" type="button" onclick="selectArchitectureNode(3)">04 // LLMS &amp; AGENTS</button>
+          <button class="chip" type="button" onclick="selectArchitectureNode(4)">05 // CLOUD &amp; DEVOPS</button>
+        </div>
+
+        <div style="position: relative; width: 100%; min-height: 220px; margin-block: 20px;">
+          <div id="traveling-message-chip" class="traveling-chip" style="opacity: 0;">
+            <span class="dot"></span>
+            <span>NOTES</span>
+          </div>
+
+          <svg class="diagram-svg" viewBox="0 0 960 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Learning path from machine learning to cloud and DevOps">
+            <path id="connector-path-0" class="diagram-connector is-active" d="M 120 110 L 280 110" />
+            <path id="connector-path-1" class="diagram-connector" d="M 320 110 L 480 110" />
+            <path id="connector-path-2" class="diagram-connector" d="M 520 110 L 680 110" />
+            <path id="connector-path-3" class="diagram-connector" d="M 720 110 L 860 110" />
+
+            <g class="diagram-node" data-state="active">
+              <rect class="diagram-node-rect" x="20" y="65" width="120" height="90" />
+              <text class="diagram-node-title" x="80" y="105">MACHINE</text>
+              <text class="diagram-node-sub" x="80" y="122">LEARNING</text>
+              <text class="diagram-node-badge" x="80" y="142">01 // MODELS</text>
+            </g>
+
+            <g class="diagram-node" data-state="idle">
+              <rect class="diagram-node-rect" x="220" y="65" width="120" height="90" />
+              <text class="diagram-node-title" x="280" y="105">DEEP</text>
+              <text class="diagram-node-sub" x="280" y="122">LEARNING</text>
+              <text class="diagram-node-badge" x="280" y="142">02 // NETS</text>
+            </g>
+
+            <g class="diagram-node" data-state="idle">
+              <circle class="diagram-hub-circle" cx="500" cy="110" r="48" />
+              <text class="diagram-node-title" x="500" y="105">TRANSFORMERS</text>
+              <text class="diagram-node-sub" x="500" y="122">ATTENTION</text>
+              <text class="diagram-node-badge" x="500" y="140">03 // PAPERS</text>
+            </g>
+
+            <g class="diagram-node" data-state="idle">
+              <rect class="diagram-node-rect" x="620" y="65" width="120" height="90" />
+              <text class="diagram-node-title" x="680" y="105">LLMS &amp;</text>
+              <text class="diagram-node-sub" x="680" y="122">AGENTS</text>
+              <text class="diagram-node-badge" x="680" y="142">04 // TOOLS</text>
+            </g>
+
+            <g class="diagram-node" data-state="idle">
+              <rect class="diagram-node-rect" x="820" y="65" width="120" height="90" />
+              <text class="diagram-node-title" x="880" y="105">CLOUD &amp;</text>
+              <text class="diagram-node-sub" x="880" y="122">DEVOPS</text>
+              <text class="diagram-node-badge" x="880" y="142">05 // SHIPPING</text>
+            </g>
+          </svg>
+        </div>
+
+        <div style="background: var(--inset); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px;">
+          <div id="arch-inspector-title" class="mono-orange" style="margin-bottom: 8px;">MACHINE LEARNING // 01</div>
+          <p id="arch-inspector-desc" class="serif-body" style="font-size: 15px;">
+            Where I started: how models learn from data, how to check whether they are any good, and why a simple baseline is usually worth trying first.
+          </p>
+        </div>
+
+        <div class="subtile-grid">
+          <div class="subtile">
+            <div class="subtile-head">READING</div>
+            <div class="subtile-stat">Transformer papers, slowly</div>
+          </div>
+          <div class="subtile">
+            <div class="subtile-head">BUILDING</div>
+            <div class="subtile-stat">Small agent tools with MCP</div>
+          </div>
+          <div class="subtile">
+            <div class="subtile-head">NEXT</div>
+            <div class="subtile-stat">More cloud &amp; deployment practice</div>
+          </div>
+        </div>
+
+        <p class="mono" style="margin-top: 18px;">
+          <a class="mono-link" href="https://github.com/sarvajithsankar" target="_blank" rel="noopener noreferrer">EXPLORE WHAT I'VE BUILT <span aria-hidden="true">↗</span></a>
+        </p>
+      </div>
+    </section>
+
+    <!-- 05: LEARNING THROUGH WORK (PINNED SCENE) -->
+    <section id="work-scene" class="pinned-scene-container">
+      <div class="pinned-scene-inner">
+        <div class="section-hairline"></div>
+
+        <div class="pinned-scene-grid">
+          <div>
+            <div class="section-eyebrow">05 / WORK // MAVERIC SYSTEMS</div>
+
+            <h2 class="section-headline">
+              <span class="headline-mask"><span class="headline-inner line-1">LEARNING THROUGH WORK.</span></span>
+              <span class="headline-mask"><span class="headline-inner italic-inview line-2">What I actually did with agents.</span></span>
+            </h2>
+
+            <p class="section-lede">
+              I was an AI intern at Maveric Systems. Most of my work sat inside agent loops: tools, state, memory, and integrating pretrained models without pretending they were something they weren't.
+            </p>
+
+            <div class="panel" style="margin-top: 24px; padding: 24px;">
+              <svg viewBox="0 0 600 120" style="width: 100%; height: auto;" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four stages of the agent loop">
+                <line x1="50" y1="60" x2="550" y2="60" stroke="rgba(255,255,255,0.15)" stroke-dasharray="4 4" />
+
+                <g class="sec-diagram-stage is-active" transform="translate(60, 60)">
+                  <circle class="sec-stage-ring" r="22" />
+                  <text class="sec-stage-num" y="4" text-anchor="middle">01</text>
+                  <text class="sec-stage-label" y="36" text-anchor="middle">TOOLS</text>
+                </g>
+
+                <g class="sec-diagram-stage" transform="translate(210, 60)">
+                  <circle class="sec-stage-ring" r="22" />
+                  <text class="sec-stage-num" y="4" text-anchor="middle">02</text>
+                  <text class="sec-stage-label" y="36" text-anchor="middle">STATE</text>
+                </g>
+
+                <g class="sec-diagram-stage" transform="translate(360, 60)">
+                  <circle class="sec-stage-ring" r="22" />
+                  <text class="sec-stage-num" y="4" text-anchor="middle">03</text>
+                  <text class="sec-stage-label" y="36" text-anchor="middle">MODELS</text>
+                </g>
+
+                <g class="sec-diagram-stage" transform="translate(510, 60)">
+                  <circle class="sec-stage-ring" r="22" />
+                  <text class="sec-stage-num" y="4" text-anchor="middle">04</text>
+                  <text class="sec-stage-label" y="36" text-anchor="middle">ITERATE</text>
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          <div>
+            <div id="security-step-card" class="step-card">
+              <div class="step-card-header">
+                <span id="sec-step-counter" class="step-counter">01 / 04</span>
+                <span id="sec-step-icon" class="step-icon-badge">⚡</span>
+              </div>
+              <h3 id="sec-step-title" class="step-card-title">TOOLS FIRST</h3>
+              <p id="sec-step-desc" class="step-card-desc">
+                Most of the work starts with tools: wrapping APIs and data sources so a model can call them cleanly through MCP.
+              </p>
+
+              <div class="step-progress-row">
+                <div class="step-segments">
+                  <div class="step-segment"><div class="step-segment-fill sec-step-segment-fill"></div></div>
+                  <div class="step-segment"><div class="step-segment-fill sec-step-segment-fill"></div></div>
+                  <div class="step-segment"><div class="step-segment-fill sec-step-segment-fill"></div></div>
+                  <div class="step-segment"><div class="step-segment-fill sec-step-segment-fill"></div></div>
+                </div>
+                <span id="sec-step-action" class="step-action-label">EXPLORE</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile fallback: all four steps in normal flow -->
+        <ol class="work-steps-mobile">
+          <li class="work-step">
+            <span class="work-step-idx mono">01</span>
+            <h3 class="work-step-title">TOOLS FIRST</h3>
+            <p class="work-step-text">Most of the work starts with tools: wrapping APIs and data sources so a model can call them cleanly through MCP.</p>
+          </li>
+          <li class="work-step">
+            <span class="work-step-idx mono">02</span>
+            <h3 class="work-step-title">STATE AND MEMORY</h3>
+            <p class="work-step-text">A lot of time goes into state: what the agent has done, what it should remember, and when to start fresh.</p>
+          </li>
+          <li class="work-step">
+            <span class="work-step-idx mono">03</span>
+            <h3 class="work-step-title">PRETRAINED MODELS</h3>
+            <p class="work-step-text">Integrating pretrained LLMs into the loop, with enough structure around them that failures are visible instead of silent.</p>
+          </li>
+          <li class="work-step">
+            <span class="work-step-idx mono">04</span>
+            <h3 class="work-step-title">READ, BREAK, REPEAT</h3>
+            <p class="work-step-text">Reading traces, breaking things on purpose, and rebuilding parts of the graph until it behaves.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- MARQUEE DIVIDER 2 -->
+    <div class="marquee-divider" aria-hidden="true">
+      <div class="marquee-track">
+        <div class="marquee-unit">
+          <span class="marquee-word-outline">STILL</span>
+          <span class="marquee-star">✦</span>
+          <span class="marquee-part">PART 02 // WHAT'S NEXT</span>
+          <span class="marquee-word-solid">LEARNING</span>
+          <span class="marquee-star">✦</span>
+        </div>
+        <div class="marquee-unit">
+          <span class="marquee-word-outline">CLOSER</span>
+          <span class="marquee-star">✦</span>
+          <span class="marquee-part">PART 02 // WHAT'S NEXT</span>
+          <span class="marquee-word-solid">TO THE PROBLEM</span>
+          <span class="marquee-star">✦</span>
+        </div>
+        <div class="marquee-unit">
+          <span class="marquee-word-outline">STILL</span>
+          <span class="marquee-star">✦</span>
+          <span class="marquee-part">PART 02 // WHAT'S NEXT</span>
+          <span class="marquee-word-solid">LEARNING</span>
+          <span class="marquee-star">✦</span>
+        </div>
+        <div class="marquee-unit">
+          <span class="marquee-word-outline">CLOSER</span>
+          <span class="marquee-star">✦</span>
+          <span class="marquee-part">PART 02 // WHAT'S NEXT</span>
+          <span class="marquee-word-solid">TO THE PROBLEM</span>
+          <span class="marquee-star">✦</span>
+        </div>
+        <div class="marquee-unit">
+          <span class="marquee-word-outline">STILL</span>
+          <span class="marquee-star">✦</span>
+          <span class="marquee-part">PART 02 // WHAT'S NEXT</span>
+          <span class="marquee-word-solid">LEARNING</span>
+          <span class="marquee-star">✦</span>
+        </div>
+        <div class="marquee-unit">
+          <span class="marquee-word-outline">CLOSER</span>
+          <span class="marquee-star">✦</span>
+          <span class="marquee-part">PART 02 // WHAT'S NEXT</span>
+          <span class="marquee-word-solid">TO THE PROBLEM</span>
+          <span class="marquee-star">✦</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 06: WHERE THIS COULD GO -->
+    <section id="next-steps" class="page-section">
+      <div class="section-hairline"></div>
+
+      <div class="section-eyebrow">06 / WHERE THIS COULD GO</div>
+
+      <h2 class="section-headline">
+        <span class="headline-mask"><span class="headline-inner line-1">WHERE THIS COULD GO.</span></span>
+        <span class="headline-mask"><span class="headline-inner italic-inview line-2">Two directions I'm exploring.</span></span>
+      </h2>
+
+      <p class="section-lede" style="margin-bottom: 40px;">
+        I'm still early, and I'm not in a hurry to pick one path. Both of these appeal to me for the same reason: getting close to a real problem and making technology useful outside a demo.
+      </p>
+
+      <div class="direction-grid">
+        <article class="direction-panel">
+          <div class="direction-index">A</div>
+          <h3 class="direction-title">FORWARD DEPLOYED ENGINEER</h3>
+          <p class="direction-text">
+            Working directly with the people using the system. Translating a messy requirement into something that runs, then staying close enough to fix it when real usage shows up.
+          </p>
+          <div class="direction-note mono">CLOSE TO THE PROBLEM</div>
+        </article>
+
+        <article class="direction-panel">
+          <div class="direction-index">B</div>
+          <h3 class="direction-title">GLOBAL SOLUTIONS ARCHITECT</h3>
+          <p class="direction-text">
+            Looking across teams and systems, deciding how the pieces fit together, and explaining the trade-offs in language people can actually use to make a decision.
+          </p>
+          <div class="direction-note mono">CLOSE TO THE WHOLE PICTURE</div>
+        </article>
+      </div>
+
+      <p class="mono" style="margin-top: 24px;">NOT A DECISION YET — AN INTEREST.</p>
+    </section>
+
+    <!-- 07: CONVERSATIONS BEYOND THE SCREEN -->
+    <section id="conversations" class="page-section">
+      <div class="section-hairline"></div>
+
+      <div class="section-eyebrow">07 / BEYOND THE SCREEN</div>
+
+      <h2 class="section-headline">
+        <span class="headline-mask"><span class="headline-inner line-1">BEYOND THE SCREEN.</span></span>
+        <span class="headline-mask"><span class="headline-inner italic-inview line-2">I like talking to people who build.</span></span>
+      </h2>
+
+      <p class="story-statement">
+        I enjoy meeting engineers, founders, and developers and asking what they're working on. Not the polished version — the parts that were annoying, the tools that surprised them, how their team actually ships. I learn a lot from those conversations, and I usually leave with something to try.
+      </p>
+
+      <div class="pull-quote" style="max-width: 640px;">
+        "Most of what I know about industry came from someone taking ten minutes to explain what their team actually does."
+      </div>
+
+      <div class="info-trio-grid">
+        <div class="info-trio-col">
+          <div class="info-trio-title">WHAT I ASK ABOUT</div>
+          <p class="info-trio-text">What they're building, what broke recently, and how the team decided to do it that way.</p>
+        </div>
+        <div class="info-trio-col">
+          <div class="info-trio-title">WHAT I ENJOY</div>
+          <p class="info-trio-text">Hand-drawn diagrams, honest trade-offs, and demos that are still a little rough around the edges.</p>
+        </div>
+        <div class="info-trio-col">
+          <div class="info-trio-title">WHAT I DO AFTER</div>
+          <p class="info-trio-text">Write a small version of the idea, break it, and see whether it holds up outside the conversation.</p>
+        </div>
+      </div>
+
+      <div class="campus-block">
+        <div class="section-eyebrow">ON CAMPUS</div>
+        <div class="campus-list">
+          <div class="campus-row">
+            <span class="campus-org">IIC VIT VELLORE</span>
+            <span class="campus-role">Events member</span>
+          </div>
+          <div class="campus-row">
+            <span class="campus-org">IEEE CS VIT VELLORE</span>
+            <span class="campus-role">Junior core</span>
+          </div>
+          <div class="campus-row">
+            <span class="campus-org">GRAVITAS</span>
+            <span class="campus-role">Ex-coordinator</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08: SAY HELLO -->
+    <section id="contact-section" class="page-section">
+      <div class="section-hairline"></div>
+
+      <div class="section-eyebrow">08 / SAY HELLO</div>
+
+      <h2 class="section-headline">
+        <span class="headline-mask"><span class="headline-inner line-1">SAY HELLO.</span></span>
+        <span class="headline-mask"><span class="headline-inner italic-inview line-2">Or just talk tech.</span></span>
+      </h2>
+
+      <div class="contact-intro">
+        <p class="section-lede">
+          I'm open to internships. If you're working on agent systems, machine learning, or the unglamorous parts of shipping software, I'd like to hear about it. GitHub, LinkedIn, and LeetCode are the quickest places to find me.
+        </p>
+        <a class="mono-link" href="mailto:sarvajith2knot8@gmail.com">SARVAJITH2KNOT8@GMAIL.COM</a>
+      </div>
+
+      <div class="credentials-block">
+        <div class="section-eyebrow">CERTIFICATIONS // LINKEDIN</div>
+        <div class="credential-grid">
+          <div class="credential-row">
+            <span class="credential-idx">01</span>
+            <div>
+              <div class="credential-title">Google Cloud Computing Foundations: Cloud Computing Fundamentals</div>
+              <div class="credential-issuer">Google Cloud</div>
+            </div>
+          </div>
+          <div class="credential-row">
+            <span class="credential-idx">02</span>
+            <div>
+              <div class="credential-title">Introduction to Cybersecurity</div>
+              <div class="credential-issuer">Cisco Networking Academy</div>
+            </div>
+          </div>
+          <div class="credential-row">
+            <span class="credential-idx">03</span>
+            <div>
+              <div class="credential-title">Cloud Platform Job Simulation</div>
+              <div class="credential-issuer">Job simulation</div>
+            </div>
+          </div>
+          <div class="credential-row">
+            <span class="credential-idx">04</span>
+            <div>
+              <div class="credential-title">Cybersecurity Job Simulation</div>
+              <div class="credential-issuer">Job simulation</div>
+            </div>
+          </div>
+          <div class="credential-row">
+            <span class="credential-idx">05</span>
+            <div>
+              <div class="credential-title">Mastercard Virtual Experience</div>
+              <div class="credential-issuer">Mastercard</div>
+            </div>
+          </div>
+          <div class="credential-row">
+            <span class="credential-idx">06</span>
+            <div>
+              <div class="credential-title">Verizon Virtual Experience</div>
+              <div class="credential-issuer">Verizon</div>
+            </div>
+          </div>
+          <div class="credential-row">
+            <span class="credential-idx">07</span>
+            <div>
+              <div class="credential-title">Pandas</div>
+              <div class="credential-issuer">Kaggle Learn</div>
+            </div>
+          </div>
+          <div class="credential-row">
+            <span class="credential-idx">08</span>
+            <div>
+              <div class="credential-title">API Foundations</div>
+              <div class="credential-issuer">Postman</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-grid">
+        <!-- GitHub destination -->
+        <div class="panel profile-card">
+          <div class="panel-header-bar">
+            <span class="panel-title">GITHUB // CODE</span>
+            <div class="state-pill"><span class="dot"></span>PROFILE</div>
+          </div>
+
+          <div class="profile-body">
+            <img class="profile-avatar" src="avatar.jpg" alt="Sarvajith Sankar" width="72" height="72">
+            <div>
+              <div class="profile-name">SARVAJITH SANKAR</div>
+              <div class="profile-handle">@sarvajithsankar</div>
+            </div>
+          </div>
+
+          <div id="gh-activity" class="gh-activity" aria-hidden="true"></div>
+
+          <p class="profile-note">Repositories, half-finished experiments, and whatever I'm currently breaking.</p>
+
+          <a class="profile-action" href="https://github.com/sarvajithsankar" target="_blank" rel="noopener noreferrer">
+            OPEN GITHUB <span aria-hidden="true">↗</span>
+            <span class="sr-only">(opens in a new tab)</span>
+          </a>
+        </div>
+
+        <!-- LinkedIn destination -->
+        <div class="panel profile-card">
+          <div class="panel-header-bar">
+            <span class="panel-title">LINKEDIN // NETWORK</span>
+            <div class="state-pill"><span class="dot"></span>PROFILE</div>
+          </div>
+
+          <div class="profile-body">
+            <img class="profile-avatar" src="avatar.jpg" alt="Sarvajith Sankar" width="72" height="72">
+            <div>
+              <div class="profile-name">SARVAJITH SANKAR</div>
+              <div class="profile-handle">Former AI intern · student</div>
+            </div>
+          </div>
+
+          <div class="profile-lines">
+            <div class="profile-line"><span class="mono">FORMERLY</span><span>AI intern at Maveric Systems</span></div>
+            <div class="profile-line"><span class="mono">STUDYING</span><span>CSE at VIT Vellore · Data Science at IIT Madras</span></div>
+            <div class="profile-line"><span class="mono">OPEN TO</span><span>Internships and conversations about AI and systems</span></div>
+          </div>
+
+          <a class="profile-action" href="https://www.linkedin.com/in/sarvajithsankar/" target="_blank" rel="noopener noreferrer">
+            VIEW LINKEDIN PROFILE <span aria-hidden="true">↗</span>
+            <span class="sr-only">(opens in a new tab)</span>
+          </a>
+        </div>
+
+        <!-- LeetCode destination -->
+        <div class="panel profile-card">
+          <div class="panel-header-bar">
+            <span class="panel-title">LEETCODE // PRACTICE</span>
+            <div class="state-pill"><span class="dot"></span>PROFILE</div>
+          </div>
+
+          <div class="profile-body">
+            <img class="profile-avatar" src="avatar.jpg" alt="Sarvajith Sankar" width="72" height="72">
+            <div>
+              <div class="profile-name">SARVAJITH SANKAR</div>
+              <div class="profile-handle">@sarvajithsankar</div>
+            </div>
+          </div>
+
+          <div class="lc-motif" aria-hidden="true">
+            <div class="lc-bars">
+              <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <div class="lc-caption mono">DATA STRUCTURES // ALGORITHMS</div>
+          </div>
+
+          <p class="profile-note">Algorithms and data structures, worked through one problem at a time.</p>
+
+          <a class="profile-action" href="https://leetcode.com/u/sarvajithsankar/" target="_blank" rel="noopener noreferrer">
+            OPEN LEETCODE <span aria-hidden="true">↗</span>
+            <span class="sr-only">(opens in a new tab)</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Small console: real inputs, real links -->
+      <div class="terminal-panel" style="margin-top: 28px;">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <span class="terminal-dot dot-red"></span>
+            <span class="terminal-dot dot-yellow"></span>
+            <span class="terminal-dot dot-green"></span>
+          </div>
+          <span class="mono" style="font-size: 10px;">SARVAJITH@SYSTEMS:~</span>
+        </div>
+
+        <div id="terminal-output" class="terminal-body" style="min-height: 210px; max-height: 260px; overflow-y: auto;">
+          <div class="terminal-line">
+            <span class="terminal-prompt">$</span> <span class="terminal-cmd">whoami</span>
+          </div>
+          <div class="terminal-line">
+            <span class="terminal-out">Sarvajith Sankar — I study CS at VIT Vellore and data science at IIT Madras.</span>
+          </div>
+          <div class="terminal-line">
+            <span class="terminal-out">Formerly an AI intern at Maveric Systems, working with agents.</span>
+          </div>
+          <div class="terminal-line">
+            <span class="terminal-prompt">$</span> <span class="terminal-cmd">help</span>
+          </div>
+          <div class="terminal-line">
+            <span class="terminal-out">Available commands: whoami, learning, stack, links, clear, help</span>
+          </div>
+        </div>
+
+        <form id="terminal-form" style="border-top: 1px solid var(--line); display: flex; align-items: center; padding: 12px 16px; background: rgba(0,0,0,0.3);">
+          <span class="terminal-prompt" style="margin-right: 8px;">$</span>
+          <input id="terminal-cmd-input" type="text" placeholder="try: whoami, learning, links, help" aria-label="Terminal command" style="flex-grow: 1; background: transparent; border: none; outline: none; font-family: var(--font-mono); font-size: 12px; color: var(--ink);" autocomplete="off" spellcheck="false">
+          <span class="terminal-cursor" aria-hidden="true">_</span>
+        </form>
+      </div>
+
+      <div class="chips-row" style="margin-top: 14px;">
+        <button class="chip terminal-chip" type="button" data-cmd="whoami">whoami</button>
+        <button class="chip terminal-chip" type="button" data-cmd="learning">learning</button>
+        <button class="chip terminal-chip" type="button" data-cmd="stack">stack</button>
+        <button class="chip terminal-chip" type="button" data-cmd="links">links</button>
+        <button class="chip terminal-chip" type="button" data-cmd="clear">clear</button>
+      </div>
+
+      <footer class="site-footer">
+        <span class="mono">© 2026 SARVAJITH SANKAR</span>
+        <span class="mono">BUILT AS ONE PAGE. NO FAKE NUMBERS.</span>
+        <div class="site-footer-links">
+          <a class="mono-link" href="https://github.com/sarvajithsankar" target="_blank" rel="noopener noreferrer">GITHUB</a>
+          <a class="mono-link" href="https://www.linkedin.com/in/sarvajithsankar/" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
+          <a class="mono-link" href="https://leetcode.com/u/sarvajithsankar/" target="_blank" rel="noopener noreferrer">LEETCODE</a>
+          <a class="mono-link" href="mailto:sarvajith2knot8@gmail.com">EMAIL</a>
+        </div>
+      </footer>
+    </section>
+
+  </main>

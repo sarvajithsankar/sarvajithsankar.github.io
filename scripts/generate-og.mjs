@@ -2,13 +2,8 @@
  * Generates public/og-image.png (1200 x 630).
  *
  * Run with `npm run og`. The result is committed so a normal build never depends
- * on this script running.
- *
- * Why satori + resvg rather than an image editor or an image model: the OG card
- * has to carry exact typography (the name, the role, the accent colour) and the
- * agent-flow motif. Rendering it from the same layout primitives the site uses
- * means it is reproducible, diffable, and cannot drift from the real design.
- * satori consumes .woff (not .woff2), hence the @fontsource devDependencies.
+ * on this script running. Fonts come from the installed @fontsource packages so
+ * generation stays reproducible offline.
  */
 
 import { Resvg } from '@resvg/resvg-js'
@@ -23,14 +18,13 @@ const WIDTH = 1200
 const HEIGHT = 630
 
 const COLORS = {
-  background: '#0A0A0F',
-  surface: '#111118',
-  border: '#2E2E40',
-  primary: '#F0F0F5',
-  secondary: '#9090A8',
-  mono: '#8585A4',
-  accent: '#6C63FF',
-  accentSoft: '#9B94FF',
+  background: '#08090D',
+  panel: '#0D1016',
+  line: '#24262D',
+  cream: '#F1EBDD',
+  secondary: '#B8B2A5',
+  mono: '#8F8B81',
+  orange: '#F28A2E',
 }
 
 const DISPLAY = 'Space Grotesk'
@@ -55,54 +49,71 @@ function el(type, props, ...children) {
   return { type, props: { ...props, children: value } }
 }
 
-function node(label, { width = '100%', active = false } = {}) {
+const chapters = [
+  ['00', 'HELLO'],
+  ['01', 'BEFORE THE CODE'],
+  ['02', 'TWO DEGREES'],
+  ['03', 'STILL CURIOUS'],
+  ['04', 'LEARNING THROUGH WORK'],
+  ['05', 'WHERE THIS COULD GO'],
+  ['06', 'BEYOND THE SCREEN'],
+  ['07', 'SAY HELLO'],
+]
+
+function chapterRow(index, title, last) {
   return el(
     'div',
     {
       style: {
-        width,
-        height: 46,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 4,
-        border: `1px solid ${active ? COLORS.accent : COLORS.border}`,
-        backgroundColor: active ? 'rgba(108,99,255,0.10)' : COLORS.surface,
-        color: active ? COLORS.primary : COLORS.mono,
-        fontFamily: MONO,
-        fontSize: 15,
+        gap: 16,
+        padding: '11px 0',
+        borderBottom: last ? 'none' : `1px solid ${COLORS.line}`,
       },
     },
-    label,
+    el(
+      'div',
+      { style: { width: 28, fontFamily: MONO, fontSize: 13, color: COLORS.orange, letterSpacing: '0.06em' } },
+      index,
+    ),
+    el(
+      'div',
+      { style: { fontSize: 19, fontWeight: 500, color: COLORS.cream, letterSpacing: '0.01em' } },
+      title,
+    ),
   )
 }
 
-function connector() {
-  return el('div', {
-    style: { width: 1, height: 22, backgroundColor: COLORS.border, alignSelf: 'center' },
-  })
-}
-
-/** The same agent-flow motif as the site, drawn statically for the share card. */
-function flowDiagram() {
+function chapterPanel() {
   return el(
     'div',
-    { style: { display: 'flex', flexDirection: 'column', width: 330, flexShrink: 0 } },
-    node('User Input'),
-    connector(),
-    node('LLM Core'),
-    connector(),
-    node('Agent Router', { active: true }),
-    connector(),
+    {
+      style: {
+        width: 386,
+        flexShrink: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: COLORS.panel,
+        border: `1px solid ${COLORS.line}`,
+        borderRadius: 4,
+        padding: '24px 26px',
+      },
+    },
     el(
       'div',
-      { style: { display: 'flex', gap: 10, width: '100%' } },
-      node('Tavily', { width: 103 }),
-      node('Wikipedia', { width: 113 }),
-      node('arXiv', { width: 94 }),
+      {
+        style: {
+          fontFamily: MONO,
+          fontSize: 13,
+          color: COLORS.mono,
+          letterSpacing: '0.16em',
+          marginBottom: 12,
+        },
+      },
+      'EIGHT SMALL CHAPTERS',
     ),
-    connector(),
-    node('Structured Output'),
+    ...chapters.map(([index, title], i) => chapterRow(index, title, i === chapters.length - 1)),
   )
 }
 
@@ -114,9 +125,10 @@ function card() {
         width: '100%',
         height: '100%',
         display: 'flex',
+        alignItems: 'center',
         backgroundColor: COLORS.background,
-        padding: '72px 80px',
-        gap: 56,
+        padding: '64px 80px',
+        gap: 64,
         fontFamily: DISPLAY,
       },
     },
@@ -125,55 +137,68 @@ function card() {
       { style: { display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'center' } },
       el(
         'div',
-        { style: { display: 'flex', alignItems: 'center', gap: 14, marginBottom: 28 } },
-        el('div', { style: { width: 28, height: 3, backgroundColor: COLORS.accent } }),
+        { style: { display: 'flex', alignItems: 'center', gap: 14, marginBottom: 26 } },
+        el('div', { style: { width: 28, height: 2, backgroundColor: COLORS.orange } }),
         el(
           'div',
           {
             style: {
               fontFamily: MONO,
-              fontSize: 19,
+              fontSize: 17,
               color: COLORS.mono,
-              letterSpacing: '0.10em',
+              letterSpacing: '0.12em',
             },
           },
-          'AI & SOFTWARE ENGINEERING',
+          'MACHINE LEARNING / AGENTS / SYSTEMS',
         ),
       ),
       el(
         'div',
-        { style: { fontSize: 78, fontWeight: 700, color: COLORS.primary, lineHeight: 1.05 } },
+        { style: { fontSize: 76, fontWeight: 700, color: COLORS.cream, lineHeight: 1.02, letterSpacing: '-0.015em' } },
         'Sarvajith Sankar',
       ),
       el(
         'div',
         {
           style: {
-            marginTop: 26,
-            fontSize: 27,
+            marginTop: 22,
+            fontSize: 25,
             color: COLORS.secondary,
-            lineHeight: 1.5,
-            maxWidth: 560,
+            lineHeight: 1.35,
+            maxWidth: 620,
           },
         },
-        'Building autonomous AI agents and LLM security infrastructure.',
+        'CS at VIT Vellore · Data Science at IIT Madras',
       ),
       el(
         'div',
         {
           style: {
-            marginTop: 44,
-            display: 'flex',
-            gap: 18,
-            fontFamily: MONO,
-            fontSize: 16,
+            marginTop: 22,
+            fontSize: 21,
             color: COLORS.mono,
+            lineHeight: 1.5,
+            maxWidth: 560,
           },
         },
-        'Maveric Systems  ·  TENET-AI  ·  SSoC Season 5',
+        'Learning how models, tools, and systems fit together. Open to internships.',
+      ),
+      el(
+        'div',
+        {
+          style: {
+            marginTop: 38,
+            display: 'flex',
+            fontFamily: MONO,
+            fontSize: 15,
+            color: COLORS.orange,
+            letterSpacing: '0.08em',
+          },
+        },
+        'VIT VELLORE  ·  IIT MADRAS  ·  OPEN TO INTERNSHIPS',
       ),
     ),
-    el('div', { style: { display: 'flex', alignItems: 'center' } }, flowDiagram()),
+    chapterPanel(),
   )
 }
 
