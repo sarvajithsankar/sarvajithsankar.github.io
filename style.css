@@ -396,12 +396,6 @@ img, svg, canvas {
   white-space: nowrap;
 }
 
-.hero-title .line-2 {
-  display: block;
-  color: var(--ink);
-  white-space: nowrap;
-}
-
 .hero-bottom {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(340px, 480px);
@@ -414,12 +408,6 @@ img, svg, canvas {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-}
-
-.hero-title .outline {
-  color: transparent;
-  -webkit-text-stroke: 1.5px var(--orange);
-  paint-order: stroke fill;
 }
 
 .hero-lede {
@@ -2525,6 +2513,38 @@ img, svg, canvas {
   margin: 0;
 }
 
+/* Campus roles (beyond the screen) */
+.campus-block {
+  margin-top: 44px;
+}
+
+.campus-list {
+  border-top: 1px solid var(--line);
+}
+
+.campus-row {
+  display: grid;
+  grid-template-columns: minmax(0, 220px) minmax(0, 1fr);
+  gap: 24px;
+  align-items: baseline;
+  padding-block: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.campus-org {
+  font: 500 10px / 1.5 var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--orange);
+}
+
+.campus-role {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+
 /* Academic route rows */
 .route-row {
   display: grid;
@@ -2670,8 +2690,14 @@ img, svg, canvas {
 
 .profile-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
+}
+
+@media (max-width: 1023px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .profile-card {
@@ -2753,6 +2779,42 @@ img, svg, canvas {
 
 .profile-card:hover .gh-cell[data-level="0"] {
   background: rgba(255, 255, 255, 0.07);
+}
+
+/* Abstract LeetCode practice motif (no numbers, no live data) */
+.lc-motif {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-block: 4px 2px;
+}
+
+.lc-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 58px;
+  padding-bottom: 1px;
+  border-bottom: 1px solid var(--line);
+}
+
+.lc-bars span {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 30%;
+  border-radius: 1px 1px 0 0;
+  background: linear-gradient(180deg, rgba(242, 138, 46, 0.85), rgba(242, 138, 46, 0.22));
+}
+
+.lc-bars span:nth-child(3n) { height: 62%; }
+.lc-bars span:nth-child(4n) { height: 44%; }
+.lc-bars span:nth-child(5n) { height: 78%; }
+.lc-bars span:nth-child(7n) { height: 54%; }
+
+.lc-caption {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--ink-3);
 }
 
 .profile-lines {
@@ -2886,7 +2948,62 @@ img, svg, canvas {
 }
 
 @media (max-width: 767px) {
+  .contents-overlay {
+    overflow-y: auto;
+    align-items: flex-start;
+    padding-block: 28px;
+  }
+
+  .contents-overlay-content {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-block: 0;
+  }
+
+  .contents-row {
+    padding-block: 12px;
+    gap: 16px;
+  }
+
+  .contents-row .row-title {
+    font-size: clamp(1.7rem, 8vw, 2.4rem);
+  }
+
+  .contents-right {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    padding-left: 0;
+    padding-top: 20px;
+    gap: 18px;
+  }
+
+  .contents-close-btn {
+    align-self: flex-start;
+    order: -1;
+  }
+
+  .contents-preview-box > :not(.contents-socials) {
+    display: none;
+  }
+
+  .contents-preview-box {
+    gap: 0;
+  }
+
+  .contents-socials {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+
+@media (max-width: 767px) {
   .field-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .campus-row {
     grid-template-columns: 1fr;
     gap: 4px;
   }
@@ -2958,8 +3075,7 @@ img, svg, canvas {
     line-height: 0.9;
   }
 
-  .hero-title .line-1,
-  .hero-title .line-2 {
+  .hero-title .line-1 {
     white-space: normal;
   }
 

@@ -78,3 +78,12 @@
   - Under reduced motion the deck becomes a static 4-column grid (2 columns below 768px) with the stage-2 headline and lede placed above it in normal flow; the animated center text is omitted.
 - Legacy `timeline.js`, `data.js`, `hero.js`, and `app.js` remain in the repository but are no longer referenced by `index.html`; they were left in place rather than deleted.
 
+## 10. Profile and Campus Updates (November 2026)
+- Hero headline now shows the name only. The outlined `MACHINE LEARNING` line and its now-unused `.outline` and `.hero-title .line-2` styles were removed; machine learning still appears in the hero lede, meta block, learning map, and work narrative.
+- "Open to internships" is stated in the hero status field, the contact lede, the LinkedIn card's `OPEN TO` row, and the terminal `whoami` output.
+- Added a LeetCode destination card with a link to `leetcode.com/u/sarvajithsankar`. It deliberately shows no solved counts; the public API numbers change and are not maintained on this static page. The card art is a decorative equalizer motif, not live data.
+- Added `LEETCODE` links to the footer, contents overlay, and terminal `links` command. All external links keep `target="_blank"` + `rel="noopener noreferrer"`.
+- Added campus roles under "Beyond the screen", listed separately at the user's request: IIC VIT Vellore (participant), IEEE CS VIT Vellore (ex-coordinator), and Gravitas (ex-coordinator).
+- The profile grid is three columns at 1024px and wider and a single column below. The contents overlay gained a mobile layout: one column, ESC button first, chapter list above the profile links.
+- Certifications were not added. LinkedIn answers automated requests with HTTP 999/authwall, so the profile could not be read. The certifications in the unused `data.js` were not imported because they could not be verified; the user will supply the current list.
+

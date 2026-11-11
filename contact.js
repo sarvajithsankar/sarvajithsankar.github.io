@@ -16,7 +16,8 @@
     whoami: () => [
       'Sarvajith Sankar — I study CS at VIT Vellore and data science at IIT Madras.',
       'Currently an AI intern at Maveric Systems, working with agents.',
-      'Interested in how models, tools, memory and state fit together.'
+      'Interested in how models, tools, memory and state fit together.',
+      'Open to internships in AI and software engineering.'
     ],
     learning: () => [
       'Machine learning and deep learning, from the maths up.',
@@ -32,6 +33,7 @@
     links: () => [
       'GitHub:   <a class="terminal-link" href="https://github.com/sarvajithsankar" target="_blank" rel="noopener noreferrer">github.com/sarvajithsankar</a>',
       'LinkedIn: <a class="terminal-link" href="https://www.linkedin.com/in/sarvajithsankar/" target="_blank" rel="noopener noreferrer">linkedin.com/in/sarvajithsankar</a>',
+      'LeetCode: <a class="terminal-link" href="https://leetcode.com/u/sarvajithsankar/" target="_blank" rel="noopener noreferrer">leetcode.com/u/sarvajithsankar</a>',
       'Email:    <a class="terminal-link" href="mailto:sarvajith2knot8@gmail.com">sarvajith2knot8@gmail.com</a>'
     ],
     clear: () => {
